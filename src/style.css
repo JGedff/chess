@@ -13,3 +13,7 @@
 .h-500p {
     height: 500px;
 }
+
+.rounded-8p {
+    border-radius: 8px;
+}

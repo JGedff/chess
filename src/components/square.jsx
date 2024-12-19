@@ -1,23 +1,36 @@
 import { useEffect, useState } from "react";
-import { getImage } from "../functions/board";
 
-export default function Square({ filled, col, row, initialTurn, changeTurn }) {
+import { getImage, handleMovePiece } from "../functions";
+
+export default function Square({ filled, col, row, initialTurn, changeTurn, initBoard, handleMove }) {
+    const [board, setBoard] = useState(initBoard)
     const [turn, setTurn] = useState(initialTurn)
 
     useEffect(() => {
         setTurn(initialTurn)
     }, [initialTurn])
 
+    useEffect(() => {
+        setBoard(initBoard)
+    }, [initBoard])
+
     const handleClick = () => {
-        changeTurn()
+        handleMovePiece(row, col, board, handleMove, changeTurn)
     }
 
     const canClick = () => {
-        if (turn && (getImage(row, col).split('/')[1] == 'white')) {
+        let image = getImage(row, col)
+        let pieceColor = image.split('/')[1]
+
+        if (board[row][col] == 2 || board[row][col] == 3 || board[row][col] == 4) {
             return true
         }
 
-        if (!turn && (getImage(row, col).split('/')[1] == 'black')) {
+        if (turn && (pieceColor == 'white')) {
+            return true
+        }
+
+        if (!turn && (pieceColor == 'black')) {
             return true
         }
 
@@ -29,7 +42,7 @@ export default function Square({ filled, col, row, initialTurn, changeTurn }) {
             {
                 getImage(row, col) != '' ?
                 <img src={getImage(row, col)} alt="" className="w-100"/> :
-                <></>
+                <div className={"w-100 h-100" + (board[row][col] == 2 ? " bg-info" : "")} />
             }
         </button>
     )
