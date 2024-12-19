@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 
 import Square from "./square";
 
-export default function Row({ initLength, initFilled, rowIndex }) {
+export default function Row({ initLength, initFilled, rowIndex, initialTurn, changeTurn }) {
     const [filled, setFilled] = useState(initFilled)
     const [length, setLength] = useState(initLength)
+    const [turn, setTurn] = useState(initialTurn)
 
     useEffect(() => {
         setFilled(initFilled)
@@ -14,12 +15,16 @@ export default function Row({ initLength, initFilled, rowIndex }) {
         setLength(initLength)
     }, [initLength])
 
+    useEffect(() => {
+        setTurn(initialTurn)
+    }, [initialTurn])
+
     const generateRows = (lenght) => {
         const row = []
         let isFilled = filled
 
         for (let l = 0; l < lenght; l++) {
-            row.push(<Square key={l + rowIndex} col={l} row={rowIndex} filled={isFilled} />)
+            row.push(<Square key={l + rowIndex} col={l} row={rowIndex} filled={isFilled} initialTurn={turn} changeTurn={changeTurn} />)
             isFilled = !isFilled
         }
 
