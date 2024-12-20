@@ -15,7 +15,7 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     }, [initBoard])
 
     useEffect(() => {
-        //console.log(board)
+        console.log(board)
     }, [board])
 
     const handleClick = () => {
