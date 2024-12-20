@@ -14,10 +14,6 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
         setBoard(initBoard)
     }, [initBoard])
 
-    useEffect(() => {
-        console.log(board)
-    }, [board])
-
     const handleClick = () => {
         handleMovePiece(row, col, board, handleMove, changeTurn)
     }

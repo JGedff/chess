@@ -1,4 +1,5 @@
-import { getImage, handleMovePiece, MoveBoard } from "./board"
+import { getImage, MoveBoard } from "./board"
+import { handleMovePiece } from "./pices"
 
 export {
     getImage,
