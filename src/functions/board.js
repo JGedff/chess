@@ -40,8 +40,11 @@ const deleteMoveSpaces = (board) => {
         for (let w = 0; w < row.length; w++) {
             const space = row[w];
             
-            if (space == 2) {
+            if (space == 2 || space == 4) {
                 newBoard[h][w] = 0
+            }
+            else if (space == 3) {
+                newBoard[h][w] = 1
             }
         }
     }
@@ -73,7 +76,9 @@ export const getImage = (row, col) => {
 export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn) => {
     let newBoard = copyBoard(oldBoard)
 
-    if (oldBoard[row][col] == 1 && MovingPiece[0][0] == '') {
+    if (oldBoard[row][col] == 1) {
+        newBoard = deleteMoveSpaces(newBoard)
+
         const image = ImageBoard[row][col]
         let imagePath = image.split('/')
 
@@ -166,6 +171,9 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn) => 
         
         newBoard[row][col] = 1
         newBoard = deleteMoveSpaces(newBoard)
+        newBoard[MovingPiece[0][1]][MovingPiece[0][2]] = 0
+        
+        MovingPiece[0][0] = ''
 
         updateBoard(newBoard)
         changeTurn()

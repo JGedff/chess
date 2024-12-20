@@ -14,6 +14,10 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
         setBoard(initBoard)
     }, [initBoard])
 
+    useEffect(() => {
+        //console.log(board)
+    }, [board])
+
     const handleClick = () => {
         handleMovePiece(row, col, board, handleMove, changeTurn)
     }
@@ -37,12 +41,33 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
         return false
     }
 
+    const getBackgroundColor = (fill) => {
+        if (board[row][col] == 2) {
+            return " bg-info"
+        }
+
+        if (board[row][col] == 3) {
+            return " bg-danger"
+        }
+
+        if (board[row][col] == 4) {
+            return " bg-warning"
+        }
+        
+        if (fill) {
+            return " bg-black"
+        }
+        else {
+            return " bg-white"
+        }
+    }
+
     return (
-        <button className={"col w-12 align-content-center bg-" + (filled ? "black" : "white")} onClick={handleClick} disabled={!canClick()}>
+        <button className={"col w-12 align-content-center" + getBackgroundColor(filled)} onClick={handleClick} disabled={!canClick()}>
             {
                 getImage(row, col) != '' ?
                 <img src={getImage(row, col)} alt="" className="w-100"/> :
-                <div className={"w-100 h-100" + (board[row][col] == 2 ? " bg-info" : "")} />
+                <></>
             }
         </button>
     )
