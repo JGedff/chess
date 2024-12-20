@@ -35,10 +35,10 @@ export const deleteMoveSpaces = (board) => {
     let newBoard = copyBoard(board)
 
     for (let h = 0; h < board.length; h++) {
-        const row = board[h];
+        const row = board[h]
         
         for (let w = 0; w < row.length; w++) {
-            const space = row[w];
+            const space = row[w]
             
             if (space == 2 || space == 4) {
                 newBoard[h][w] = 0

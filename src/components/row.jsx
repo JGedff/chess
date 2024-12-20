@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 
-import Square from "./square";
+import Square from "./square"
 
 export default function Row({ initLength, initFilled, rowIndex, initialTurn, changeTurn, initBoard, handleMove }) {
     const [filled, setFilled] = useState(initFilled)

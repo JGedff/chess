@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 
-import { getImage, handleMovePiece } from "../functions";
+import { getImage, handleMovePiece } from "../functions"
 
 export default function Square({ filled, col, row, initialTurn, changeTurn, initBoard, handleMove }) {
     const [board, setBoard] = useState(initBoard)

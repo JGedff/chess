@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 
-import Row from "./row";
-import { MoveBoard } from "../functions";
+import Row from "./row"
+import { MoveBoard } from "../functions"
 
 export default function Board({ initLength, initHeight }) {
     const [spaceBoard, setSpaceBoard] = useState(MoveBoard)

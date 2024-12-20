@@ -1,5 +1,6 @@
-import { copyBoard, deleteMoveSpaces, ImageBoard, MovingPiece } from "./board";
-import { movePeo } from "./peo";
+import { copyBoard, deleteMoveSpaces, ImageBoard, MovingPiece } from "./board"
+import { movePeo } from "./peo"
+import { moveTower } from "./tower"
 
 export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn) => {
     let newBoard = copyBoard(oldBoard)
@@ -14,12 +15,17 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn) => 
                 newBoard = movePeo(row, col, newBoard)
 
                 updateBoard(newBoard)
-                break;
+                break
+            case "torre.png":
+                newBoard = moveTower(row, col, newBoard)
+
+                updateBoard(newBoard)
+                break
             default:
-                break;
+                break
         }
     }
-    else if (oldBoard[row][col] == 2 || oldBoard[row][col] == 3) {
+    else if (oldBoard[row][col] == 2 || oldBoard[row][col] == 3 || oldBoard[row][col] == 4) {
         ImageBoard[row][col] = MovingPiece[0][0]
         ImageBoard[MovingPiece[0][1]][MovingPiece[0][2]] = ''
         
