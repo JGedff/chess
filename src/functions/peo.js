@@ -1,14 +1,9 @@
-import { copyBoard, ImageBoard, MovingPiece } from "./board"
+import { copyBoard, ImageBoard } from "./board"
 
-export const movePeo = (row, col, oldMoveBoard) => {
-    let imagePath = ImageBoard[row][col].split('/')
+export const movePeo = (row, col, oldMoveBoard, imageName) => {
     const newBoard = copyBoard(oldMoveBoard)
 
-    MovingPiece[0][0] = imagePath.join('/')
-    MovingPiece[0][1] = row
-    MovingPiece[0][2] = col
-
-    if (imagePath[1] == 'white' && row - 1 >= 0) {
+    if (imageName == 'white' && row - 1 >= 0) {
         // Kill
         if (col - 1 >= 0) {
             if (newBoard[row - 1][col - 1] == 1 && ImageBoard[row - 1][col - 1].split('/')[1] == 'black') {
@@ -43,7 +38,7 @@ export const movePeo = (row, col, oldMoveBoard) => {
             }
         }
     }
-    else if (imagePath[1] == 'black' && row + 1 <= oldMoveBoard.length -1) {
+    else if (imageName == 'black' && row + 1 <= oldMoveBoard.length -1) {
         // Kill
         if (col - 1 >= 0) {
             if (newBoard[row + 1][col - 1] == 1 && ImageBoard[row + 1][col - 1].split('/')[1] == 'white') {

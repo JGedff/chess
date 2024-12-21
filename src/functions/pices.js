@@ -1,3 +1,4 @@
+import { moveAlfil } from "./alfil"
 import { copyBoard, deleteMoveSpaces, ImageBoard, MovingPiece } from "./board"
 import { movePeo } from "./peo"
 import { moveTower } from "./tower"
@@ -9,15 +10,24 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn) => 
         let imagePath = ImageBoard[row][col].split('/')
         
         newBoard = deleteMoveSpaces(newBoard)
+    
+        MovingPiece[0][0] = imagePath.join('/')
+        MovingPiece[0][1] = row
+        MovingPiece[0][2] = col
 
         switch (imagePath[2]) {
             case "peo.png":
-                newBoard = movePeo(row, col, newBoard)
+                newBoard = movePeo(row, col, newBoard, imagePath[1])
 
                 updateBoard(newBoard)
                 break
             case "torre.png":
-                newBoard = moveTower(row, col, newBoard)
+                newBoard = moveTower(row, col, newBoard, imagePath[1])
+
+                updateBoard(newBoard)
+                break
+            case "alfil.png":
+                newBoard = moveAlfil(row, col, newBoard, imagePath[1])
 
                 updateBoard(newBoard)
                 break
