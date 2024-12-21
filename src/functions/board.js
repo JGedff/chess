@@ -41,6 +41,9 @@ export const deleteMoveSpaces = (board) => {
             else if (space == 3) {
                 newBoard[h][w] = 1
             }
+            else if (space == 6) {
+                newBoard[h][w] = 5
+            }
         }
     }
 
@@ -52,16 +55,18 @@ export const deleteMoveSpaces = (board) => {
 // 2 Move
 // 3 Kill
 // 4 Special move
+// 5 King
+// 6 Kill king
 
 export const MoveBoard = [
-    [1,1,1,1,1,1,1,1],
+    [1,1,1,1,5,1,1,1],
     [1,1,1,1,1,1,1,1],
     [0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0],
     [1,1,1,1,1,1,1,1],
-    [1,1,1,1,1,1,1,1],
+    [1,1,1,1,5,1,1,1],
 ]
 
 export const getImage = (row, col) => {

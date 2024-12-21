@@ -11,6 +11,9 @@ export const getMoveValue = (value, imagePath, imageToCheck) => {
     else if (value == 1 && image == imageToCheck) {
         return 3
     }
+    else if (value == 5 && image == imageToCheck) {
+        return 6
+    }
 
     return value
 }

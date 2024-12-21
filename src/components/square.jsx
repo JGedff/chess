@@ -22,7 +22,7 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     const canClick = () => {
         const pieceColor = getSide(row, col)
 
-        if (board[row][col] == 2 || board[row][col] == 3 || board[row][col] == 4) {
+        if (board[row][col] == 2 || board[row][col] == 3 || board[row][col] == 4 || board[row][col] == 6) {
             return true
         }
 
@@ -43,19 +43,22 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
         }
 
         if (board[row][col] == 3) {
-            return " bg-danger"
+            return " bg-warning"
         }
 
         if (board[row][col] == 4) {
-            return " bg-warning"
+            return " bg-secondary"
+        }
+
+        if (board[row][col] == 6) {
+            return " bg-danger"
         }
         
         if (fill) {
             return " bg-black"
         }
-        else {
-            return " bg-white"
-        }
+
+        return " bg-white"
     }
 
     return (

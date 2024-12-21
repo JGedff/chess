@@ -11,7 +11,7 @@ const checkRowSpaces = (row, col, oldMoveBoard, imageNameToCheck) => {
         
         newBoard[row][w] = newValue
 
-        if (oldValue == newValue || newValue == 3) {
+        if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6) {
             break
         }
     }
@@ -22,7 +22,7 @@ const checkRowSpaces = (row, col, oldMoveBoard, imageNameToCheck) => {
         
         newBoard[row][w] = newValue
 
-        if (oldValue == newValue || newValue == 3) {
+        if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6) {
             break
         }
     }
@@ -39,7 +39,7 @@ const checkColumnSpaces = (row, col, oldMoveBoard, imageNameToCheck) => {
         
         newBoard[h][col] = newValue
 
-        if (oldValue == newValue || newValue == 3) {
+        if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6) {
             break
         }
     }
@@ -50,7 +50,7 @@ const checkColumnSpaces = (row, col, oldMoveBoard, imageNameToCheck) => {
         
         newBoard[h][col] = newValue
 
-        if (oldValue == newValue || newValue == 3) {
+        if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6) {
             break
         }
     }
@@ -65,11 +65,9 @@ const addMoveTowerSpaces = (row, col, oldBoard, imageToCheck) => {
 }
 
 export const moveTower = (row, col, oldMoveBoard, imageName) => {
-    const newBoard = copyBoard(oldMoveBoard)
-
     if (imageName == Sides[1]) {
-        return addMoveTowerSpaces(row, col, newBoard, Sides[0])
+        return addMoveTowerSpaces(row, col, oldMoveBoard, Sides[0])
     }
 
-    return addMoveTowerSpaces(row, col, newBoard, Sides[1])
+    return addMoveTowerSpaces(row, col, oldMoveBoard, Sides[1])
 }
