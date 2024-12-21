@@ -1,5 +1,6 @@
 import { copyBoard, ImageBoard } from "./board"
 import { getMoveValue } from "./checkMove"
+import { Sides } from "../constants"
 
 const checkRowSpaces = (row, col, oldMoveBoard, imageNameToCheck) => {
     const newBoard = copyBoard(oldMoveBoard)
@@ -66,9 +67,9 @@ const addMoveTowerSpaces = (row, col, oldBoard, imageToCheck) => {
 export const moveTower = (row, col, oldMoveBoard, imageName) => {
     const newBoard = copyBoard(oldMoveBoard)
 
-    if (imageName == 'white') {
-        return addMoveTowerSpaces(row, col, newBoard, 'black')
+    if (imageName == Sides[1]) {
+        return addMoveTowerSpaces(row, col, newBoard, Sides[0])
     }
 
-    return addMoveTowerSpaces(row, col, newBoard, 'white')
+    return addMoveTowerSpaces(row, col, newBoard, Sides[1])
 }

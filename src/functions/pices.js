@@ -1,5 +1,6 @@
 import { moveAlfil } from "./alfil"
-import { copyBoard, deleteMoveSpaces, ImageBoard, MovingPiece } from "./board"
+import { copyBoard, deleteMoveSpaces, getImage, ImageBoard } from "./board"
+import { MovingPiece } from "../constants"
 import { movePeo } from "./peo"
 import { moveTower } from "./tower"
 
@@ -7,10 +8,12 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn) => 
     let newBoard = copyBoard(oldBoard)
 
     if (oldBoard[row][col] == 1) {
-        let imagePath = ImageBoard[row][col].split('/')
+        const imagePath = getImage(row, col).split('/')
         
         newBoard = deleteMoveSpaces(newBoard)
     
+        console.log(imagePath)
+
         MovingPiece[0][0] = imagePath.join('/')
         MovingPiece[0][1] = row
         MovingPiece[0][2] = col

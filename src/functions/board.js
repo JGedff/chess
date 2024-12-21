@@ -26,11 +26,6 @@ export const copyBoard = (board) => {
     return newBoard
 }
 
-export const MovingPiece = [
-    ['', 0, 0],
-    ['', 0, 0]
-]
-
 export const deleteMoveSpaces = (board) => {
     let newBoard = copyBoard(board)
 
@@ -71,4 +66,8 @@ export const MoveBoard = [
 
 export const getImage = (row, col) => {
     return ImageBoard[row][col]
+}
+
+export const getSide = (row, col) => {
+    return ImageBoard[row][col].split('/')[1]
 }

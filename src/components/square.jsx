@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 
-import { getImage, handleMovePiece } from "../functions"
+import { getImage, getSide, handleMovePiece } from "../functions"
+import { Sides } from "../constants"
 
 export default function Square({ filled, col, row, initialTurn, changeTurn, initBoard, handleMove }) {
     const [board, setBoard] = useState(initBoard)
@@ -19,18 +20,17 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     }
 
     const canClick = () => {
-        let image = getImage(row, col)
-        let pieceColor = image.split('/')[1]
+        const pieceColor = getSide(row, col)
 
         if (board[row][col] == 2 || board[row][col] == 3 || board[row][col] == 4) {
             return true
         }
 
-        if (turn && (pieceColor == 'white')) {
+        if (turn && (pieceColor == Sides[1])) {
             return true
         }
 
-        if (!turn && (pieceColor == 'black')) {
+        if (!turn && (pieceColor == Sides[0])) {
             return true
         }
 

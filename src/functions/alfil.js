@@ -1,5 +1,6 @@
 import { copyBoard, ImageBoard } from "./board"
 import { getMoveValue } from "./checkMove"
+import { Sides } from "../constants"
 
 const alfilUpMove = (row, col, oldMoveBoard, imageName) => {
     const newBoard = copyBoard(oldMoveBoard)
@@ -80,13 +81,13 @@ const alfilDownMove = (row, col, oldMoveBoard, imageName) => {
 }
 
 export const moveAlfil = (row, col, oldMoveBoard, imageName) => {
-    if (imageName == 'white') {
-        const newBoard = alfilUpMove(row, col, oldMoveBoard, 'black')
+    if (imageName == Sides[1]) {
+        const newBoard = alfilUpMove(row, col, oldMoveBoard, Sides[0])
 
-        return alfilDownMove(row, col, newBoard, 'black')
+        return alfilDownMove(row, col, newBoard, Sides[0])
     }
     
-    const newBoard = alfilUpMove(row, col, oldMoveBoard, 'white')
+    const newBoard = alfilUpMove(row, col, oldMoveBoard, Sides[1])
 
-    return alfilDownMove(row, col, newBoard, 'white')
+    return alfilDownMove(row, col, newBoard, Sides[1])
 }

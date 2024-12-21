@@ -1,18 +1,19 @@
-import { copyBoard, ImageBoard } from "./board"
+import { copyBoard, getSide } from "./board"
+import { Sides } from "../constants"
 
 export const movePeo = (row, col, oldMoveBoard, imageName) => {
     const newBoard = copyBoard(oldMoveBoard)
 
-    if (imageName == 'white' && row - 1 >= 0) {
+    if (imageName == Sides[1] && row - 1 >= 0) {
         // Kill
         if (col - 1 >= 0) {
-            if (newBoard[row - 1][col - 1] == 1 && ImageBoard[row - 1][col - 1].split('/')[1] == 'black') {
+            if (newBoard[row - 1][col - 1] == 1 && getSide(row - 1, col - 1) == Sides[0]) {
                 newBoard[row - 1][col - 1] = 3
             }
         }
 
         if (col + 1 <= oldMoveBoard.length - 1) {
-            if (newBoard[row - 1][col + 1] == 1 && ImageBoard[row - 1][col + 1].split('/')[1] == 'black') {
+            if (newBoard[row - 1][col + 1] == 1 && getSide(row - 1, col + 1) == Sides[0]) {
                 newBoard[row - 1][col + 1] = 3
             }
         }
@@ -38,16 +39,16 @@ export const movePeo = (row, col, oldMoveBoard, imageName) => {
             }
         }
     }
-    else if (imageName == 'black' && row + 1 <= oldMoveBoard.length -1) {
+    else if (imageName == Sides[0] && row + 1 <= oldMoveBoard.length -1) {
         // Kill
         if (col - 1 >= 0) {
-            if (newBoard[row + 1][col - 1] == 1 && ImageBoard[row + 1][col - 1].split('/')[1] == 'white') {
+            if (newBoard[row + 1][col - 1] == 1 && getSide(row + 1, col - 1) == Sides[1]) {
                 newBoard[row + 1][col - 1] = 3
             }
         }
 
         if (col + 1 <= oldMoveBoard.length - 1) {
-            if (newBoard[row + 1][col + 1] == 1 && ImageBoard[row + 1][col + 1].split('/')[1] == 'white') {
+            if (newBoard[row + 1][col + 1] == 1 && getSide(row + 1, col + 1) == Sides[1]) {
                 newBoard[row + 1][col + 1] = 3
             }
         }
