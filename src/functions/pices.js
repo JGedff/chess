@@ -11,8 +11,6 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn) => 
         const imagePath = getImage(row, col).split('/')
         
         newBoard = deleteMoveSpaces(newBoard)
-    
-        console.log(imagePath)
 
         MovingPiece[0][0] = imagePath.join('/')
         MovingPiece[0][1] = row
@@ -31,6 +29,12 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn) => 
                 break
             case "alfil.png":
                 newBoard = moveAlfil(row, col, newBoard, imagePath[1])
+
+                updateBoard(newBoard)
+                break
+            case "reina.png":
+                newBoard = moveAlfil(row, col, newBoard, imagePath[1])
+                newBoard = moveTower(row, col, newBoard, imagePath[1])
 
                 updateBoard(newBoard)
                 break
