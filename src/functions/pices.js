@@ -4,6 +4,7 @@ import { MovingPiece } from "../constants"
 import { movePeo } from "./peo"
 import { moveTower } from "./tower"
 import { moveKing } from "./king"
+import { moveHorse } from "./horse"
 
 export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn) => {
     let newBoard = copyBoard(oldBoard)
@@ -42,6 +43,11 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn) => 
                 break
             case "rei.png":
                 newBoard = moveKing(row, col, newBoard, imagePath[1])
+
+                updateBoard(newBoard)
+                break
+            case "cavall.png":
+                newBoard = moveHorse(row, col, newBoard, imagePath[1])
 
                 updateBoard(newBoard)
                 break

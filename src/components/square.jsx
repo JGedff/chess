@@ -47,7 +47,7 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
         }
 
         if (board[row][col] == 4) {
-            return " bg-secondary"
+            return " bg-success"
         }
 
         if (board[row][col] == 6) {

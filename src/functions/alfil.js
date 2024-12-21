@@ -1,4 +1,4 @@
-import { copyBoard, ImageBoard } from "./board"
+import { copyBoard, getImage } from "./board"
 import { getMoveValue } from "./checkMove"
 import { Sides } from "../constants"
 
@@ -9,7 +9,7 @@ const alfilUpMove = (row, col, oldMoveBoard, imageName) => {
     for (let x = row; x >= 0; x--) {
         if (x != row && y != col) {
             const oldValue = newBoard[x][y]
-            const newValue = getMoveValue(newBoard[x][y], ImageBoard[x][y], imageName)
+            const newValue = getMoveValue(newBoard[x][y], getImage(x, y), imageName)
     
             newBoard[x][y] = newValue
     
@@ -26,7 +26,7 @@ const alfilUpMove = (row, col, oldMoveBoard, imageName) => {
     for (let x = row; x >= 0; x--) {
         if (x != row && y != col) {
             const oldValue = newBoard[x][y]
-            const newValue = getMoveValue(newBoard[x][y], ImageBoard[x][y], imageName)
+            const newValue = getMoveValue(newBoard[x][y], getImage(x, y), imageName)
 
             newBoard[x][y] = newValue
 
@@ -48,7 +48,7 @@ const alfilDownMove = (row, col, oldMoveBoard, imageName) => {
     for (let x = row; x < newBoard.length - 1; x++) {
         if (x != row && y != col) {
             const oldValue = newBoard[x][y]
-            const newValue = getMoveValue(newBoard[x][y], ImageBoard[x][y], imageName)
+            const newValue = getMoveValue(newBoard[x][y], getImage(x, y), imageName)
 
             newBoard[x][y] = newValue
 
@@ -65,7 +65,7 @@ const alfilDownMove = (row, col, oldMoveBoard, imageName) => {
     for (let x = row; x < newBoard.length; x++) {
         if (x != row && y != col) {
             const oldValue = newBoard[x][y]
-            const newValue = getMoveValue(newBoard[x][y], ImageBoard[x][y], imageName)
+            const newValue = getMoveValue(newBoard[x][y], getImage(x, y), imageName)
             
             newBoard[x][y] = newValue
 

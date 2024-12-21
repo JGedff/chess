@@ -1,4 +1,4 @@
-import { copyBoard, ImageBoard } from "./board"
+import { copyBoard, getImage } from "./board"
 import { getMoveValue } from "./checkMove"
 import { Sides } from "../constants"
 
@@ -7,7 +7,7 @@ const checkRowSpaces = (row, col, oldMoveBoard, imageNameToCheck) => {
     
     for (let w = col + 1; w < oldMoveBoard.length; w++) {
         const oldValue = newBoard[row][w]
-        const newValue = getMoveValue(newBoard[row][w], ImageBoard[row][w], imageNameToCheck)
+        const newValue = getMoveValue(newBoard[row][w], getImage(row, w), imageNameToCheck)
         
         newBoard[row][w] = newValue
 
@@ -18,7 +18,7 @@ const checkRowSpaces = (row, col, oldMoveBoard, imageNameToCheck) => {
 
     for (let w = col - 1; w >= 0; w--) {
         const oldValue = newBoard[row][w]
-        const newValue = getMoveValue(newBoard[row][w], ImageBoard[row][w], imageNameToCheck)
+        const newValue = getMoveValue(newBoard[row][w], getImage(row, w), imageNameToCheck)
         
         newBoard[row][w] = newValue
 
@@ -35,7 +35,7 @@ const checkColumnSpaces = (row, col, oldMoveBoard, imageNameToCheck) => {
 
     for (let h = row + 1; h < oldMoveBoard.length; h++) {
         const oldValue = newBoard[h][col]
-        const newValue = getMoveValue(newBoard[h][col], ImageBoard[h][col], imageNameToCheck)
+        const newValue = getMoveValue(newBoard[h][col], getImage(h, col), imageNameToCheck)
         
         newBoard[h][col] = newValue
 
@@ -46,7 +46,7 @@ const checkColumnSpaces = (row, col, oldMoveBoard, imageNameToCheck) => {
 
     for (let h = row - 1; h >= 0; h--) {
         const oldValue = newBoard[h][col]
-        const newValue = getMoveValue(newBoard[h][col], ImageBoard[h][col], imageNameToCheck)
+        const newValue = getMoveValue(newBoard[h][col], getImage(h, col), imageNameToCheck)
         
         newBoard[h][col] = newValue
 
