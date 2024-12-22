@@ -17,9 +17,9 @@ export default function Board({ initLength, initHeight }) {
         setHeight(initHeight)
     }, [initHeight])
 
-    /* useEffect(() => {
-        console.log(spaceBoard)
-    }, [spaceBoard]) */
+    useEffect(() => {
+        
+    }, [spaceBoard])
 
     const handleTurn = () => {
         setTurn(!turn)

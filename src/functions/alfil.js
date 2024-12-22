@@ -7,7 +7,7 @@ const alfilUpMove = (row, col, oldMoveBoard, imageName) => {
     let y = col
 
     for (let x = row; x >= 0; x--) {
-        if (x != row && y != col) {
+        if (x != row && y != col && y < newBoard.length) {
             const oldValue = newBoard[x][y]
             const newValue = getMoveValue(newBoard[x][y], getImage(x, y), imageName)
     
@@ -24,7 +24,7 @@ const alfilUpMove = (row, col, oldMoveBoard, imageName) => {
     y = col
 
     for (let x = row; x >= 0; x--) {
-        if (x != row && y != col) {
+        if (x != row && y != col && y >= 0) {
             const oldValue = newBoard[x][y]
             const newValue = getMoveValue(newBoard[x][y], getImage(x, y), imageName)
 
@@ -46,7 +46,7 @@ const alfilDownMove = (row, col, oldMoveBoard, imageName) => {
     let y = col
 
     for (let x = row; x < newBoard.length; x++) {
-        if (x != row && y != col) {
+        if (x != row && y != col && y < newBoard.length) {
             const oldValue = newBoard[x][y]
             const newValue = getMoveValue(newBoard[x][y], getImage(x, y), imageName)
 
@@ -63,7 +63,7 @@ const alfilDownMove = (row, col, oldMoveBoard, imageName) => {
     y = col
 
     for (let x = row; x < newBoard.length; x++) {
-        if (x != row && y != col) {
+        if (x != row && y != col && y >= 0) {
             const oldValue = newBoard[x][y]
             const newValue = getMoveValue(newBoard[x][y], getImage(x, y), imageName)
             
