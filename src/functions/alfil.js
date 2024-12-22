@@ -45,7 +45,7 @@ const alfilDownMove = (row, col, oldMoveBoard, imageName) => {
     const newBoard = copyBoard(oldMoveBoard)
     let y = col
 
-    for (let x = row; x < newBoard.length - 1; x++) {
+    for (let x = row; x < newBoard.length; x++) {
         if (x != row && y != col) {
             const oldValue = newBoard[x][y]
             const newValue = getMoveValue(newBoard[x][y], getImage(x, y), imageName)

@@ -55,15 +55,30 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn) => 
                 break
         }
     }
-    else if (oldBoard[row][col] == 2 || oldBoard[row][col] == 3 || oldBoard[row][col] == 4 || oldBoard[row][col] == 6) {
+    else if (oldBoard[row][col] == 2 || oldBoard[row][col] == 3 || oldBoard[row][col] == 6) {
+        ImageBoard[row][col] = MovingPiece[0][0]
+        ImageBoard[MovingPiece[0][1]][MovingPiece[0][2]] = ''
+        
+        newBoard[row][col] = MovingPiece[0][3]
+        newBoard = deleteMoveSpaces(newBoard)
+        newBoard[MovingPiece[0][1]][MovingPiece[0][2]] = 0
+        
+        MovingPiece[0][0] = ''
+        
+        updateBoard(newBoard)
+        changeTurn()
+    }
+    else if (oldBoard[row][col] == 4) {
         ImageBoard[row][col] = MovingPiece[0][0]
         ImageBoard[MovingPiece[0][1]][MovingPiece[0][2]] = ''
 
         newBoard[row][col] = MovingPiece[0][3]
         newBoard = deleteMoveSpaces(newBoard)
         newBoard[MovingPiece[0][1]][MovingPiece[0][2]] = 0
-        
+
         MovingPiece[0][0] = ''
+
+        MovingPiece[1][0] = ''
 
         updateBoard(newBoard)
         changeTurn()
