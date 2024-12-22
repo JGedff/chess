@@ -13,7 +13,7 @@ const alfilUpMove = (row, col, oldMoveBoard, imageName) => {
     
             newBoard[x][y] = newValue
     
-            if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6) {
+            if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6 || newValue == 7) {
                 break
             }
         }
@@ -30,7 +30,7 @@ const alfilUpMove = (row, col, oldMoveBoard, imageName) => {
 
             newBoard[x][y] = newValue
 
-            if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6) {
+            if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6 || newValue == 7) {
                 break
             }
         }
@@ -52,7 +52,7 @@ const alfilDownMove = (row, col, oldMoveBoard, imageName) => {
 
             newBoard[x][y] = newValue
 
-            if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6) {
+            if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6 || newValue == 7) {
                 break
             }
         }
@@ -69,7 +69,7 @@ const alfilDownMove = (row, col, oldMoveBoard, imageName) => {
             
             newBoard[x][y] = newValue
 
-            if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6) {
+            if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6 || newValue == 7) {
                 break
             }
         }

@@ -75,7 +75,7 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
             return " bg-success"
         }
 
-        if (board[row][col] == 6) {
+        if (board[row][col] == 6 || board[row][col] == 7) {
             return " bg-danger"
         }
         

@@ -10,7 +10,7 @@ export const movePeo = (row, col, oldMoveBoard, imageName) => {
             if (newBoard[row - 1][col - 1] == 1 && getSide(row - 1, col - 1) == Sides[0]) {
                 newBoard[row - 1][col - 1] = 3
             }
-            else if (newBoard[row - 1][col - 1] == 5 && getSide(row - 1, col - 1) == Sides[1]) {
+            else if ((newBoard[row - 1][col - 1] == 5 || newBoard[row - 1][col - 1] == 7) && getSide(row - 1, col - 1) == Sides[1]) {
                 newBoard[row - 1][col - 1] = 6
             }
         }
@@ -19,18 +19,18 @@ export const movePeo = (row, col, oldMoveBoard, imageName) => {
             if (newBoard[row - 1][col + 1] == 1 && getSide(row - 1, col + 1) == Sides[0]) {
                 newBoard[row - 1][col + 1] = 3
             }
-            else if (newBoard[row - 1][col + 1] == 5 && getSide(row - 1, col + 1) == Sides[1]) {
+            else if ((newBoard[row - 1][col + 1] == 5 || newBoard[row - 1][col + 1] == 7) && getSide(row - 1, col + 1) == Sides[1]) {
                 newBoard[row - 1][col + 1] = 6
             }
         }
 
-        // Move
+        // Special Move
         if (row - 1 == 0) {
-            if (oldMoveBoard[row - 1][col] != 1 && oldMoveBoard[row - 1][col] != 5) {
+            if (oldMoveBoard[row - 1][col] != 1 && oldMoveBoard[row - 1][col] != 5 && oldMoveBoard[row - 1][col] != 7) {
                 newBoard[row - 1][col] = 4
             }
         }
-        else if (row == 6) {
+        else if (row == 6) { // Move
             if (oldMoveBoard[row - 1][col] != 1 && oldMoveBoard[row - 2][col] != 1) {
                 newBoard[row - 1][col] = 2
                 newBoard[row - 2][col] = 2
@@ -51,7 +51,7 @@ export const movePeo = (row, col, oldMoveBoard, imageName) => {
             if (newBoard[row + 1][col - 1] == 1 && getSide(row + 1, col - 1) == Sides[1]) {
                 newBoard[row + 1][col - 1] = 3
             }
-            else if (newBoard[row + 1][col - 1] == 5 && getSide(row + 1, col - 1) == Sides[1]) {
+            else if ((newBoard[row + 1][col - 1] == 5 || newBoard[row + 1][col - 1] == 7) && getSide(row + 1, col - 1) == Sides[1]) {
                 newBoard[row + 1][col - 1] = 6
             }
         }
@@ -60,18 +60,18 @@ export const movePeo = (row, col, oldMoveBoard, imageName) => {
             if (newBoard[row + 1][col + 1] == 1 && getSide(row + 1, col + 1) == Sides[1]) {
                 newBoard[row + 1][col + 1] = 3
             }
-            else if (newBoard[row + 1][col + 1] == 5 && getSide(row + 1, col + 1) == Sides[1]) {
+            else if ((newBoard[row + 1][col + 1] == 5 || newBoard[row + 1][col + 1] == 7) && getSide(row + 1, col + 1) == Sides[1]) {
                 newBoard[row + 1][col + 1] = 6
             }
         }
 
-        // Move
+        // Special Move
         if (row + 1 == oldMoveBoard.length - 1) {
-            if (oldMoveBoard[row + 1][col] != 1 && oldMoveBoard[row + 1][col] != 5) {
+            if (oldMoveBoard[row + 1][col] != 1 && oldMoveBoard[row + 1][col] != 5 && oldMoveBoard[row + 1][col] != 7) {
                 newBoard[row + 1][col] = 4
             }
         }
-        else if (row == 1) {
+        else if (row == 1) { // Move
             if (oldMoveBoard[row + 1][col] != 1 && oldMoveBoard[row + 2][col] != 1) {
                 newBoard[row + 1][col] = 2
                 newBoard[row + 2][col] = 2

@@ -57,6 +57,7 @@ export const deleteMoveSpaces = (board) => {
 // 4 Special move
 // 5 King
 // 6 Kill king
+// 7 Check
 
 export const MoveBoard = [
     [1,1,1,1,5,1,1,1],

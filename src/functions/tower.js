@@ -11,7 +11,7 @@ const checkRowSpaces = (row, col, oldMoveBoard, imageNameToCheck) => {
         
         newBoard[row][w] = newValue
 
-        if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6) {
+        if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6 || newValue == 7) {
             break
         }
     }
@@ -22,7 +22,7 @@ const checkRowSpaces = (row, col, oldMoveBoard, imageNameToCheck) => {
         
         newBoard[row][w] = newValue
 
-        if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6) {
+        if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6 || newValue == 7) {
             break
         }
     }
@@ -39,7 +39,7 @@ const checkColumnSpaces = (row, col, oldMoveBoard, imageNameToCheck) => {
         
         newBoard[h][col] = newValue
 
-        if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6) {
+        if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6 || newValue == 7) {
             break
         }
     }
@@ -50,7 +50,7 @@ const checkColumnSpaces = (row, col, oldMoveBoard, imageNameToCheck) => {
         
         newBoard[h][col] = newValue
 
-        if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6) {
+        if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6 || newValue == 7) {
             break
         }
     }
