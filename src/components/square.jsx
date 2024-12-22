@@ -2,8 +2,11 @@ import { useEffect, useState } from "react"
 
 import { getImage, getSide, handleMovePiece } from "../functions"
 import { Sides } from "../constants"
+import TransformModal from "./transformModal"
 
-export default function Square({ filled, col, row, initialTurn, changeTurn, initBoard, handleMove }) {
+export default function Square({ filled, col, row, initialTurn, changeTurn, initBoard, handleMove, initTransformPeo, showTransform }) {
+    const [showingModal, setShowingModal] = useState(initTransformPeo)
+    const [isTransforming, setIsTransforming] = useState(false)
     const [board, setBoard] = useState(initBoard)
     const [turn, setTurn] = useState(initialTurn)
 
@@ -15,12 +18,34 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
         setBoard(initBoard)
     }, [initBoard])
 
+    useEffect(() => {
+        setShowingModal(initTransformPeo)
+    }, [initTransformPeo])
+
+    const showTransformModal = () => {
+        showTransform(true)
+    }
+
+    const hideTransformModal = () => {
+        setIsTransforming(false)
+
+        showTransform(false)
+    }
+
     const handleClick = () => {
-        handleMovePiece(row, col, board, handleMove, changeTurn)
+        handleMovePiece(row, col, board, handleMove, changeTurn, showTransformModal)
+
+        if ((row == 0 || row == board.length) && getImage(row, col).split('/')[2] == 'peo.png') {
+            setIsTransforming(true)
+        }
     }
 
     const canClick = () => {
         const pieceColor = getSide(row, col)
+
+        if (showingModal) {
+            return false
+        }
 
         if (board[row][col] == 2 || board[row][col] == 3 || board[row][col] == 4 || board[row][col] == 6) {
             return true
@@ -62,12 +87,17 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     }
 
     return (
-        <button className={"col w-12 align-content-center" + getBackgroundColor(filled)} onClick={handleClick} disabled={!canClick()}>
+        <>
             {
-                getImage(row, col) != '' ?
-                <img src={getImage(row, col)} alt="" className="w-100"/> :
-                <></>
+                isTransforming ? <TransformModal row={row} col={col} side={getSide(row, col)} hideModal={hideTransformModal} /> : <></>
             }
-        </button>
+            <button className={"col w-12 align-content-center" + getBackgroundColor(filled)} onClick={handleClick} disabled={!canClick()}>
+                {
+                    getImage(row, col) != '' ?
+                    <img src={getImage(row, col)} alt="" className="w-100"/> :
+                    <></>
+                }
+            </button>
+        </>
     )
 }

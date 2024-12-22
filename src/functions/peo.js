@@ -89,3 +89,8 @@ export const movePeo = (row, col, oldMoveBoard, imageName) => {
 
     return newBoard
 }
+
+export const transformPeo = (changeTurn, showTransformModal) => {
+    showTransformModal()
+    changeTurn()
+}

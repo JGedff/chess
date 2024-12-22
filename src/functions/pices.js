@@ -1,12 +1,12 @@
 import { moveAlfil } from "./alfil"
 import { copyBoard, deleteMoveSpaces, getImage, ImageBoard } from "./board"
 import { MovingPiece } from "../constants"
-import { movePeo } from "./peo"
+import { movePeo, transformPeo } from "./peo"
 import { moveTower } from "./tower"
 import { moveKing } from "./king"
 import { moveHorse } from "./horse"
 
-export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn) => {
+export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, showTransformModal) => {
     let newBoard = copyBoard(oldBoard)
 
     if (oldBoard[row][col] == 1 || oldBoard[row][col] == 5) {
@@ -55,7 +55,7 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn) => 
                 break
         }
     }
-    else if (oldBoard[row][col] == 2 || oldBoard[row][col] == 3 || oldBoard[row][col] == 6) {
+    else if (oldBoard[row][col] == 2 || oldBoard[row][col] == 3 || oldBoard[row][col] == 4 || oldBoard[row][col] == 6) {
         ImageBoard[row][col] = MovingPiece[0][0]
         ImageBoard[MovingPiece[0][1]][MovingPiece[0][2]] = ''
         
@@ -65,22 +65,13 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn) => 
         
         MovingPiece[0][0] = ''
         
-        updateBoard(newBoard)
-        changeTurn()
-    }
-    else if (oldBoard[row][col] == 4) {
-        ImageBoard[row][col] = MovingPiece[0][0]
-        ImageBoard[MovingPiece[0][1]][MovingPiece[0][2]] = ''
-
-        newBoard[row][col] = MovingPiece[0][3]
-        newBoard = deleteMoveSpaces(newBoard)
-        newBoard[MovingPiece[0][1]][MovingPiece[0][2]] = 0
-
-        MovingPiece[0][0] = ''
-
-        MovingPiece[1][0] = ''
-
-        updateBoard(newBoard)
-        changeTurn()
+        if (oldBoard[row][col] == 4) {
+            transformPeo(changeTurn, showTransformModal)
+            updateBoard(newBoard)
+        }
+        else {
+            updateBoard(newBoard)
+            changeTurn()
+        }
     }
 }

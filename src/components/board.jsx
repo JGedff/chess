@@ -8,6 +8,7 @@ export default function Board({ initLength, initHeight }) {
     const [length, setLength] = useState(initLength)
     const [height, setHeight] = useState(initHeight)
     const [turn, setTurn] = useState(true)
+    const [showModal, setShowModal] = useState(false)
 
     useEffect(() => {
         setLength(initLength)
@@ -17,9 +18,9 @@ export default function Board({ initLength, initHeight }) {
         setHeight(initHeight)
     }, [initHeight])
 
-    useEffect(() => {
-        
-    }, [spaceBoard])
+    /* useEffect(() => {
+        console.log(spaceBoard)
+    }, [spaceBoard]) */
 
     const handleTurn = () => {
         setTurn(!turn)
@@ -29,12 +30,16 @@ export default function Board({ initLength, initHeight }) {
         setSpaceBoard(newBoard)
     }
 
+    const showTransformModal = (val) => {
+        setShowModal(val)
+    }
+
     const generateBoard = (height, lenght) => {
         const board = []
         let filled = true
 
         for (let h = 0; h < height; h++) {
-            board.push(<Row key={h} initLength={lenght} initFilled={filled} rowIndex={h} initialTurn={turn} changeTurn={handleTurn} initBoard={spaceBoard} handleMove={updateBoard} />)
+            board.push(<Row key={h} initLength={lenght} initFilled={filled} rowIndex={h} initialTurn={turn} changeTurn={handleTurn} initBoard={spaceBoard} handleMove={updateBoard} initShowModal={showModal} setTransformPeo={showTransformModal} />)
             filled = !filled
         }
 
