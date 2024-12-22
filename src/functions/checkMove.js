@@ -1,3 +1,4 @@
+import { Space } from "../constants"
 import { moveAlfil } from "./alfil"
 import { copyBoard } from "./board"
 import { moveHorse } from "./horse"
@@ -12,14 +13,14 @@ export const getMoveValue = (value, imagePath, imageToCheck) => {
         image = imagePath.split('/')[1]
     }
 
-    if (value == 0) {
-        return 2
+    if (value == Space.Empty) {
+        return Space.CanMove
     }
-    else if (value == 1 && image == imageToCheck) {
-        return 3
+    else if (value == Space.Fill && image == imageToCheck) {
+        return Space.Kill
     }
-    else if ((value == 5 || value == 7) && image == imageToCheck) {
-        return 6
+    else if ((value == Space.King || value == Space.Check) && image == imageToCheck) {
+        return Space.KillKing
     }
 
     return value
@@ -59,7 +60,7 @@ export const getCheck = (row, col, piece, board, imageToCheck) => {
         for (let y = 0; y < column.length; y++) {
             const value = column[y];
             
-            if (value == 6) {
+            if (value == Space.KillKing) {
                 return [x, y]
             }
         }

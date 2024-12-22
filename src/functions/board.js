@@ -1,3 +1,5 @@
+import { Space } from "../constants"
+
 export const ImageBoard = [
     ["/black/torre.png","/black/cavall.png","/black/alfil.png","/black/reina.png","/black/rei.png","/black/alfil.png","/black/cavall.png","/black/torre.png"],
     ["/black/peo.png","/black/peo.png","/black/peo.png","/black/peo.png","/black/peo.png","/black/peo.png","/black/peo.png","/black/peo.png"],
@@ -26,6 +28,24 @@ export const copyBoard = (board) => {
     return newBoard
 }
 
+export const deleteCheckSpaces = (board) => {
+    let newBoard = copyBoard(board)
+    
+    for (let h = 0; h < board.length; h++) {
+        const row = board[h]
+        
+        for (let w = 0; w < row.length; w++) {
+            const space = row[w]
+
+            if (space == Space.Check) {
+                newBoard[h][w] = Space.King
+            }
+        }
+    }
+
+    return newBoard
+}
+
 export const deleteMoveSpaces = (board) => {
     let newBoard = copyBoard(board)
 
@@ -35,14 +55,14 @@ export const deleteMoveSpaces = (board) => {
         for (let w = 0; w < row.length; w++) {
             const space = row[w]
             
-            if (space == 2 || space == 4) {
-                newBoard[h][w] = 0
+            if (space == Space.CanMove || space == Space.SpecialMove) {
+                newBoard[h][w] = Space.Empty
             }
-            else if (space == 3) {
-                newBoard[h][w] = 1
+            else if (space == Space.Kill) {
+                newBoard[h][w] = Space.Fill
             }
-            else if (space == 6) {
-                newBoard[h][w] = 5
+            else if (space == Space.KillKing) {
+                newBoard[h][w] = Space.King
             }
         }
     }

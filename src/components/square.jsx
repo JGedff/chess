@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
 import { getImage, getSide, handleMovePiece } from "../functions"
-import { Sides } from "../constants"
+import { Sides, Space } from "../constants"
 import TransformModal from "./transformModal"
 
 export default function Square({ filled, col, row, initialTurn, changeTurn, initBoard, handleMove, initTransformPeo, showTransform }) {
@@ -47,15 +47,15 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
             return false
         }
 
-        if (board[row][col] == 2 || board[row][col] == 3 || board[row][col] == 4 || board[row][col] == 6) {
+        if (board[row][col] == Space.CanMove || board[row][col] == Space.Kill || board[row][col] == Space.SpecialMove || board[row][col] == Space.KillKing) {
             return true
         }
 
-        if (turn && (pieceColor == Sides[1])) {
+        if (turn && (pieceColor == Sides.White)) {
             return true
         }
 
-        if (!turn && (pieceColor == Sides[0])) {
+        if (!turn && (pieceColor == Sides.Black)) {
             return true
         }
 
@@ -63,19 +63,19 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     }
 
     const getBackgroundColor = (fill) => {
-        if (board[row][col] == 2) {
+        if (board[row][col] == Space.CanMove) {
             return " bg-info"
         }
 
-        if (board[row][col] == 3) {
+        if (board[row][col] == Space.Kill) {
             return " bg-warning"
         }
 
-        if (board[row][col] == 4) {
+        if (board[row][col] == Space.SpecialMove) {
             return " bg-success"
         }
 
-        if (board[row][col] == 6 || board[row][col] == 7) {
+        if (board[row][col] == Space.Check || board[row][col] == Space.KillKing) {
             return " bg-danger"
         }
         

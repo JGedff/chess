@@ -19,9 +19,9 @@ const getMoveArround = (row, col, oldMoveBoard, imageNameToCheck) => {
 }
 
 export const moveKing = (row, col, oldMoveBoard, imageName) => {
-    if (imageName == Sides[1]) {
-        return getMoveArround(row, col, oldMoveBoard, Sides[0])
+    if (imageName == Sides.Black) {
+        return getMoveArround(row, col, oldMoveBoard, Sides.White)
     }
 
-    return getMoveArround(row, col, oldMoveBoard, Sides[1])
+    return getMoveArround(row, col, oldMoveBoard, Sides.Black)
 }

@@ -1,88 +1,124 @@
 import { copyBoard, getSide } from "./board"
-import { Sides } from "../constants"
+import { Sides, Space } from "../constants"
 
 export const movePeo = (row, col, oldMoveBoard, imageName) => {
     const newBoard = copyBoard(oldMoveBoard)
 
-    if (imageName == Sides[1] && row - 1 >= 0) {
+    if (imageName == Sides.White && row - 1 >= 0) {
         // Kill
         if (col - 1 >= 0) {
-            if (newBoard[row - 1][col - 1] == 1 && getSide(row - 1, col - 1) == Sides[0]) {
-                newBoard[row - 1][col - 1] = 3
+            if (newBoard[row - 1][col - 1] == Space.Fill && getSide(row - 1, col - 1) == Sides.Black) {
+                if (row - 1 == 0) {
+                    newBoard[row - 1][col - 1] = Space.SpecialMove
+                }
+                else {
+                    newBoard[row - 1][col - 1] = Space.Kill
+                }
             }
-            else if ((newBoard[row - 1][col - 1] == 5 || newBoard[row - 1][col - 1] == 7) && getSide(row - 1, col - 1) == Sides[1]) {
-                newBoard[row - 1][col - 1] = 6
+            else if ((newBoard[row - 1][col - 1] == Space.King || newBoard[row - 1][col - 1] == Space.Check) && getSide(row - 1, col - 1) == Sides.Black) {
+                if (row - 1 == 0) {
+                    newBoard[row - 1][col - 1] = Space.SpecialMove
+                }
+                else {
+                    newBoard[row - 1][col - 1] = Space.KillKing
+                }
             }
         }
 
         if (col + 1 <= oldMoveBoard.length - 1) {
-            if (newBoard[row - 1][col + 1] == 1 && getSide(row - 1, col + 1) == Sides[0]) {
-                newBoard[row - 1][col + 1] = 3
+            if (newBoard[row - 1][col + 1] == Space.Fill && getSide(row - 1, col + 1) == Sides.Black) {
+                if (row - 1 == 0) {
+                    newBoard[row - 1][col + 1] = Space.SpecialMove
+                }
+                else {
+                    newBoard[row - 1][col + 1] = Space.Kill
+                }
             }
-            else if ((newBoard[row - 1][col + 1] == 5 || newBoard[row - 1][col + 1] == 7) && getSide(row - 1, col + 1) == Sides[1]) {
-                newBoard[row - 1][col + 1] = 6
+            else if ((newBoard[row - 1][col + 1] == Space.King || newBoard[row - 1][col + 1] == Space.Check) && getSide(row - 1, col + 1) == Sides.Black) {
+                if (row - 1 == 0) {
+                    newBoard[row - 1][col + 1] = Space.SpecialMove
+                }
+                else {
+                    newBoard[row - 1][col + 1] = Space.KillKing
+                }
             }
         }
 
         // Special Move
         if (row - 1 == 0) {
-            if (oldMoveBoard[row - 1][col] != 1 && oldMoveBoard[row - 1][col] != 5 && oldMoveBoard[row - 1][col] != 7) {
-                newBoard[row - 1][col] = 4
+            if (oldMoveBoard[row - 1][col] == Space.Empty) {
+                newBoard[row - 1][col] = Space.SpecialMove
             }
         }
         else if (row == 6) { // Move
-            if (oldMoveBoard[row - 1][col] != 1 && oldMoveBoard[row - 2][col] != 1) {
-                newBoard[row - 1][col] = 2
-                newBoard[row - 2][col] = 2
+            if (oldMoveBoard[row - 1][col] != Space.Fill && oldMoveBoard[row - 2][col] != Space.Fill) {
+                newBoard[row - 1][col] = Space.CanMove
+                newBoard[row - 2][col] = Space.CanMove
             }
-            else if (oldMoveBoard[row - 1][col] != 1) {
-                newBoard[row - 1][col] = 2
+            else if (oldMoveBoard[row - 1][col] != Space.Fill) {
+                newBoard[row - 1][col] = Space.CanMove
             }
         }
         else {
-            if (oldMoveBoard[row - 1][col] != 1) {
-                newBoard[row - 1][col] = 2
+            if (oldMoveBoard[row - 1][col] != Space.Fill) {
+                newBoard[row - 1][col] = Space.CanMove
             }
         }
     }
-    else if (imageName == Sides[0] && row + 1 <= oldMoveBoard.length -1) {
+    else if (imageName == Sides.Black && row + 1 <= oldMoveBoard.length - 1) {
         // Kill
         if (col - 1 >= 0) {
-            if (newBoard[row + 1][col - 1] == 1 && getSide(row + 1, col - 1) == Sides[1]) {
-                newBoard[row + 1][col - 1] = 3
+            if (newBoard[row + 1][col - 1] == Space.Fill && getSide(row + 1, col - 1) == Sides.White) {
+                if (row + 1 == oldMoveBoard.length - 1) {
+                    newBoard[row + 1][col - 1] = Space.SpecialMove
+                }
+                else {
+                    newBoard[row + 1][col - 1] = Space.Kill
+                }
             }
-            else if ((newBoard[row + 1][col - 1] == 5 || newBoard[row + 1][col - 1] == 7) && getSide(row + 1, col - 1) == Sides[1]) {
-                newBoard[row + 1][col - 1] = 6
+            else if ((newBoard[row + 1][col - 1] == Space.King || newBoard[row + 1][col - 1] == Space.Check) && getSide(row + 1, col - 1) == Sides.White) {
+                newBoard[row + 1][col - 1] = Space.KillKing
             }
         }
 
         if (col + 1 <= oldMoveBoard.length - 1) {
-            if (newBoard[row + 1][col + 1] == 1 && getSide(row + 1, col + 1) == Sides[1]) {
-                newBoard[row + 1][col + 1] = 3
+            if (newBoard[row + 1][col + 1] == Space.Fill && getSide(row + 1, col + 1) == Sides.White) {
+                if (row + 1 == oldMoveBoard.length - 1) {
+                    newBoard[row + 1][col + 1] = Space.SpecialMove
+                }
+                else {
+                    newBoard[row + 1][col + 1] = Space.Kill
+                }
             }
-            else if ((newBoard[row + 1][col + 1] == 5 || newBoard[row + 1][col + 1] == 7) && getSide(row + 1, col + 1) == Sides[1]) {
-                newBoard[row + 1][col + 1] = 6
+            else if ((newBoard[row + 1][col + 1] == Space.King || newBoard[row + 1][col + 1] == Space.Check) && getSide(row + 1, col + 1) == Sides.White) {
+                if (row + 1 == oldMoveBoard.length - 1) {
+                    newBoard[row + 1][col + 1] = Space.SpecialMove
+                }
+                else{
+                    newBoard[row + 1][col + 1] = Space.KillKing
+                }
             }
         }
 
         // Special Move
         if (row + 1 == oldMoveBoard.length - 1) {
-            if (oldMoveBoard[row + 1][col] != 1 && oldMoveBoard[row + 1][col] != 5 && oldMoveBoard[row + 1][col] != 7) {
-                newBoard[row + 1][col] = 4
+            console.log(oldMoveBoard[row + 1][col])
+            if (oldMoveBoard[row + 1][col] == Space.Empty) {
+                newBoard[row + 1][col] = Space.SpecialMove
             }
         }
         else if (row == 1) { // Move
-            if (oldMoveBoard[row + 1][col] != 1 && oldMoveBoard[row + 2][col] != 1) {
-                newBoard[row + 1][col] = 2
-                newBoard[row + 2][col] = 2
+            if (oldMoveBoard[row + 1][col] != Space.Fill && oldMoveBoard[row + 2][col] != Space.Fill) {
+                newBoard[row + 1][col] = Space.CanMove
+                newBoard[row + 2][col] = Space.CanMove
             }
-            else if (oldMoveBoard[row + 1][col] != 1) {
-                newBoard[row + 1][col] = 2
+            else if (oldMoveBoard[row + 1][col] != Space.Fill) {
+                newBoard[row + 1][col] = Space.CanMove
             }
         }
         else {
-            if (oldMoveBoard[row + 1][col] != 1) {
-                newBoard[row + 1][col] = 2
+            if (oldMoveBoard[row + 1][col] != Space.Fill) {
+                newBoard[row + 1][col] = Space.CanMove
             }
         }
     }

@@ -49,9 +49,9 @@ const getHorseSpaces = (row, col, oldMoveBoard, imageToCheck) => {
 }
 
 export const moveHorse = (row, col, oldMoveBoard, imageName) => {
-    if (imageName == Sides[0]) {
-        return getHorseSpaces(row, col, oldMoveBoard, Sides[1])
+    if (imageName == Sides.White) {
+        return getHorseSpaces(row, col, oldMoveBoard, Sides.Black)
     }
 
-    return getHorseSpaces(row, col, oldMoveBoard, Sides[0])
+    return getHorseSpaces(row, col, oldMoveBoard, Sides.White)
 }

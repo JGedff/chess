@@ -1,6 +1,6 @@
 import { copyBoard, getImage } from "./board"
 import { getMoveValue } from "./checkMove"
-import { Sides } from "../constants"
+import { Sides, Space } from "../constants"
 
 const checkRowSpaces = (row, col, oldMoveBoard, imageNameToCheck) => {
     const newBoard = copyBoard(oldMoveBoard)
@@ -11,7 +11,7 @@ const checkRowSpaces = (row, col, oldMoveBoard, imageNameToCheck) => {
         
         newBoard[row][w] = newValue
 
-        if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6 || newValue == 7) {
+        if (oldValue == newValue || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
             break
         }
     }
@@ -22,7 +22,7 @@ const checkRowSpaces = (row, col, oldMoveBoard, imageNameToCheck) => {
         
         newBoard[row][w] = newValue
 
-        if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6 || newValue == 7) {
+        if (oldValue == newValue || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
             break
         }
     }
@@ -39,7 +39,7 @@ const checkColumnSpaces = (row, col, oldMoveBoard, imageNameToCheck) => {
         
         newBoard[h][col] = newValue
 
-        if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6 || newValue == 7) {
+        if (oldValue == newValue || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
             break
         }
     }
@@ -50,7 +50,7 @@ const checkColumnSpaces = (row, col, oldMoveBoard, imageNameToCheck) => {
         
         newBoard[h][col] = newValue
 
-        if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6 || newValue == 7) {
+        if (oldValue == newValue || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
             break
         }
     }
@@ -65,9 +65,9 @@ const addMoveTowerSpaces = (row, col, oldBoard, imageToCheck) => {
 }
 
 export const moveTower = (row, col, oldMoveBoard, imageName) => {
-    if (imageName == Sides[1]) {
-        return addMoveTowerSpaces(row, col, oldMoveBoard, Sides[0])
+    if (imageName == Sides.Black) {
+        return addMoveTowerSpaces(row, col, oldMoveBoard, Sides.White)
     }
 
-    return addMoveTowerSpaces(row, col, oldMoveBoard, Sides[1])
+    return addMoveTowerSpaces(row, col, oldMoveBoard, Sides.Black)
 }

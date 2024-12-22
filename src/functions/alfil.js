@@ -1,6 +1,6 @@
 import { copyBoard, getImage } from "./board"
 import { getMoveValue } from "./checkMove"
-import { Sides } from "../constants"
+import { Sides, Space } from "../constants"
 
 const alfilUpMove = (row, col, oldMoveBoard, imageName) => {
     const newBoard = copyBoard(oldMoveBoard)
@@ -13,7 +13,7 @@ const alfilUpMove = (row, col, oldMoveBoard, imageName) => {
     
             newBoard[x][y] = newValue
     
-            if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6 || newValue == 7) {
+            if (oldValue == newValue || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
                 break
             }
         }
@@ -30,7 +30,7 @@ const alfilUpMove = (row, col, oldMoveBoard, imageName) => {
 
             newBoard[x][y] = newValue
 
-            if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6 || newValue == 7) {
+            if (oldValue == newValue || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
                 break
             }
         }
@@ -52,7 +52,7 @@ const alfilDownMove = (row, col, oldMoveBoard, imageName) => {
 
             newBoard[x][y] = newValue
 
-            if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6 || newValue == 7) {
+            if (oldValue == newValue || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
                 break
             }
         }
@@ -69,7 +69,7 @@ const alfilDownMove = (row, col, oldMoveBoard, imageName) => {
             
             newBoard[x][y] = newValue
 
-            if (oldValue == newValue || newValue == 3 || newValue == 5 || newValue == 6 || newValue == 7) {
+            if (oldValue == newValue || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
                 break
             }
         }
@@ -81,13 +81,13 @@ const alfilDownMove = (row, col, oldMoveBoard, imageName) => {
 }
 
 export const moveAlfil = (row, col, oldMoveBoard, imageName) => {
-    if (imageName == Sides[1]) {
-        const newBoard = alfilUpMove(row, col, oldMoveBoard, Sides[0])
+    if (imageName == Sides.White) {
+        const newBoard = alfilUpMove(row, col, oldMoveBoard, Sides.Black)
 
-        return alfilDownMove(row, col, newBoard, Sides[0])
+        return alfilDownMove(row, col, newBoard, Sides.Black)
     }
     
-    const newBoard = alfilUpMove(row, col, oldMoveBoard, Sides[1])
+    const newBoard = alfilUpMove(row, col, oldMoveBoard, Sides.White)
 
-    return alfilDownMove(row, col, newBoard, Sides[1])
+    return alfilDownMove(row, col, newBoard, Sides.White)
 }

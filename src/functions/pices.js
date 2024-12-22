@@ -1,6 +1,6 @@
 import { moveAlfil } from "./alfil"
-import { copyBoard, deleteMoveSpaces, getImage, ImageBoard } from "./board"
-import { MovingPiece } from "../constants"
+import { copyBoard, deleteCheckSpaces, deleteMoveSpaces, getImage, ImageBoard } from "./board"
+import { MovingPiece, Space } from "../constants"
 import { movePeo, transformPeo } from "./peo"
 import { moveTower } from "./tower"
 import { moveKing } from "./king"
@@ -10,7 +10,7 @@ import { getCheck } from "./checkMove"
 export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, showTransformModal) => {
     let newBoard = copyBoard(oldBoard)
 
-    if (oldBoard[row][col] == 1 || oldBoard[row][col] == 5) {
+    if (oldBoard[row][col] == Space.Fill || oldBoard[row][col] == Space.King) {
         const imagePath = getImage(row, col).split('/')
         
         newBoard = deleteMoveSpaces(newBoard)
@@ -46,7 +46,7 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
 
         updateBoard(newBoard)
     }
-    else if (oldBoard[row][col] == 2 || oldBoard[row][col] == 3 || oldBoard[row][col] == 4 || oldBoard[row][col] == 6) {
+    else if (oldBoard[row][col] == Space.CanMove || oldBoard[row][col] == Space.Kill || oldBoard[row][col] == Space.SpecialMove || oldBoard[row][col] == Space.KillKing) {
         let piece = MovingPiece[0][0].split('/')
 
         ImageBoard[row][col] = MovingPiece[0][0]
@@ -54,11 +54,11 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
         
         newBoard[row][col] = MovingPiece[0][3]
         newBoard = deleteMoveSpaces(newBoard)
-        newBoard[MovingPiece[0][1]][MovingPiece[0][2]] = 0
+        newBoard[MovingPiece[0][1]][MovingPiece[0][2]] = Space.Empty
 
         MovingPiece[0][0] = ''
         
-        if (oldBoard[row][col] == 4) {
+        if (oldBoard[row][col] == Space.SpecialMove) {
             transformPeo(changeTurn, showTransformModal)
         }
         else {
@@ -70,7 +70,10 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
         let check = getCheck(row, col, piece[2], newBoard, piece[1])
 
         if (check != false) {
-            newBoard[check[0]][check[1]] = 7
+            newBoard[check[0]][check[1]] = Space.Check
+        }
+        else {
+            newBoard = deleteCheckSpaces(newBoard)
         }
 
         updateBoard(newBoard)
