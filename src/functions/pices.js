@@ -5,7 +5,7 @@ import { movePeo, transformPeo } from "./peo"
 import { moveTower } from "./tower"
 import { moveKing } from "./king"
 import { moveHorse } from "./horse"
-import { getCheck } from "./checkMove"
+import { getAllKingCheck } from "./checkMove"
 
 export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, showTransformModal) => {
     let newBoard = copyBoard(oldBoard)
@@ -47,8 +47,6 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
         updateBoard(newBoard)
     }
     else if (oldBoard[row][col] == Space.CanMove || oldBoard[row][col] == Space.Kill || oldBoard[row][col] == Space.SpecialMove || oldBoard[row][col] == Space.KillKing) {
-        let piece = MovingPiece[0][0].split('/')
-
         ImageBoard[row][col] = MovingPiece[0][0]
         ImageBoard[MovingPiece[0][1]][MovingPiece[0][2]] = ''
         
@@ -58,22 +56,15 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
 
         MovingPiece[0][0] = ''
         
+        newBoard = deleteCheckSpaces(newBoard)
+
         if (oldBoard[row][col] == Space.SpecialMove) {
             transformPeo(changeTurn, showTransformModal)
         }
         else {
+            newBoard = getAllKingCheck(newBoard)
+
             changeTurn()
-        }
-
-        console.log(piece)
-
-        let check = getCheck(row, col, piece[2], newBoard, piece[1])
-
-        if (check != false) {
-            newBoard[check[0]][check[1]] = Space.Check
-        }
-        else {
-            newBoard = deleteCheckSpaces(newBoard)
         }
 
         updateBoard(newBoard)

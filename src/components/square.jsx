@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 
-import { getImage, getSide, handleMovePiece } from "../functions"
+import { getImage, getPiece, getSide, handleMovePiece } from "../functions"
 import { Sides, Space } from "../constants"
+
 import TransformModal from "./transformModal"
 
 export default function Square({ filled, col, row, initialTurn, changeTurn, initBoard, handleMove, initTransformPeo, showTransform }) {
@@ -35,7 +36,7 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     const handleClick = () => {
         handleMovePiece(row, col, board, handleMove, changeTurn, showTransformModal)
 
-        if ((row == 0 || row == board.length) && getImage(row, col).split('/')[2] == 'peo.png') {
+        if ((row == 0 || row == board.length) && getPiece(row, col) == 'peo.png') {
             setIsTransforming(true)
         }
     }
@@ -89,7 +90,7 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     return (
         <>
             {
-                isTransforming ? <TransformModal row={row} col={col} side={getSide(row, col)} hideModal={hideTransformModal} /> : <></>
+                isTransforming ? <TransformModal row={row} col={col} side={getSide(row, col)} hideModal={hideTransformModal} board={board} updateBoard={handleMove} /> : <></>
             }
             <button className={"col w-12 align-content-center" + getBackgroundColor(filled)} onClick={handleClick} disabled={!canClick()}>
                 {

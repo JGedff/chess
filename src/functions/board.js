@@ -62,7 +62,7 @@ export const deleteMoveSpaces = (board) => {
                 newBoard[h][w] = Space.Fill
             }
             else if (space == Space.KillKing) {
-                newBoard[h][w] = Space.King
+                newBoard[h][w] = Space.Check
             }
         }
     }
@@ -70,28 +70,23 @@ export const deleteMoveSpaces = (board) => {
     return newBoard
 }
 
-// 0 Empty
-// 1 Fill
-// 2 Move
-// 3 Kill
-// 4 Special move
-// 5 King
-// 6 Kill king
-// 7 Check
-
 export const MoveBoard = [
-    [1,1,1,1,5,1,1,1],
-    [1,1,1,1,1,1,1,1],
-    [0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0],
-    [1,1,1,1,1,1,1,1],
-    [1,1,1,1,5,1,1,1],
+    [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.King, Space.Fill, Space.Fill, Space.Fill],
+    [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill],
+    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+    [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill],
+    [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.King, Space.Fill, Space.Fill, Space.Fill],
 ]
 
 export const getImage = (row, col) => {
     return ImageBoard[row][col]
+}
+
+export const getPiece = (row, col) => {
+    return ImageBoard[row][col].split('/')[2]
 }
 
 export const getSide = (row, col) => {

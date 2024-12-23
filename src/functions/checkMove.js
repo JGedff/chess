@@ -1,6 +1,6 @@
 import { Space } from "../constants"
 import { moveAlfil } from "./alfil"
-import { copyBoard } from "./board"
+import { copyBoard, getPiece, getSide } from "./board"
 import { moveHorse } from "./horse"
 import { moveKing } from "./king"
 import { movePeo } from "./peo"
@@ -26,7 +26,7 @@ export const getMoveValue = (value, imagePath, imageToCheck) => {
     return value
 }
 
-export const getCheck = (row, col, piece, board, imageToCheck) => {
+const getCheck = (row, col, piece, board, imageToCheck) => {
     let newBoard = copyBoard(board)
 
     switch (piece) {
@@ -67,4 +67,29 @@ export const getCheck = (row, col, piece, board, imageToCheck) => {
     }
 
     return false
+}
+
+export const getAllKingCheck = (board) => {
+    const newBoard = copyBoard(board)
+    const allChecks = []
+
+    for (let x = 0; x < newBoard.length; x++) {
+        const row = newBoard[x];
+        
+        for (let y = 0; y < row.length; y++) {
+            const side = getSide(x, y)
+            const piece = getPiece(x, y)
+            const isCheck = getCheck(x, y, piece, newBoard, side)
+
+            if (isCheck != false) {
+                allChecks.push(isCheck)
+            }
+        }
+    }
+
+    allChecks.forEach(([row, col]) => {
+        newBoard[row][col] = Space.Check
+    })
+
+    return newBoard
 }

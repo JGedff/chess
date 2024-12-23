@@ -1,10 +1,13 @@
 import { ImageBoard } from "../functions/board"
+import { getAllKingCheck } from "../functions/checkMove"
 
-export default function TransformModal({ row, col, side, hideModal }) {
+export default function TransformModal({ row, col, side, hideModal, board, updateBoard }) {
     const handleClick = (e) => {
         let val = e.target.src.split('/')
 
         ImageBoard[row][col] = `/${val[3]}/${val[4]}`
+
+        updateBoard(getAllKingCheck(board))
         hideModal()
     }
 
