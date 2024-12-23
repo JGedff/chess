@@ -1,5 +1,5 @@
 import { moveAlfil } from "./alfil"
-import { copyBoard, deleteCheckSpaces, deleteMoveSpaces, getImage, ImageBoard } from "./board"
+import { copyBoard, deleteCheckSpaces, deleteMoveSpaces, getImage, getSide, ImageBoard } from "./board"
 import { MovingPiece, Space } from "../constants"
 import { movePeo, transformPeo } from "./peo"
 import { moveTower } from "./tower"
@@ -68,5 +68,66 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
         }
 
         updateBoard(newBoard)
+    }
+    else if (oldBoard[row][col] == Space.Check) {
+        const imagePath = getImage(row, col).split('/')
+        
+        newBoard = deleteMoveSpaces(newBoard)
+
+        MovingPiece[0][0] = imagePath.join('/')
+        MovingPiece[0][1] = row
+        MovingPiece[0][2] = col
+        MovingPiece[0][3] = newBoard[row][col]
+
+        newBoard = moveKingOutOfCheck(row, col, newBoard)
+
+        updateBoard(newBoard)
+    }
+}
+
+const moveKingOutOfCheck = (row, col, board) => {
+    let newBoard = moveKing(row, col, board, getSide(row, col))
+    
+    for (let x = row - 1; x < row + 2; x++) {
+        if (x >= 0 && x < newBoard.length) {
+            for (let y = col - 1; y < col + 2; y++) {
+                if ((y >= 0 && y < newBoard.length) && !(x == row && y == col)) {
+                    if (newBoard[x][y] == Space.Kill || newBoard[x][y] == Space.CanMove) {
+                        newBoard[x][y] = secureKing(x, y, board, [row, col], newBoard[x][y])
+                    }
+                }
+            }
+        }
+    }
+
+    return newBoard
+}
+
+const secureKing = (row, col, board, kingPos, oldValue) => {
+    let newBoard = copyBoard(board)
+    let imageAux = ''
+
+    newBoard[row][col] = Space.King
+    newBoard[kingPos[0]][kingPos[1]] = Space.Empty
+
+    imageAux = ImageBoard[row][col]
+    ImageBoard[row][col] = ImageBoard[kingPos[0]][kingPos[1]]
+    ImageBoard[kingPos[0]][kingPos[1]] = ''
+
+    newBoard = getAllKingCheck(newBoard)
+
+    ImageBoard[kingPos[0]][kingPos[1]] = ImageBoard[row][col]
+    ImageBoard[row][col] = imageAux
+
+    if (newBoard[row][col] != Space.Check) {
+        return oldValue
+    }
+    else {
+        if (oldValue == Space.Kill) {
+            return Space.Fill
+        }
+        else {
+            return Space.Empty
+        }
     }
 }

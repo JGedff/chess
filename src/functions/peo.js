@@ -102,7 +102,6 @@ export const movePeo = (row, col, oldMoveBoard, imageName) => {
 
         // Special Move
         if (row + 1 == oldMoveBoard.length - 1) {
-            console.log(oldMoveBoard[row + 1][col])
             if (oldMoveBoard[row + 1][col] == Space.Empty) {
                 newBoard[row + 1][col] = Space.SpecialMove
             }

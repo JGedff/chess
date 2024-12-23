@@ -64,20 +64,20 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     }
 
     const getBackgroundColor = (fill) => {
-        if (board[row][col] == Space.CanMove) {
-            return " bg-info"
-        }
-
-        if (board[row][col] == Space.Kill) {
-            return " bg-warning"
+        if (board[row][col] == Space.Check || board[row][col] == Space.KillKing) {
+            return " bg-danger"
         }
 
         if (board[row][col] == Space.SpecialMove) {
             return " bg-success"
         }
 
-        if (board[row][col] == Space.Check || board[row][col] == Space.KillKing) {
-            return " bg-danger"
+        if (board[row][col] == Space.Kill) {
+            return " bg-warning"
+        }
+
+        if (board[row][col] == Space.CanMove) {
+            return " bg-info"
         }
         
         if (fill) {

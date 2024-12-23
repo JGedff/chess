@@ -1,7 +1,7 @@
-// ['FileName.png', Row, Column, Value], 'NewPiece_SpecialMove'
+// ['PieceToMove.png', Row, Column, Value], ['KilledPiece', Row, Column]
 
 export const MovingPiece = [
-    ['', 0, 0, 0], ''
+    ['', 0, 0, 0], ['', 0, 0, 0]
 ]
 
 export const Sides = {

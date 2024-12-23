@@ -1,10 +1,12 @@
 import { Space } from "../constants"
-import { moveAlfil } from "./alfil"
+
 import { copyBoard, getPiece, getSide } from "./board"
+
+import { moveAlfil } from "./alfil"
 import { moveHorse } from "./horse"
+import { moveTower } from "./tower"
 import { moveKing } from "./king"
 import { movePeo } from "./peo"
-import { moveTower } from "./tower"
 
 export const getMoveValue = (value, imagePath, imageToCheck) => {
     let image = ''

@@ -1,4 +1,5 @@
-import { getImage, getPiece, getSide, MoveBoard } from "./board"
+import { getImage, getPiece, getSide, ImageBoard, MoveBoard } from "./board"
+import { getAllKingCheck } from "./checkMove"
 import { handleMovePiece } from "./pices"
 
 export {
@@ -6,5 +7,7 @@ export {
     getPiece,
     getImage,
     MoveBoard,
+    ImageBoard,
+    getAllKingCheck,
     handleMovePiece
 }
