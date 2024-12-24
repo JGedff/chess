@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react"
 
 import Row from "./row"
-import { MoveBoard } from "../functions"
+import { ImageBoard, MoveBoard } from "../functions"
 
 export default function Board({ initLength, initHeight }) {
+    const [spaceImageBoard, setSpaceImageBoard] = useState(ImageBoard)
     const [spaceBoard, setSpaceBoard] = useState(MoveBoard)
+    const [showModal, setShowModal] = useState(false)
     const [length, setLength] = useState(initLength)
     const [height, setHeight] = useState(initHeight)
     const [turn, setTurn] = useState(true)
-    const [showModal, setShowModal] = useState(false)
 
     useEffect(() => {
         setLength(initLength)
@@ -30,6 +31,10 @@ export default function Board({ initLength, initHeight }) {
         setSpaceBoard(newBoard)
     }
 
+    const updateImageBoard = (newImageBoard) => {
+        setSpaceImageBoard(newImageBoard)
+    }
+
     const showTransformModal = (val) => {
         setShowModal(val)
     }
@@ -39,7 +44,7 @@ export default function Board({ initLength, initHeight }) {
         let filled = true
 
         for (let h = 0; h < height; h++) {
-            board.push(<Row key={h} initLength={lenght} initFilled={filled} rowIndex={h} initialTurn={turn} changeTurn={handleTurn} initBoard={spaceBoard} handleMove={updateBoard} initShowModal={showModal} setTransformPeo={showTransformModal} />)
+            board.push(<Row key={h} initLength={lenght} initFilled={filled} rowIndex={h} initialTurn={turn} changeTurn={handleTurn} initBoard={spaceBoard} handleMove={updateBoard} initImageBoard={spaceImageBoard} updateImgBoard={updateImageBoard} initShowModal={showModal} setTransformPeo={showTransformModal} />)
             filled = !filled
         }
 

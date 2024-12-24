@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
 
-import { getImage, getPiece, getSide, handleMovePiece } from "../functions"
+import { handleMovePiece } from "../functions"
 import { Sides, Space } from "../constants"
 
 import TransformModal from "./transformModal"
 
-export default function Square({ filled, col, row, initialTurn, changeTurn, initBoard, handleMove, initTransformPeo, showTransform }) {
+export default function Square({ filled, col, row, initialTurn, changeTurn, initBoard, handleMove, initImageBoard, updateImageBoard, initTransformPeo, showTransform }) {
     const [showingModal, setShowingModal] = useState(initTransformPeo)
+    const [imageBoard, setImageBoard] = useState(initImageBoard)
     const [isTransforming, setIsTransforming] = useState(false)
     const [board, setBoard] = useState(initBoard)
     const [turn, setTurn] = useState(initialTurn)
@@ -18,6 +19,10 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     useEffect(() => {
         setBoard(initBoard)
     }, [initBoard])
+
+    useEffect(() => {
+        setImageBoard(initImageBoard)
+    }, [initImageBoard])
 
     useEffect(() => {
         setShowingModal(initTransformPeo)
@@ -34,15 +39,17 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     }
 
     const handleClick = () => {
-        handleMovePiece(row, col, board, handleMove, changeTurn, showTransformModal)
+        const spaceImage = imageBoard[row][col].split('/')
 
-        if ((row == 0 || row == board.length) && getPiece(row, col) == 'peo.png') {
+        handleMovePiece(row, col, board, handleMove, changeTurn, showTransformModal, imageBoard, updateImageBoard)
+
+        if (((row == 0 && spaceImage[1] == Sides.White) || (row == board.length - 1 && spaceImage[1] == Sides.Black)) && spaceImage[2] == 'peo.png') {
             setIsTransforming(true)
         }
     }
 
     const canClick = () => {
-        const pieceColor = getSide(row, col)
+        const pieceColor = imageBoard[row][col].split('/')[1]
 
         if (showingModal) {
             return false
@@ -90,12 +97,12 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     return (
         <>
             {
-                isTransforming ? <TransformModal row={row} col={col} side={getSide(row, col)} hideModal={hideTransformModal} board={board} updateBoard={handleMove} /> : <></>
+                isTransforming ? <TransformModal row={row} col={col} side={imageBoard[row][col].split('/')[1]} hideModal={hideTransformModal} board={board} updateBoard={handleMove} imageBoard={imageBoard} updateImageBoard={updateImageBoard} /> : <></>
             }
             <button className={"col w-12 align-content-center" + getBackgroundColor(filled)} onClick={handleClick} disabled={!canClick()}>
                 {
-                    getImage(row, col) != '' ?
-                    <img src={getImage(row, col)} alt="" className="w-100"/> :
+                    imageBoard[row][col] != '' ?
+                    <img src={imageBoard[row][col]} alt="" className="w-100"/> :
                     <></>
                 }
             </button>

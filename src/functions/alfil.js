@@ -1,15 +1,15 @@
-import { copyBoard, getImage } from "./board"
+import { copyBoard } from "./board"
 import { getMoveValue } from "./checkMove"
 import { Sides, Space } from "../constants"
 
-const alfilUpMove = (row, col, oldMoveBoard, imageName) => {
+const alfilUpMove = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
     const newBoard = copyBoard(oldMoveBoard)
     let y = col
 
     for (let x = row; x >= 0; x--) {
         if (x != row && y != col && y < newBoard.length) {
             const oldValue = newBoard[x][y]
-            const newValue = getMoveValue(newBoard[x][y], getImage(x, y), imageName)
+            const newValue = getMoveValue(newBoard[x][y], oldImageBoard[x][y], imageName)
     
             newBoard[x][y] = newValue
     
@@ -26,7 +26,7 @@ const alfilUpMove = (row, col, oldMoveBoard, imageName) => {
     for (let x = row; x >= 0; x--) {
         if (x != row && y != col && y >= 0) {
             const oldValue = newBoard[x][y]
-            const newValue = getMoveValue(newBoard[x][y], getImage(x, y), imageName)
+            const newValue = getMoveValue(newBoard[x][y], oldImageBoard[x][y], imageName)
 
             newBoard[x][y] = newValue
 
@@ -41,14 +41,14 @@ const alfilUpMove = (row, col, oldMoveBoard, imageName) => {
     return newBoard
 }
 
-const alfilDownMove = (row, col, oldMoveBoard, imageName) => {
+const alfilDownMove = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
     const newBoard = copyBoard(oldMoveBoard)
     let y = col
 
     for (let x = row; x < newBoard.length; x++) {
         if (x != row && y != col && y < newBoard.length) {
             const oldValue = newBoard[x][y]
-            const newValue = getMoveValue(newBoard[x][y], getImage(x, y), imageName)
+            const newValue = getMoveValue(newBoard[x][y], oldImageBoard[x][y], imageName)
 
             newBoard[x][y] = newValue
 
@@ -65,7 +65,7 @@ const alfilDownMove = (row, col, oldMoveBoard, imageName) => {
     for (let x = row; x < newBoard.length; x++) {
         if (x != row && y != col && y >= 0) {
             const oldValue = newBoard[x][y]
-            const newValue = getMoveValue(newBoard[x][y], getImage(x, y), imageName)
+            const newValue = getMoveValue(newBoard[x][y], oldImageBoard[x][y], imageName)
             
             newBoard[x][y] = newValue
 
@@ -80,14 +80,14 @@ const alfilDownMove = (row, col, oldMoveBoard, imageName) => {
     return newBoard
 }
 
-export const moveAlfil = (row, col, oldMoveBoard, imageName) => {
+export const moveAlfil = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
     if (imageName == Sides.White) {
-        const newBoard = alfilUpMove(row, col, oldMoveBoard, Sides.Black)
+        const newBoard = alfilUpMove(row, col, oldMoveBoard, Sides.Black, oldImageBoard)
 
-        return alfilDownMove(row, col, newBoard, Sides.Black)
+        return alfilDownMove(row, col, newBoard, Sides.Black, oldImageBoard)
     }
     
-    const newBoard = alfilUpMove(row, col, oldMoveBoard, Sides.White)
+    const newBoard = alfilUpMove(row, col, oldMoveBoard, Sides.White, oldImageBoard)
 
-    return alfilDownMove(row, col, newBoard, Sides.White)
+    return alfilDownMove(row, col, newBoard, Sides.White, oldImageBoard)
 }

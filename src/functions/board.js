@@ -80,15 +80,3 @@ export const MoveBoard = [
     [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill],
     [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.King, Space.Fill, Space.Fill, Space.Fill],
 ]
-
-export const getImage = (row, col) => {
-    return ImageBoard[row][col]
-}
-
-export const getPiece = (row, col) => {
-    return ImageBoard[row][col].split('/')[2]
-}
-
-export const getSide = (row, col) => {
-    return ImageBoard[row][col].split('/')[1]
-}
