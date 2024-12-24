@@ -55,7 +55,7 @@ export const deleteMoveSpaces = (board) => {
         for (let w = 0; w < row.length; w++) {
             const space = row[w]
             
-            if (space == Space.CanMove || space == Space.SpecialMove) {
+            if (space == Space.CanMove || space == Space.PeoSpecialMove) {
                 newBoard[h][w] = Space.Empty
             }
             else if (space == Space.Kill) {

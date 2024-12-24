@@ -46,7 +46,7 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
 
         updateBoard(newBoard)
     }
-    else if (oldBoard[row][col] == Space.CanMove || oldBoard[row][col] == Space.Kill || oldBoard[row][col] == Space.SpecialMove || oldBoard[row][col] == Space.KillKing) {
+    else if (oldBoard[row][col] == Space.CanMove || oldBoard[row][col] == Space.Kill || oldBoard[row][col] == Space.PeoSpecialMove || oldBoard[row][col] == Space.KillKing) {
         imageBoard[row][col] = MovingPiece[0][0]
         imageBoard[MovingPiece[0][1]][MovingPiece[0][2]] = ''
 
@@ -60,7 +60,7 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
         
         newBoard = deleteCheckSpaces(newBoard)
 
-        if (oldBoard[row][col] == Space.SpecialMove) {
+        if (oldBoard[row][col] == Space.PeoSpecialMove) {
             transformPeo(changeTurn, showTransformModal)
         }
         else {

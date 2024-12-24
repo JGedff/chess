@@ -3,7 +3,7 @@ import { copyBoard, getAllKingCheck } from "../functions"
 export default function TransformModal({ row, col, side, hideModal, board, updateBoard, imageBoard, updateImageBoard }) {
     const handleClick = (e) => {
         const newImageBoard = copyBoard(imageBoard)
-        const newBoard = getAllKingCheck(board)
+        const newBoard = getAllKingCheck(board, imageBoard)
         let val = e.target.src.split('/')
 
         newImageBoard[row][col] = `/${val[3]}/${val[4]}`

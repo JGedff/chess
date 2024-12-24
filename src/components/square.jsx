@@ -39,11 +39,9 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     }
 
     const handleClick = () => {
-        const spaceImage = imageBoard[row][col].split('/')
-
         handleMovePiece(row, col, board, handleMove, changeTurn, showTransformModal, imageBoard, updateImageBoard)
 
-        if (((row == 0 && spaceImage[1] == Sides.White) || (row == board.length - 1 && spaceImage[1] == Sides.Black)) && spaceImage[2] == 'peo.png') {
+        if (board[row][col] == Space.PeoSpecialMove) {
             setIsTransforming(true)
         }
     }
@@ -55,7 +53,7 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
             return false
         }
 
-        if (board[row][col] == Space.CanMove || board[row][col] == Space.Kill || board[row][col] == Space.SpecialMove || board[row][col] == Space.KillKing) {
+        if (board[row][col] == Space.CanMove || board[row][col] == Space.Kill || board[row][col] == Space.PeoSpecialMove || board[row][col] == Space.KillKing) {
             return true
         }
 
@@ -75,7 +73,7 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
             return " bg-danger"
         }
 
-        if (board[row][col] == Space.SpecialMove) {
+        if (board[row][col] == Space.PeoSpecialMove) {
             return " bg-success"
         }
 

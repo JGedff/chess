@@ -27,8 +27,8 @@ export const peoNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) => 
         // Kill
         if (col - 1 >= 0) {
             if (newBoard[row - 1][col - 1] == Space.Fill && imageBoard[row - 1][col - 1].split('/')[1] == Sides.Black) {
-                if (row - 1 == newBoard.length - 1) {
-                    newBoard[row - 1][col - 1] = Space.SpecialMove
+                if (row - 1 == 0) {
+                    newBoard[row - 1][col - 1] = Space.PeoSpecialMove
                 }
                 else {
                     newBoard[row - 1][col - 1] = Space.Kill
@@ -41,8 +41,8 @@ export const peoNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) => 
 
         if (col + 1 <= newBoard.length - 1) {
             if (newBoard[row - 1][col + 1] == Space.Fill && imageBoard[row - 1][col + 1].split('/')[1] == Sides.Black) {
-                if (row - 1 == newBoard.length - 1) {
-                    newBoard[row - 1][col + 1] = Space.SpecialMove
+                if (row - 1 == 0) {
+                    newBoard[row - 1][col + 1] = Space.PeoSpecialMove
                 }
                 else {
                     newBoard[row - 1][col + 1] = Space.Kill
@@ -56,7 +56,7 @@ export const peoNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) => 
         // Special Move
         if (row - 1 == 0) {
             if (newBoard[row - 1][col] == Space.Empty) {
-                newBoard[row - 1][col] = Space.SpecialMove
+                newBoard[row - 1][col] = Space.PeoSpecialMove
             }
         }
         else if (row == 6) { // Move
@@ -79,7 +79,7 @@ export const peoNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) => 
         if (col - 1 >= 0) {
             if (newBoard[row + 1][col - 1] == Space.Fill && imageBoard[row + 1][col - 1].split('/')[1] == Sides.White) {
                 if (row + 1 == newBoard.length - 1) {
-                    newBoard[row + 1][col - 1] = Space.SpecialMove
+                    newBoard[row + 1][col - 1] = Space.PeoSpecialMove
                 }
                 else {
                     newBoard[row + 1][col - 1] = Space.Kill
@@ -93,7 +93,7 @@ export const peoNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) => 
         if (col + 1 <= newBoard.length - 1) {
             if (newBoard[row + 1][col + 1] == Space.Fill && imageBoard[row + 1][col + 1].split('/')[1] == Sides.White) {
                 if (row + 1 == newBoard.length - 1) {
-                    newBoard[row + 1][col + 1] = Space.SpecialMove
+                    newBoard[row + 1][col + 1] = Space.PeoSpecialMove
                 }
                 else {
                     newBoard[row + 1][col + 1] = Space.Kill
@@ -107,7 +107,7 @@ export const peoNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) => 
         // Special Move
         if (row + 1 == newBoard.length - 1) {
             if (newBoard[row + 1][col] == Space.Empty) {
-                newBoard[row + 1][col] = Space.SpecialMove
+                newBoard[row + 1][col] = Space.PeoSpecialMove
             }
         }
         else if (row == 1) { // Move
@@ -135,13 +135,13 @@ const peoSaveKing = (row, col, oldMoveBoard, imageName, imageBoard) => {
     if (imageName == Sides.White && row - 1 >= 0) {
         // Kill
         if (col - 1 >= 0) {
-            if (newBoard[row - 1][col - 1] == Space.SpecialMove || newBoard[row - 1][col - 1] == Space.Kill || newBoard[row - 1][col - 1] == Space.KillKing) {
+            if (newBoard[row - 1][col - 1] == Space.PeoSpecialMove || newBoard[row - 1][col - 1] == Space.Kill || newBoard[row - 1][col - 1] == Space.KillKing) {
                 newBoard[row - 1][col - 1] = pieceProtect(row - 1, col - 1, newBoard, [row, col], imageBoard)
             }
         }
         
         if (col + 1 <= newBoard.length - 1) {
-            if (newBoard[row - 1][col + 1] == Space.SpecialMove || newBoard[row - 1][col + 1] == Space.Kill || newBoard[row - 1][col + 1] == Space.KillKing) {
+            if (newBoard[row - 1][col + 1] == Space.PeoSpecialMove || newBoard[row - 1][col + 1] == Space.Kill || newBoard[row - 1][col + 1] == Space.KillKing) {
                 newBoard[row - 1][col + 1] = pieceProtect(row - 1, col + 1, newBoard, [row, col], imageBoard)
             }
         }
@@ -162,7 +162,7 @@ const peoSaveKing = (row, col, oldMoveBoard, imageName, imageBoard) => {
             }
         }
         else {
-            if (newBoard[row - 1][col] == Space.SpecialMove || newBoard[row - 1][col] == Space.CanMove) {
+            if (newBoard[row - 1][col] == Space.PeoSpecialMove || newBoard[row - 1][col] == Space.CanMove) {
                 newBoard[row - 1][col] = pieceProtect(row - 1, col, newBoard, [row, col], imageBoard)
             }
         }
@@ -170,13 +170,13 @@ const peoSaveKing = (row, col, oldMoveBoard, imageName, imageBoard) => {
     else if (imageName == Sides.Black && row + 1 <= newBoard.length - 1) {
         // Kill
         if (col - 1 >= 0) {
-            if (newBoard[row + 1][col - 1] == Space.SpecialMove || newBoard[row + 1][col - 1] == Space.Kill || newBoard[row + 1][col - 1] == Space.KillKing) {
+            if (newBoard[row + 1][col - 1] == Space.PeoSpecialMove || newBoard[row + 1][col - 1] == Space.Kill || newBoard[row + 1][col - 1] == Space.KillKing) {
                 newBoard[row + 1][col - 1] = pieceProtect(row + 1, col - 1, newBoard, [row, col], imageBoard)
             }
         }
 
         if (col + 1 <= newBoard.length - 1) {
-            if (newBoard[row + 1][col + 1] == Space.SpecialMove || newBoard[row + 1][col + 1] == Space.Kill || newBoard[row + 1][col + 1] == Space.KillKing) {
+            if (newBoard[row + 1][col + 1] == Space.PeoSpecialMove || newBoard[row + 1][col + 1] == Space.Kill || newBoard[row + 1][col + 1] == Space.KillKing) {
                 newBoard[row + 1][col + 1] = pieceProtect(row + 1, col + 1, newBoard, [row, col], imageBoard)
             }
         }
@@ -197,7 +197,7 @@ const peoSaveKing = (row, col, oldMoveBoard, imageName, imageBoard) => {
             }
         }
         else {
-            if (newBoard[row + 1][col] == Space.SpecialMove || newBoard[row + 1][col] == Space.CanMove) {
+            if (newBoard[row + 1][col] == Space.PeoSpecialMove || newBoard[row + 1][col] == Space.CanMove) {
                 newBoard[row + 1][col] = pieceProtect(row + 1, col, newBoard, [row, col], imageBoard)
             }
         }
@@ -227,7 +227,7 @@ const pieceProtect = (row, col, board, oldPosition, oldImageBoard) => {
         for (let y = 0; y < newBoard[x].length; y++) {
             if (newBoard[x][y] == Space.King && imageBoard[x][y].split('/')[1] == side) {
                 console.log('saved')
-                if (board[row][col] == Space.Empty || board[row][col] == Space.CanMove || board[row][col] == Space.SpecialMove) {
+                if (board[row][col] == Space.Empty || board[row][col] == Space.CanMove || board[row][col] == Space.PeoSpecialMove) {
                     newValue = Space.CanMove
                 }
                 else {
