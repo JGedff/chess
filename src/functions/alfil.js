@@ -1,6 +1,8 @@
 import { copyBoard } from "./board"
 import { getMoveValue } from "./checkMove"
 import { Sides, Space } from "../constants"
+import { isKingInDanger } from "./king"
+import { pieceProtect } from "./pices"
 
 const alfilUpMove = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
     const newBoard = copyBoard(oldMoveBoard)
@@ -13,7 +15,7 @@ const alfilUpMove = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
     
             newBoard[x][y] = newValue
     
-            if (oldValue == newValue || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
+            if ((oldValue == newValue && newValue != Space.CanMove) || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
                 break
             }
         }
@@ -30,7 +32,7 @@ const alfilUpMove = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
 
             newBoard[x][y] = newValue
 
-            if (oldValue == newValue || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
+            if ((oldValue == newValue && newValue != Space.CanMove) || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
                 break
             }
         }
@@ -52,7 +54,7 @@ const alfilDownMove = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
 
             newBoard[x][y] = newValue
 
-            if (oldValue == newValue || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
+            if ((oldValue == newValue && newValue != Space.CanMove) || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
                 break
             }
         }
@@ -69,7 +71,7 @@ const alfilDownMove = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
             
             newBoard[x][y] = newValue
 
-            if (oldValue == newValue || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
+            if ((oldValue == newValue && newValue != Space.CanMove) || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
                 break
             }
         }
@@ -80,7 +82,7 @@ const alfilDownMove = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
     return newBoard
 }
 
-export const moveAlfil = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
+export const alfilNormalMove = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
     if (imageName == Sides.White) {
         const newBoard = alfilUpMove(row, col, oldMoveBoard, Sides.Black, oldImageBoard)
 
@@ -90,4 +92,26 @@ export const moveAlfil = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
     const newBoard = alfilUpMove(row, col, oldMoveBoard, Sides.White, oldImageBoard)
 
     return alfilDownMove(row, col, newBoard, Sides.White, oldImageBoard)
+}
+
+const alfilSaveKing = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
+    const newBoard = alfilNormalMove(row, col, oldMoveBoard, imageName, oldImageBoard)
+    
+    for (let x = 0; x < newBoard.length; x++) {
+        for (let y = 0; y < newBoard.length; y++) {
+            if (newBoard[x][y] == Space.CanMove || newBoard[x][y] == Space.Kill || newBoard[x][y] == Space.KillKing) {
+                newBoard[x][y] = pieceProtect(x, y, newBoard, [row, col], oldImageBoard)
+            }
+        }
+    }
+
+    return newBoard
+}
+
+export const moveAlfil = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
+    if (isKingInDanger(oldMoveBoard, imageName, oldImageBoard)) {
+        return alfilSaveKing(row, col, oldMoveBoard, imageName, oldImageBoard)
+    }
+
+    return alfilNormalMove(row, col, oldMoveBoard, imageName, oldImageBoard)
 }

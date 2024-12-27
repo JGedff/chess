@@ -2,7 +2,7 @@ import { copyBoard } from "./board"
 import { Sides, Space } from "../constants"
 import { getMoveValue } from "./checkMove"
 import { towerNormalMove } from "./tower"
-import { moveAlfil } from "./alfil"
+import { alfilNormalMove, moveAlfil } from "./alfil"
 import { moveHorse } from "./horse"
 import { peoNormalMove } from "./peo"
 
@@ -41,10 +41,10 @@ const getCheck = (row, col, piece, board, imageToCheck, imageBoard) => {
             newBoard = towerNormalMove(row, col, board, imageToCheck, imageBoard)
             break
         case "alfil.png":
-            newBoard = moveAlfil(row, col, board, imageToCheck, imageBoard)
+            newBoard = alfilNormalMove(row, col, board, imageToCheck, imageBoard)
             break
         case "reina.png":
-            newBoard = moveAlfil(row, col, board, imageToCheck, imageBoard)
+            newBoard = alfilNormalMove(row, col, board, imageToCheck, imageBoard)
             newBoard = towerNormalMove(row, col, newBoard, imageToCheck, imageBoard)
             break
         case "rei.png":
