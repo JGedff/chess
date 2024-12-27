@@ -1,7 +1,6 @@
 import { Sides, Space } from "../constants"
 import { copyBoard } from "./board"
 import { getMoveValue } from "./checkMove"
-import { isKingInDanger } from "./king"
 import { pieceProtect } from "./pices"
 
 const getHorseSpaces = (row, col, oldMoveBoard, imageToCheck, imageBoard) => {
@@ -58,7 +57,7 @@ export const horseNormalMove = (row, col, oldMoveBoard, imageName, oldImageBoard
     return getHorseSpaces(row, col, oldMoveBoard, Sides.White, oldImageBoard)
 }
 
-const horseSaveKing = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
+export const moveHorse = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
     const newBoard = horseNormalMove(row, col, oldMoveBoard, imageName, oldImageBoard)
     
     for (let x = 0; x < newBoard.length; x++) {
@@ -70,12 +69,4 @@ const horseSaveKing = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
     }
 
     return newBoard
-}
-
-export const moveHorse = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
-    if (isKingInDanger(oldMoveBoard, imageName, oldImageBoard)) {
-        return horseSaveKing(row, col, oldMoveBoard, imageName, oldImageBoard)
-    }
-
-    return horseNormalMove(row, col, oldMoveBoard, imageName, oldImageBoard)
 }

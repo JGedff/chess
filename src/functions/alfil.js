@@ -94,7 +94,7 @@ export const alfilNormalMove = (row, col, oldMoveBoard, imageName, oldImageBoard
     return alfilDownMove(row, col, newBoard, Sides.White, oldImageBoard)
 }
 
-const alfilSaveKing = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
+export const moveAlfil = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
     const newBoard = alfilNormalMove(row, col, oldMoveBoard, imageName, oldImageBoard)
     
     for (let x = 0; x < newBoard.length; x++) {
@@ -106,12 +106,4 @@ const alfilSaveKing = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
     }
 
     return newBoard
-}
-
-export const moveAlfil = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
-    if (isKingInDanger(oldMoveBoard, imageName, oldImageBoard)) {
-        return alfilSaveKing(row, col, oldMoveBoard, imageName, oldImageBoard)
-    }
-
-    return alfilNormalMove(row, col, oldMoveBoard, imageName, oldImageBoard)
 }

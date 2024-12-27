@@ -2,8 +2,8 @@ import { copyBoard } from "./board"
 import { Sides, Space } from "../constants"
 import { getMoveValue } from "./checkMove"
 import { towerNormalMove } from "./tower"
-import { alfilNormalMove, moveAlfil } from "./alfil"
-import { horseNormalMove, moveHorse } from "./horse"
+import { alfilNormalMove } from "./alfil"
+import { horseNormalMove } from "./horse"
 import { peoNormalMove } from "./peo"
 
 const getMoveArround = (row, col, oldMoveBoard, imageNameToCheck, imageBoard) => {
