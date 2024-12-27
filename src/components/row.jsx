@@ -2,7 +2,9 @@ import { useEffect, useState } from "react"
 
 import Square from "./square"
 
-export default function Row({ initLength, initFilled, rowIndex, initialTurn, changeTurn, initBoard, handleMove }) {
+export default function Row({ initLength, initFilled, rowIndex, initialTurn, changeTurn, initBoard, handleMove, initImageBoard, updateImgBoard, initShowModal, setTransformPeo }) {
+    const [imageBoard, setImageBoard] = useState(initImageBoard)
+    const [showModal, setShowModal] = useState(initShowModal)
     const [filled, setFilled] = useState(initFilled)
     const [length, setLength] = useState(initLength)
     const [board, setBoard] = useState(initBoard)
@@ -24,12 +26,20 @@ export default function Row({ initLength, initFilled, rowIndex, initialTurn, cha
         setBoard(initBoard)
     }, [initBoard])
 
+    useEffect(() => {
+        setImageBoard(initImageBoard)
+    }, [initImageBoard])
+
+    useEffect(() => {
+        setShowModal(initShowModal)
+    }, [initShowModal])
+
     const generateRows = (lenght) => {
         const row = []
         let isFilled = filled
 
         for (let l = 0; l < lenght; l++) {
-            row.push(<Square key={l + rowIndex} col={l} row={rowIndex} filled={isFilled} initialTurn={turn} changeTurn={changeTurn} initBoard={board} handleMove={handleMove} />)
+            row.push(<Square key={l + rowIndex} col={l} row={rowIndex} filled={isFilled} initialTurn={turn} changeTurn={changeTurn} initBoard={board} handleMove={handleMove} initImageBoard={imageBoard} updateImageBoard={updateImgBoard} initTransformPeo={showModal} showTransform={setTransformPeo} />)
             isFilled = !isFilled
         }
 

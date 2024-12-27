@@ -1,3 +1,5 @@
+import { Space } from "../constants"
+
 export const getMoveValue = (value, imagePath, imageToCheck) => {
     let image = ''
     
@@ -5,14 +7,14 @@ export const getMoveValue = (value, imagePath, imageToCheck) => {
         image = imagePath.split('/')[1]
     }
 
-    if (value == 0) {
-        return 2
+    if (value == Space.Empty) {
+        return Space.CanMove
     }
-    else if (value == 1 && image == imageToCheck) {
-        return 3
+    else if (value == Space.Fill && image == imageToCheck) {
+        return Space.Kill
     }
-    else if (value == 5 && image == imageToCheck) {
-        return 6
+    else if ((value == Space.King || value == Space.Check) && image == imageToCheck) {
+        return Space.KillKing
     }
 
     return value

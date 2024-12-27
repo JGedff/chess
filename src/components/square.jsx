@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react"
 
-import { getImage, getSide, handleMovePiece } from "../functions"
-import { Sides } from "../constants"
+import { handleMovePiece } from "../functions"
+import { Sides, Space } from "../constants"
 
-export default function Square({ filled, col, row, initialTurn, changeTurn, initBoard, handleMove }) {
+import TransformModal from "./transformModal"
+
+export default function Square({ filled, col, row, initialTurn, changeTurn, initBoard, handleMove, initImageBoard, updateImageBoard, initTransformPeo, showTransform }) {
+    const [showingModal, setShowingModal] = useState(initTransformPeo)
+    const [imageBoard, setImageBoard] = useState(initImageBoard)
+    const [isTransforming, setIsTransforming] = useState(false)
     const [board, setBoard] = useState(initBoard)
     const [turn, setTurn] = useState(initialTurn)
 
@@ -15,22 +20,48 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
         setBoard(initBoard)
     }, [initBoard])
 
+    useEffect(() => {
+        setImageBoard(initImageBoard)
+    }, [initImageBoard])
+
+    useEffect(() => {
+        setShowingModal(initTransformPeo)
+    }, [initTransformPeo])
+
+    const showTransformModal = () => {
+        showTransform(true)
+    }
+
+    const hideTransformModal = () => {
+        setIsTransforming(false)
+
+        showTransform(false)
+    }
+
     const handleClick = () => {
-        handleMovePiece(row, col, board, handleMove, changeTurn)
+        handleMovePiece(row, col, board, handleMove, changeTurn, showTransformModal, imageBoard, updateImageBoard)
+
+        if (board[row][col] == Space.PeoSpecialMove) {
+            setIsTransforming(true)
+        }
     }
 
     const canClick = () => {
-        const pieceColor = getSide(row, col)
+        const pieceColor = imageBoard[row][col].split('/')[1]
 
-        if (board[row][col] == 2 || board[row][col] == 3 || board[row][col] == 4 || board[row][col] == 6) {
+        if (showingModal) {
+            return false
+        }
+
+        if (board[row][col] == Space.CanMove || board[row][col] == Space.Kill || board[row][col] == Space.PeoSpecialMove || board[row][col] == Space.KillKing) {
             return true
         }
 
-        if (turn && (pieceColor == Sides[1])) {
+        if (turn && (pieceColor == Sides.White)) {
             return true
         }
 
-        if (!turn && (pieceColor == Sides[0])) {
+        if (!turn && (pieceColor == Sides.Black)) {
             return true
         }
 
@@ -38,20 +69,20 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     }
 
     const getBackgroundColor = (fill) => {
-        if (board[row][col] == 2) {
-            return " bg-info"
+        if (board[row][col] == Space.Check || board[row][col] == Space.KillKing) {
+            return " bg-danger"
         }
 
-        if (board[row][col] == 3) {
-            return " bg-warning"
-        }
-
-        if (board[row][col] == 4) {
+        if (board[row][col] == Space.PeoSpecialMove) {
             return " bg-success"
         }
 
-        if (board[row][col] == 6) {
-            return " bg-danger"
+        if (board[row][col] == Space.Kill) {
+            return " bg-warning"
+        }
+
+        if (board[row][col] == Space.CanMove) {
+            return " bg-info"
         }
         
         if (fill) {
@@ -62,12 +93,17 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     }
 
     return (
-        <button className={"col w-12 align-content-center" + getBackgroundColor(filled)} onClick={handleClick} disabled={!canClick()}>
+        <>
             {
-                getImage(row, col) != '' ?
-                <img src={getImage(row, col)} alt="" className="w-100"/> :
-                <></>
+                isTransforming ? <TransformModal row={row} col={col} side={imageBoard[row][col].split('/')[1]} hideModal={hideTransformModal} board={board} updateBoard={handleMove} imageBoard={imageBoard} updateImageBoard={updateImageBoard} /> : <></>
             }
-        </button>
+            <button className={"col w-12 align-content-center" + getBackgroundColor(filled)} onClick={handleClick} disabled={!canClick()}>
+                {
+                    imageBoard[row][col] != '' ?
+                    <img src={imageBoard[row][col]} alt="" className="w-100"/> :
+                    <></>
+                }
+            </button>
+        </>
     )
 }

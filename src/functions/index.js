@@ -1,9 +1,11 @@
-import { getImage, getSide, MoveBoard } from "./board"
+import { copyBoard, ImageBoard, MoveBoard } from "./board"
+import { getAllKingCheck } from "./king"
 import { handleMovePiece } from "./pices"
 
 export {
-    getSide,
-    getImage,
+    copyBoard,
     MoveBoard,
+    ImageBoard,
+    getAllKingCheck,
     handleMovePiece
 }

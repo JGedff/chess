@@ -6,8 +6,16 @@
     width: 12.5%;
 }
 
+.w-250p {
+    width: 250px;
+}
+
 .w-500p {
     width: 500px;
+}
+
+.h-75p {
+    height: 75px;
 }
 
 .h-500p {
@@ -16,4 +24,8 @@
 
 .rounded-8p {
     border-radius: 8px;
+}
+
+.justify-items-center {
+    justify-items: center;
 }
