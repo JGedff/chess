@@ -3,7 +3,7 @@ import { Sides, Space } from "../constants"
 import { getMoveValue } from "./checkMove"
 import { towerNormalMove } from "./tower"
 import { alfilNormalMove, moveAlfil } from "./alfil"
-import { moveHorse } from "./horse"
+import { horseNormalMove, moveHorse } from "./horse"
 import { peoNormalMove } from "./peo"
 
 const getMoveArround = (row, col, oldMoveBoard, imageNameToCheck, imageBoard) => {
@@ -51,7 +51,7 @@ const getCheck = (row, col, piece, board, imageToCheck, imageBoard) => {
             newBoard = moveKing(row, col, board, imageToCheck, imageBoard)
             break
         case "cavall.png":
-            newBoard = moveHorse(row, col, board, imageToCheck, imageBoard)
+            newBoard = horseNormalMove(row, col, board, imageToCheck, imageBoard)
             break
         default:
             break
