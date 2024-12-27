@@ -1,18 +1,14 @@
-import { copyBoard, deleteCheckSpaces } from "./board"
+import { copyBoard } from "./board"
 import { Sides, Space } from "../constants"
-import { getAllKingCheck, isKingInDanger } from "./king"
+import { isKingInDanger } from "./king"
+import { pieceProtect } from "./pices"
 
 export const movePeo = (row, col, oldMoveBoard, imageName, imageBoard) => {
-    let newBoard = copyBoard(oldMoveBoard)
-
-    if (isKingInDanger(newBoard, imageName, imageBoard)) {
-        newBoard = peoSaveKing(row, col, newBoard, imageName, imageBoard)
-    }
-    else {
-        newBoard = peoNormalMove(row, col, newBoard, imageName, imageBoard)
+    if (isKingInDanger(oldMoveBoard, imageName, imageBoard)) {
+        return peoSaveKing(row, col, oldMoveBoard, imageName, imageBoard)
     }
 
-    return newBoard
+    return peoNormalMove(row, col, oldMoveBoard, imageName, imageBoard)
 }
 
 export const transformPeo = (changeTurn, showTransformModal) => {
@@ -204,38 +200,4 @@ const peoSaveKing = (row, col, oldMoveBoard, imageName, imageBoard) => {
     }
 
     return newBoard
-}
-
-const pieceProtect = (row, col, board, oldPosition, oldImageBoard) => {
-    const imageBoard = copyBoard(oldImageBoard)
-    const side = imageBoard[oldPosition[0]][oldPosition[1]].split('/')[1]
-
-    let newBoard = copyBoard(board)
-    let newValue = Space.Empty
-
-    imageBoard[row][col] = imageBoard[oldPosition[0]][oldPosition[1]]
-    imageBoard[oldPosition[0]][oldPosition[1]] = ''
-    
-    newBoard[row][col] = newBoard[oldPosition[0]][oldPosition[1]]
-    newBoard[oldPosition[0]][oldPosition[1]] = Space.Empty
-
-    newBoard = deleteCheckSpaces(newBoard)
-    newBoard = getAllKingCheck(newBoard, imageBoard)
-
-    console.log(newBoard)
-    for (let x = 0; x < newBoard.length; x++) {
-        for (let y = 0; y < newBoard[x].length; y++) {
-            if (newBoard[x][y] == Space.King && imageBoard[x][y].split('/')[1] == side) {
-                console.log('saved')
-                if (board[row][col] == Space.Empty || board[row][col] == Space.CanMove || board[row][col] == Space.PeoSpecialMove) {
-                    newValue = Space.CanMove
-                }
-                else {
-                    newValue = Space.Kill
-                }
-            }
-        }
-    }
-
-    return newValue
 }

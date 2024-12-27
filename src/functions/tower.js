@@ -1,6 +1,8 @@
 import { copyBoard } from "./board"
 import { getMoveValue } from "./checkMove"
 import { Sides, Space } from "../constants"
+import { isKingInDanger } from "./king"
+import { pieceProtect } from "./pices"
 
 const checkRowSpaces = (row, col, oldMoveBoard, imageNameToCheck, imageBoard) => {
     const newBoard = copyBoard(oldMoveBoard)
@@ -11,7 +13,7 @@ const checkRowSpaces = (row, col, oldMoveBoard, imageNameToCheck, imageBoard) =>
         
         newBoard[row][w] = newValue
 
-        if (oldValue == newValue || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
+        if ((oldValue == newValue && oldValue != Space.CanMove) || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
             break
         }
     }
@@ -22,7 +24,7 @@ const checkRowSpaces = (row, col, oldMoveBoard, imageNameToCheck, imageBoard) =>
         
         newBoard[row][w] = newValue
 
-        if (oldValue == newValue || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
+        if ((oldValue == newValue && oldValue != Space.CanMove) || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
             break
         }
     }
@@ -39,7 +41,7 @@ const checkColumnSpaces = (row, col, oldMoveBoard, imageNameToCheck, imageBoard)
         
         newBoard[h][col] = newValue
 
-        if (oldValue == newValue || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
+        if ((oldValue == newValue && oldValue != Space.CanMove) || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
             break
         }
     }
@@ -50,7 +52,7 @@ const checkColumnSpaces = (row, col, oldMoveBoard, imageNameToCheck, imageBoard)
         
         newBoard[h][col] = newValue
 
-        if (oldValue == newValue || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
+        if ((oldValue == newValue && oldValue != Space.CanMove) || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
             break
         }
     }
@@ -64,10 +66,34 @@ const addMoveTowerSpaces = (row, col, oldBoard, imageToCheck, imageBoard) => {
     return checkRowSpaces(row, col, newBoard, imageToCheck, imageBoard)
 }
 
-export const moveTower = (row, col, oldMoveBoard, imageName, imageBoard) => {
+export const towerNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) => {
     if (imageName == Sides.Black) {
         return addMoveTowerSpaces(row, col, oldMoveBoard, Sides.White, imageBoard)
     }
 
     return addMoveTowerSpaces(row, col, oldMoveBoard, Sides.Black, imageBoard)
+}
+
+const towerSaveKing = (row, col, oldMoveBoard, imageName, imageBoard) => {
+    const newBoard = towerNormalMove(row, col, oldMoveBoard, imageName, imageBoard)
+
+    for (let x = 0; x < newBoard.length; x++) {
+        for (let y = 0; y < newBoard.length; y++) {
+            if ((x == row || y == col) && !(x == row && y == col)) {
+                if (newBoard[x][y] == Space.CanMove || newBoard[x][y] == Space.Kill || newBoard[x][y] == Space.KillKing) {
+                    newBoard[x][y] = pieceProtect(x, y, newBoard, [row, col], imageBoard)
+                }
+            }
+        }
+    }
+
+    return newBoard
+}
+
+export const moveTower = (row, col, oldMoveBoard, imageName, imageBoard) => {
+    if (isKingInDanger(oldMoveBoard, imageName, imageBoard)) {
+        return towerSaveKing(row, col, oldMoveBoard, imageName, imageBoard)
+    }
+
+    return towerNormalMove(row, col, oldMoveBoard, imageName, imageBoard)
 }

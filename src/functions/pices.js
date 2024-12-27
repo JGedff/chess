@@ -85,3 +85,39 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
         updateBoard(newBoard)
     }
 }
+
+export const pieceProtect = (row, col, board, oldPosition, oldImageBoard) => {
+    const imageBoard = copyBoard(oldImageBoard)
+    const side = imageBoard[oldPosition[0]][oldPosition[1]].split('/')[1]
+
+    let newBoard = copyBoard(board)
+    let newValue = Space.Empty
+
+    imageBoard[row][col] = imageBoard[oldPosition[0]][oldPosition[1]]
+    imageBoard[oldPosition[0]][oldPosition[1]] = ''
+    
+    newBoard[row][col] = newBoard[oldPosition[0]][oldPosition[1]]
+    newBoard[oldPosition[0]][oldPosition[1]] = Space.Empty
+
+    newBoard = deleteCheckSpaces(newBoard)
+    newBoard = getAllKingCheck(newBoard, imageBoard)
+
+    for (let x = 0; x < newBoard.length; x++) {
+        for (let y = 0; y < newBoard[x].length; y++) {
+            if (newBoard[x][y] == Space.King && imageBoard[x][y].split('/')[1] == side) {
+                if (board[row][col] == Space.Empty || board[row][col] == Space.CanMove || board[row][col] == Space.PeoSpecialMove) {
+                    newValue = Space.CanMove
+                }
+                else {
+                    newValue = Space.Kill
+                }
+            }
+        }
+    }
+
+    if (newValue == Space.Empty && (board[row][col] == Space.Fill || board[row][col] == Space.Kill || board[row][col] == Space.KillKing || board[row][col] == Space.King)) {
+        newValue = Space.Fill
+    }
+
+    return newValue
+}
