@@ -1,8 +1,8 @@
 import { copyBoard, deleteCheckSpaces, deleteMoveSpaces } from "./board"
 import { getAllKingCheck, moveKing, moveKingOutOfCheck } from "./king"
 import { MovingPiece, Space } from "../constants"
-import { movePeo, transformPeo } from "./peo"
-import { moveAlfil } from "./alfil"
+import { movePawn, transformPawn } from "./pawn"
+import { moveBishop } from "./bishop"
 import { moveTower } from "./tower"
 import { moveHorse } from "./horse"
 
@@ -21,23 +21,23 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
         MovingPiece[0][3] = newBoard[row][col]
 
         switch (imagePath[2]) {
-            case "peo.png":
-                newBoard = movePeo(row, col, newBoard, imagePath[1], imageBoard)
+            case "pawn.png":
+                newBoard = movePawn(row, col, newBoard, imagePath[1], imageBoard)
                 break
-            case "torre.png":
+            case "tower.png":
                 newBoard = moveTower(row, col, newBoard, imagePath[1], imageBoard)
                 break
-            case "alfil.png":
-                newBoard = moveAlfil(row, col, newBoard, imagePath[1], imageBoard)
+            case "bishop.png":
+                newBoard = moveBishop(row, col, newBoard, imagePath[1], imageBoard)
                 break
-            case "reina.png":
-                newBoard = moveAlfil(row, col, newBoard, imagePath[1], imageBoard)
+            case "queen.png":
+                newBoard = moveBishop(row, col, newBoard, imagePath[1], imageBoard)
                 newBoard = moveTower(row, col, newBoard, imagePath[1], imageBoard)
                 break
-            case "rei.png":
+            case "king.png":
                 newBoard = moveKing(row, col, newBoard, imagePath[1], imageBoard)
                 break
-            case "cavall.png":
+            case "horse.png":
                 newBoard = moveHorse(row, col, newBoard, imagePath[1], imageBoard)
                 break
             default:
@@ -46,7 +46,7 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
 
         updateBoard(newBoard)
     }
-    else if (oldBoard[row][col] == Space.CanMove || oldBoard[row][col] == Space.Kill || oldBoard[row][col] == Space.PeoSpecialMove || oldBoard[row][col] == Space.KillKing) {
+    else if (oldBoard[row][col] == Space.CanMove || oldBoard[row][col] == Space.Kill || oldBoard[row][col] == Space.PawnSpecialMove || oldBoard[row][col] == Space.KillKing) {
         imageBoard[row][col] = MovingPiece[0][0]
         imageBoard[MovingPiece[0][1]][MovingPiece[0][2]] = ''
 
@@ -60,8 +60,8 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
         
         newBoard = deleteCheckSpaces(newBoard)
 
-        if (oldBoard[row][col] == Space.PeoSpecialMove) {
-            transformPeo(changeTurn, showTransformModal)
+        if (oldBoard[row][col] == Space.PawnSpecialMove) {
+            transformPawn(changeTurn, showTransformModal)
         }
         else {
             newBoard = getAllKingCheck(newBoard, imageBoard)
@@ -105,7 +105,7 @@ export const pieceProtect = (row, col, board, oldPosition, oldImageBoard) => {
     for (let x = 0; x < newBoard.length; x++) {
         for (let y = 0; y < newBoard[x].length; y++) {
             if (newBoard[x][y] == Space.King && imageBoard[x][y].split('/')[1] == side) {
-                if (board[row][col] == Space.Empty || board[row][col] == Space.CanMove || board[row][col] == Space.PeoSpecialMove) {
+                if (board[row][col] == Space.Empty || board[row][col] == Space.CanMove || board[row][col] == Space.PawnSpecialMove) {
                     newValue = Space.CanMove
                 }
                 else {

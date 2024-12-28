@@ -5,8 +5,8 @@ import { Sides, Space } from "../constants"
 
 import TransformModal from "./transformModal"
 
-export default function Square({ filled, col, row, initialTurn, changeTurn, initBoard, handleMove, initImageBoard, updateImageBoard, initTransformPeo, showTransform }) {
-    const [showingModal, setShowingModal] = useState(initTransformPeo)
+export default function Square({ filled, col, row, initialTurn, changeTurn, initBoard, handleMove, initImageBoard, updateImageBoard, initTransformPawn, showTransform }) {
+    const [showingModal, setShowingModal] = useState(initTransformPawn)
     const [imageBoard, setImageBoard] = useState(initImageBoard)
     const [isTransforming, setIsTransforming] = useState(false)
     const [board, setBoard] = useState(initBoard)
@@ -25,8 +25,8 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     }, [initImageBoard])
 
     useEffect(() => {
-        setShowingModal(initTransformPeo)
-    }, [initTransformPeo])
+        setShowingModal(initTransformPawn)
+    }, [initTransformPawn])
 
     const showTransformModal = () => {
         showTransform(true)
@@ -41,7 +41,7 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     const handleClick = () => {
         handleMovePiece(row, col, board, handleMove, changeTurn, showTransformModal, imageBoard, updateImageBoard)
 
-        if (board[row][col] == Space.PeoSpecialMove) {
+        if (board[row][col] == Space.PawnSpecialMove) {
             setIsTransforming(true)
         }
     }
@@ -53,7 +53,7 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
             return false
         }
 
-        if (board[row][col] == Space.CanMove || board[row][col] == Space.Kill || board[row][col] == Space.PeoSpecialMove || board[row][col] == Space.KillKing) {
+        if (board[row][col] == Space.CanMove || board[row][col] == Space.Kill || board[row][col] == Space.PawnSpecialMove || board[row][col] == Space.KillKing) {
             return true
         }
 
@@ -73,7 +73,7 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
             return " bg-danger"
         }
 
-        if (board[row][col] == Space.PeoSpecialMove) {
+        if (board[row][col] == Space.PawnSpecialMove) {
             return " bg-success"
         }
 
