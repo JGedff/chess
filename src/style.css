@@ -1,3 +1,11 @@
+.mt-70p {
+    margin-top: 70px;
+}
+
+.pt-70p {
+    padding-top: 70px;
+}
+
 .h-12 {
     height: 12.5%;
 }
@@ -10,16 +18,16 @@
     width: 250px;
 }
 
-.w-500p {
-    width: 500px;
+.w-600p {
+    width: 600px;
 }
 
 .h-75p {
     height: 75px;
 }
 
-.h-500p {
-    height: 500px;
+.h-600p {
+    height: 600px;
 }
 
 .rounded-8p {

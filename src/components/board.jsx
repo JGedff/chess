@@ -13,7 +13,7 @@ export default function Board({ initLength, initHeight }) {
     const [length, setLength] = useState(initLength)
     const [height, setHeight] = useState(initHeight)
     const [turn, setTurn] = useState(true)
-    const [moves, setMoves] = useState([]) // [ [SPACE_BOARD, IMAGES_BOARD, TURN], [SPACE_BOARD, IMAGES_BOARD, TURN], [SPACE_BOARD, IMAGES_BOARD, TURN] ]
+    const [moves, setMoves] = useState([])
 
     useEffect(() => {
         setLength(initLength)
@@ -57,7 +57,7 @@ export default function Board({ initLength, initHeight }) {
         let filled = true
 
         for (let h = 0; h < height; h++) {
-            board.push(<Row key={h} initLength={lenght} initFilled={filled} rowIndex={h} initialTurn={turn} changeTurn={handleTurn} initBoard={spaceBoard} handleMove={updateBoard} initImageBoard={spaceImageBoard} updateImgBoard={updateImageBoard} initShowModal={showModal} setTransformPeo={showTransformModal} />)
+            board.push(<Row key={h} initLength={lenght} initFilled={filled} rowIndex={h} initialTurn={turn} changeTurn={handleTurn} initBoard={spaceBoard} handleMove={updateBoard} initImageBoard={spaceImageBoard} updateImgBoard={updateImageBoard} initShowModal={showModal} setTransformPawn={showTransformModal} />)
             filled = !filled
         }
 
@@ -65,9 +65,9 @@ export default function Board({ initLength, initHeight }) {
     }
     
     return (
-        <div className={ showModal ? "pt-4 mt-4" : "" }>
+        <div className={ showModal ? "pt-70p mt-70p" : "" }>
             <MoveTimeline updateBoard={setSpaceBoard} updateImages={setSpaceImageBoard} initMoves={moves} updateMoves={setMoves} updateTurn={setTurn} updateFromTimeLine={setUpdateFromTimeLine} />
-            <div className="border border-dark rounded-8p container text-center w-500p h-500p">
+            <div className="border border-dark rounded-8p container text-center w-600p h-600p">
                 {
                     generateBoard(height, length)
                 }

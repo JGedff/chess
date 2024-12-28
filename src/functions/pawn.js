@@ -2,12 +2,12 @@ import { copyBoard } from "./board"
 import { Sides, Space } from "../constants"
 import { pieceProtect } from "./pices"
 
-export const transformPeo = (changeTurn, showTransformModal) => {
+export const transformPawn = (changeTurn, showTransformModal) => {
     showTransformModal()
     changeTurn()
 }
 
-export const peoNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) => {
+export const pawnNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) => {
     const newBoard = copyBoard(oldMoveBoard)
 
     if (imageName == Sides.White && row - 1 >= 0) {
@@ -15,7 +15,7 @@ export const peoNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) => 
         if (col - 1 >= 0) {
             if (newBoard[row - 1][col - 1] == Space.Fill && imageBoard[row - 1][col - 1].split('/')[1] == Sides.Black) {
                 if (row - 1 == 0) {
-                    newBoard[row - 1][col - 1] = Space.PeoSpecialMove
+                    newBoard[row - 1][col - 1] = Space.PawnSpecialMove
                 }
                 else {
                     newBoard[row - 1][col - 1] = Space.Kill
@@ -29,7 +29,7 @@ export const peoNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) => 
         if (col + 1 <= newBoard.length - 1) {
             if (newBoard[row - 1][col + 1] == Space.Fill && imageBoard[row - 1][col + 1].split('/')[1] == Sides.Black) {
                 if (row - 1 == 0) {
-                    newBoard[row - 1][col + 1] = Space.PeoSpecialMove
+                    newBoard[row - 1][col + 1] = Space.PawnSpecialMove
                 }
                 else {
                     newBoard[row - 1][col + 1] = Space.Kill
@@ -43,7 +43,7 @@ export const peoNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) => 
         // Special Move
         if (row - 1 == 0) {
             if (newBoard[row - 1][col] == Space.Empty) {
-                newBoard[row - 1][col] = Space.PeoSpecialMove
+                newBoard[row - 1][col] = Space.PawnSpecialMove
             }
         }
         else if (row == 6) { // Move
@@ -66,7 +66,7 @@ export const peoNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) => 
         if (col - 1 >= 0) {
             if (newBoard[row + 1][col - 1] == Space.Fill && imageBoard[row + 1][col - 1].split('/')[1] == Sides.White) {
                 if (row + 1 == newBoard.length - 1) {
-                    newBoard[row + 1][col - 1] = Space.PeoSpecialMove
+                    newBoard[row + 1][col - 1] = Space.PawnSpecialMove
                 }
                 else {
                     newBoard[row + 1][col - 1] = Space.Kill
@@ -80,7 +80,7 @@ export const peoNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) => 
         if (col + 1 <= newBoard.length - 1) {
             if (newBoard[row + 1][col + 1] == Space.Fill && imageBoard[row + 1][col + 1].split('/')[1] == Sides.White) {
                 if (row + 1 == newBoard.length - 1) {
-                    newBoard[row + 1][col + 1] = Space.PeoSpecialMove
+                    newBoard[row + 1][col + 1] = Space.PawnSpecialMove
                 }
                 else {
                     newBoard[row + 1][col + 1] = Space.Kill
@@ -94,7 +94,7 @@ export const peoNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) => 
         // Special Move
         if (row + 1 == newBoard.length - 1) {
             if (newBoard[row + 1][col] == Space.Empty) {
-                newBoard[row + 1][col] = Space.PeoSpecialMove
+                newBoard[row + 1][col] = Space.PawnSpecialMove
             }
         }
         else if (row == 1) { // Move
@@ -116,8 +116,8 @@ export const peoNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) => 
     return newBoard
 }
 
-export const movePeo = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
-    const newBoard = peoNormalMove(row, col, oldMoveBoard, imageName, oldImageBoard)
+export const movePawn = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
+    const newBoard = pawnNormalMove(row, col, oldMoveBoard, imageName, oldImageBoard)
     
     for (let x = 0; x < newBoard.length; x++) {
         for (let y = 0; y < newBoard.length; y++) {

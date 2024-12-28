@@ -14,7 +14,7 @@ export const Space = {
     Fill: 1,
     CanMove: 2,
     Kill: 3,
-    PeoSpecialMove: 4,
+    PawnSpecialMove: 4,
     King: 5,
     Check: 6,
     KillKing: 7

@@ -2,9 +2,9 @@ import { copyBoard } from "./board"
 import { Sides, Space } from "../constants"
 import { getMoveValue } from "./checkMove"
 import { towerNormalMove } from "./tower"
-import { alfilNormalMove } from "./alfil"
+import { bishopNormalMove } from "./bishop"
 import { horseNormalMove } from "./horse"
-import { peoNormalMove } from "./peo"
+import { pawnNormalMove } from "./pawn"
 
 const getMoveArround = (row, col, oldMoveBoard, imageNameToCheck, imageBoard) => {
     const newBoard = copyBoard(oldMoveBoard)
@@ -34,23 +34,23 @@ const getCheck = (row, col, piece, board, imageToCheck, imageBoard) => {
     let newBoard = copyBoard(board)
 
     switch (piece) {
-        case "peo.png":
-            newBoard = peoNormalMove(row, col, board, imageToCheck, imageBoard)
+        case "pawn.png":
+            newBoard = pawnNormalMove(row, col, board, imageToCheck, imageBoard)
             break
-        case "torre.png":
+        case "tower.png":
             newBoard = towerNormalMove(row, col, board, imageToCheck, imageBoard)
             break
-        case "alfil.png":
-            newBoard = alfilNormalMove(row, col, board, imageToCheck, imageBoard)
+        case "bishop.png":
+            newBoard = bishopNormalMove(row, col, board, imageToCheck, imageBoard)
             break
-        case "reina.png":
-            newBoard = alfilNormalMove(row, col, board, imageToCheck, imageBoard)
+        case "queen.png":
+            newBoard = bishopNormalMove(row, col, board, imageToCheck, imageBoard)
             newBoard = towerNormalMove(row, col, newBoard, imageToCheck, imageBoard)
             break
-        case "rei.png":
+        case "king.png":
             newBoard = moveKing(row, col, board, imageToCheck, imageBoard)
             break
-        case "cavall.png":
+        case "horse.png":
             newBoard = horseNormalMove(row, col, board, imageToCheck, imageBoard)
             break
         default:
