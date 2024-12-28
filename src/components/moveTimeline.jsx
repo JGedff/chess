@@ -59,10 +59,22 @@ export default function MoveTimeline({ updateBoard, updateImages, updateTurn, in
         setDeletedMoves(newDeletedMoves)
     }
 
+    const restart = () => {
+        setTimeLineUpdate(false)
+        setImageBoard(ImageBoard)
+        setMoves([[MoveBoard, ImageBoard, true]])
+        setDeletedMoves([[MoveBoard, ImageBoard, true]])
+
+        updateTurn(true)
+        updateBoard(MoveBoard)
+        updateImages(ImageBoard)
+    }
+
     return (
         <div className="pb-2">
-            <button className="btn-secondary" onClick={prevMove} disabled={moves.length < 2}>Atrás ↩</button>
-            <button className="btn-secondary" onClick={nextMove} disabled={deletedMoves.length < 2}>Adelante ↪</button>
+            <button className="btn-secondary me-4" onClick={prevMove} disabled={moves.length < 2}>Back ↩</button>
+            <button className="btn-secondary me-4" onClick={nextMove} disabled={deletedMoves.length < 2}>Forward ↪</button>
+            <button className="btn-secondary" onClick={restart} disabled={moves.length < 2}>Reset game 🔄️</button>
         </div>
     )
 }
