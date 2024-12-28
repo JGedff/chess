@@ -6,14 +6,12 @@ import MoveTimeline from "./moveTimeline"
 import { ImageBoard, MoveBoard } from "../functions"
 
 export default function Board({ initLength, initHeight }) {
-    const [updateFromTimeLine, setUpdateFromTimeLine] = useState(false)
     const [spaceImageBoard, setSpaceImageBoard] = useState(ImageBoard)
     const [spaceBoard, setSpaceBoard] = useState(MoveBoard)
     const [showModal, setShowModal] = useState(false)
     const [length, setLength] = useState(initLength)
     const [height, setHeight] = useState(initHeight)
     const [turn, setTurn] = useState(true)
-    const [moves, setMoves] = useState([])
 
     useEffect(() => {
         setLength(initLength)
@@ -22,15 +20,6 @@ export default function Board({ initLength, initHeight }) {
     useEffect(() => {
         setHeight(initHeight)
     }, [initHeight])
-
-    useEffect(() => {
-        if (!updateFromTimeLine) {
-            moves.push([spaceBoard, spaceImageBoard, turn])
-        }
-        else {
-            setUpdateFromTimeLine(true)
-        }
-    }, [spaceImageBoard])
 
     /* useEffect(() => {
         console.log(spaceBoard)
@@ -66,7 +55,7 @@ export default function Board({ initLength, initHeight }) {
     
     return (
         <div className={ showModal ? "pt-70p mt-70p" : "" }>
-            <MoveTimeline updateBoard={setSpaceBoard} updateImages={setSpaceImageBoard} initMoves={moves} updateMoves={setMoves} updateTurn={setTurn} updateFromTimeLine={setUpdateFromTimeLine} />
+            <MoveTimeline updateBoard={setSpaceBoard} updateImages={setSpaceImageBoard} updateTurn={setTurn} initImageBoard={spaceImageBoard} initValBoard={spaceBoard} initTurn={turn} />
             <div className="border border-dark rounded-8p container text-center w-600p h-600p">
                 {
                     generateBoard(height, length)
