@@ -10,9 +10,9 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
     let newBoard = copyBoard(oldBoard)
     let imageBoard = copyBoard(oldImageBoard)
 
+    const imagePath = imageBoard[row][col].split('/')
+
     if (oldBoard[row][col] == Space.Fill || oldBoard[row][col] == Space.King) {
-        const imagePath = imageBoard[row][col].split('/')
-        
         newBoard = deleteMoveSpaces(newBoard)
 
         MovingPiece[0][0] = imagePath.join('/')
@@ -71,8 +71,6 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
         updateBoard(newBoard)
     }
     else if (oldBoard[row][col] == Space.Check) {
-        const imagePath = imageBoard[row][col].split('/')
-        
         newBoard = deleteMoveSpaces(newBoard)
 
         MovingPiece[0][0] = imagePath.join('/')

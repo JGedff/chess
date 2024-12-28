@@ -3,7 +3,9 @@ import { useEffect, useState } from "react"
 import Row from "./row"
 import MoveTimeline from "./moveTimeline"
 
-import { ImageBoard, MoveBoard } from "../functions"
+import { checkMate, copyBoard, getKingPos, ImageBoard, MoveBoard } from "../functions"
+import { Sides, Space } from "../constants"
+import { isKingInDanger } from "../functions/king"
 
 export default function Board({ initLength, initHeight }) {
     const [spaceImageBoard, setSpaceImageBoard] = useState(ImageBoard)
@@ -20,6 +22,26 @@ export default function Board({ initLength, initHeight }) {
     useEffect(() => {
         setHeight(initHeight)
     }, [initHeight])
+
+    useEffect(() => {
+        if (isKingInDanger(spaceBoard, Sides.Black, spaceImageBoard) && checkMate(spaceBoard, spaceImageBoard, Sides.Black)) {
+            const newBoard = copyBoard(spaceBoard)
+            const pos = getKingPos(spaceBoard, spaceImageBoard, Sides.Black)
+            
+            newBoard[pos[0]][pos[1]] = Space.CheckMate
+            
+            updateBoard(newBoard)
+        }
+
+        if (isKingInDanger(spaceBoard, Sides.White, spaceImageBoard) && checkMate(spaceBoard, spaceImageBoard, Sides.White)) {
+            const newBoard = copyBoard(spaceBoard)
+            const pos = getKingPos(spaceBoard, spaceImageBoard, Sides.White)
+            
+            newBoard[pos[0]][pos[1]] = Space.CheckMate
+            
+            updateBoard(newBoard)
+        }
+    }, [spaceImageBoard])
 
     /* useEffect(() => {
         console.log(spaceBoard)

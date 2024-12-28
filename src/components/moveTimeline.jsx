@@ -61,8 +61,6 @@ export default function MoveTimeline({ updateBoard, updateImages, updateTurn, in
 
     return (
         <div className="pb-2">
-            {console.log(deletedMoves)}
-            {console.log(deletedMoves.length)}
             <button className="btn-secondary" onClick={prevMove} disabled={moves.length < 2}>Atrás ↩</button>
             <button className="btn-secondary" onClick={nextMove} disabled={deletedMoves.length < 2}>Adelante ↪</button>
         </div>
