@@ -1,24 +1,39 @@
 import { useEffect, useState } from "react"
-import { ImageBoard, MoveBoard } from "../functions"
+import { haveSameValues, ImageBoard, MoveBoard } from "../functions"
 
-export default function MoveTimeline({ updateBoard, updateImages, initMoves, updateMoves, updateTurn, updateFromTimeLine }) {
+export default function MoveTimeline({ updateBoard, updateImages, updateTurn, initValBoard, initImageBoard, initTurn }) {
+    const [imageBoard, setImageBoard] = useState(ImageBoard)
+    const [timeLineUpdate, setTimeLineUpdate] = useState(false)
+
     const [moves, setMoves] = useState([[MoveBoard, ImageBoard, true]])
     const [deletedMoves, setDeletedMoves] = useState([[MoveBoard, ImageBoard, true]])
 
     useEffect(() => {
-        setMoves(initMoves)
-    }, [initMoves])
+        if (!haveSameValues(initImageBoard, imageBoard) && !timeLineUpdate) {
+            const newMoves = moves
+
+            newMoves.push([initValBoard, initImageBoard, initTurn])
+
+            setMoves(newMoves)
+            setDeletedMoves([[MoveBoard, ImageBoard, true]])
+            setImageBoard(initImageBoard)
+        }
+        else {
+            setTimeLineUpdate(false)
+        }
+    }, [initImageBoard])
 
     const prevMove = () => {
         const newMoves = moves
         const newDeletedMoves = deletedMoves
 
+        setTimeLineUpdate(true)
+
         newDeletedMoves.push(newMoves[newMoves.length - 1])
 
         newMoves.pop()
+        setMoves(newMoves)
 
-        updateFromTimeLine(true)
-        updateMoves(newMoves)
         setDeletedMoves(newDeletedMoves)
 
         updateBoard(newMoves[newMoves.length - 1][0])
@@ -30,9 +45,11 @@ export default function MoveTimeline({ updateBoard, updateImages, initMoves, upd
         const newMoves = moves
         const newDeletedMoves = deletedMoves
 
+        setTimeLineUpdate(true)
+
         newMoves.push(newDeletedMoves[newDeletedMoves.length - 1])
 
-        updateMoves(newMoves)
+        setMoves(newMoves)
 
         updateBoard(newDeletedMoves[newDeletedMoves.length - 1][0])
         updateImages(newDeletedMoves[newDeletedMoves.length - 1][1])
@@ -44,7 +61,9 @@ export default function MoveTimeline({ updateBoard, updateImages, initMoves, upd
 
     return (
         <div className="pb-2">
-            <button className="btn-secondary" onClick={prevMove} disabled={moves.length <= 2}>Atrás ↩</button>
+            {console.log(deletedMoves)}
+            {console.log(deletedMoves.length)}
+            <button className="btn-secondary" onClick={prevMove} disabled={moves.length < 2}>Atrás ↩</button>
             <button className="btn-secondary" onClick={nextMove} disabled={deletedMoves.length < 2}>Adelante ↪</button>
         </div>
     )

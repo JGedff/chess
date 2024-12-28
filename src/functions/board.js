@@ -90,3 +90,15 @@ export const deleteMoveSpaces = (board) => {
 
     return newBoard
 }
+
+export const haveSameValues = (newArray, arrayToCheck) => {
+    for (let x = 0; x < newArray.length; x++) {
+        for (let y = 0; y < newArray[x].length; y++) {
+            if (newArray[x][y] != arrayToCheck[x][y]) {
+                return false
+            }
+        }
+    }
+
+    return true
+}
