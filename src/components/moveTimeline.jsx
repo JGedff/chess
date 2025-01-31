@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { haveSameValues, ImageBoard, MoveBoard } from "../functions"
 
-export default function MoveTimeline({ updateBoard, updateImages, updateTurn, initValBoard, initImageBoard, initTurn }) {
+export default function MoveTimeline({ updateBoard, updateImages, updateTurn, initValBoard, initImageBoard, initTurn, setTimelineMove }) {
     const [imageBoard, setImageBoard] = useState(ImageBoard)
     const [timeLineUpdate, setTimeLineUpdate] = useState(false)
 
@@ -39,6 +39,8 @@ export default function MoveTimeline({ updateBoard, updateImages, updateTurn, in
         updateBoard(newMoves[newMoves.length - 1][0])
         updateImages(newMoves[newMoves.length - 1][1])
         updateTurn(newMoves[newMoves.length - 1][2])
+
+        setTimelineMove(true)
     }
     
     const nextMove = () => {
@@ -57,6 +59,8 @@ export default function MoveTimeline({ updateBoard, updateImages, updateTurn, in
 
         newDeletedMoves.pop()
         setDeletedMoves(newDeletedMoves)
+
+        setTimelineMove(true)
     }
 
     const restart = () => {

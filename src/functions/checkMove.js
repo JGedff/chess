@@ -61,7 +61,7 @@ const someoneCanMove = (board, imageBoard, side) => {
     return false
 }
 
-const showMoves = (row, col, oldBoard, oldImageBoard) => {
+export const showMoves = (row, col, oldBoard, oldImageBoard) => {
     let newBoard = copyBoard(oldBoard)
     let imageBoard = copyBoard(oldImageBoard)
 

@@ -5,7 +5,7 @@ import { Sides, Space } from "../constants"
 
 import TransformModal from "./transformModal"
 
-export default function Square({ filled, col, row, initialTurn, changeTurn, initBoard, handleMove, initImageBoard, updateImageBoard, initTransformPawn, showTransform }) {
+export default function Square({ filled, col, row, initialTurn, changeTurn, initBoard, handleMove, initImageBoard, updateImageBoard, initTransformPawn, showTransform, setTimelineMove }) {
     const [showingModal, setShowingModal] = useState(initTransformPawn)
     const [imageBoard, setImageBoard] = useState(initImageBoard)
     const [isTransforming, setIsTransforming] = useState(false)
@@ -40,6 +40,8 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
 
     const handleClick = () => {
         handleMovePiece(row, col, board, handleMove, changeTurn, showTransformModal, imageBoard, updateImageBoard)
+
+        setTimelineMove(false)
 
         if (board[row][col] == Space.PawnSpecialMove) {
             setIsTransforming(true)
@@ -99,7 +101,7 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     return (
         <>
             {
-                isTransforming ? <TransformModal row={row} col={col} side={imageBoard[row][col].split('/')[1]} hideModal={hideTransformModal} board={board} updateBoard={handleMove} imageBoard={imageBoard} updateImageBoard={updateImageBoard} /> : <></>
+                isTransforming ? <TransformModal row={row} col={col} side={imageBoard[row][col].split('/')[1]} hideModal={hideTransformModal} board={board} updateBoard={handleMove} imageBoard={imageBoard} updateImageBoard={updateImageBoard} changeTurn={changeTurn}/> : <></>
             }
             <button className={"col w-12 align-content-center" + getBackgroundColor(filled)} onClick={handleClick} disabled={!canClick()} data-id={`${row}-${col}`}>
                 {

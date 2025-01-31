@@ -2,9 +2,8 @@ import { copyBoard } from "./board"
 import { Sides, Space } from "../constants"
 import { pieceProtect } from "./pices"
 
-export const transformPawn = (changeTurn, showTransformModal) => {
+export const transformPawn = (showTransformModal) => {
     showTransformModal()
-    changeTurn()
 }
 
 export const pawnNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) => {
@@ -121,7 +120,7 @@ export const movePawn = (row, col, oldMoveBoard, imageName, oldImageBoard) => {
     
     for (let x = 0; x < newBoard.length; x++) {
         for (let y = 0; y < newBoard.length; y++) {
-            if (newBoard[x][y] == Space.CanMove || newBoard[x][y] == Space.Kill || newBoard[x][y] == Space.KillKing) {
+            if (newBoard[x][y] == Space.CanMove || newBoard[x][y] == Space.Kill || newBoard[x][y] == Space.KillKing || newBoard[x][y] == Space.PawnSpecialMove) {
                 newBoard[x][y] = pieceProtect(x, y, newBoard, [row, col], oldImageBoard)
             }
         }

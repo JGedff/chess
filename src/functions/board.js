@@ -1,6 +1,28 @@
 import { Space } from "../constants"
 
 export const ImageBoard = [
+    ["/black/pawn.png","","/white/queen.png","","/black/king.png","","",""],
+    ["","","","","","","",""],
+    ["","","","","","","",""],
+    ["","","","","","","",""],
+    ["","","","","","","",""],
+    ["","","","","","","",""],
+    ["","/black/pawn.png","","","","","",""],
+    ["/white/pawn.png","","/white/pawn.png","","/white/king.png","","",""],
+]
+
+export const MoveBoard = [
+    [Space.Fill, Space.Empty, Space.Fill, Space.Empty, Space.Check, Space.Empty, Space.Empty, Space.Empty],
+    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+    [Space.Empty, Space.Fill, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+    [Space.Fill, Space.Empty, Space.Fill, Space.Empty, Space.King, Space.Empty, Space.Empty, Space.Empty],
+]
+
+/* export const ImageBoard = [
     ["/black/tower.png","/black/horse.png","/black/bishop.png","/black/queen.png","/black/king.png","/black/bishop.png","/black/horse.png","/black/tower.png"],
     ["/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png"],
     ["","","","","","","",""],
@@ -20,7 +42,7 @@ export const MoveBoard = [
     [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
     [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill],
     [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.King, Space.Fill, Space.Fill, Space.Fill],
-]
+] */
 
 export const copyBoard = (board) => {
     const newBoard = []
@@ -57,7 +79,7 @@ export const deleteCheckSpaces = (board) => {
     return newBoard
 }
 
-export const deleteMoveSpaces = (board) => {
+export const deleteMoveSpaces = (board, imageBoard) => {
     let newBoard = copyBoard(board)
 
     for (let h = 0; h < board.length; h++) {
@@ -65,8 +87,10 @@ export const deleteMoveSpaces = (board) => {
         
         for (let w = 0; w < row.length; w++) {
             const space = row[w]
-            
-            if (space == Space.CanMove || space == Space.PawnSpecialMove) {
+            if (space == Space.PawnSpecialMove && imageBoard[h][w] != '') {
+                newBoard[h][w] = Space.Fill
+            }
+            else if (space == Space.CanMove || space == Space.PawnSpecialMove) {
                 newBoard[h][w] = Space.Empty
             }
             else if (space == Space.Kill) {
@@ -105,4 +129,37 @@ export const combineBoards = (board1, board2) => {
     }
 
     return newBoard
+}
+
+export const boardsAreEqual = (firstBoard, secondBoard) => {
+    let equal = true
+
+    try {
+        for (let x = 0; x < firstBoard.length; x++) {
+            for (let y = 0; y < firstBoard[x].length; y++) {
+                if (firstBoard[x][y] != secondBoard[x][y]) {
+                    equal = false
+                    break
+                }
+            }
+        }
+    } catch {
+        equal = false
+    }
+
+    return equal
+}
+
+export const getAmountPieces = (imageBoard, side) => {
+    let count = 0
+
+    for (let x = 0; x < imageBoard.length; x++) {
+        for (let y = 0; y < imageBoard[x].length; y++) {
+            if (imageBoard[x][y].split('/')[1] == side) {
+                count += 1
+            }
+        }
+    }
+
+    return count
 }

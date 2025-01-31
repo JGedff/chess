@@ -13,7 +13,7 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
     const imagePath = imageBoard[row][col].split('/')
 
     if (oldBoard[row][col] == Space.Fill || oldBoard[row][col] == Space.King) {
-        newBoard = deleteMoveSpaces(newBoard)
+        newBoard = deleteMoveSpaces(newBoard, imageBoard)
 
         MovingPiece[0][0] = imagePath.join('/')
         MovingPiece[0][1] = row
@@ -53,7 +53,7 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
         updateImageBoard(imageBoard)
 
         newBoard[row][col] = MovingPiece[0][3]
-        newBoard = deleteMoveSpaces(newBoard)
+        newBoard = deleteMoveSpaces(newBoard, imageBoard)
         newBoard[MovingPiece[0][1]][MovingPiece[0][2]] = Space.Empty
 
         MovingPiece[0][0] = ''
@@ -61,7 +61,7 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
         newBoard = deleteCheckSpaces(newBoard)
 
         if (oldBoard[row][col] == Space.PawnSpecialMove) {
-            transformPawn(changeTurn, showTransformModal)
+            transformPawn(showTransformModal)
         }
         else {
             newBoard = getAllKingCheck(newBoard, imageBoard)
@@ -71,7 +71,7 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
         updateBoard(newBoard)
     }
     else if (oldBoard[row][col] == Space.Check) {
-        newBoard = deleteMoveSpaces(newBoard)
+        newBoard = deleteMoveSpaces(newBoard, imageBoard)
 
         MovingPiece[0][0] = imagePath.join('/')
         MovingPiece[0][1] = row
@@ -103,7 +103,10 @@ export const pieceProtect = (row, col, board, oldPosition, oldImageBoard) => {
     for (let x = 0; x < newBoard.length; x++) {
         for (let y = 0; y < newBoard[x].length; y++) {
             if (newBoard[x][y] == Space.King && imageBoard[x][y].split('/')[1] == side) {
-                if (board[row][col] == Space.Empty || board[row][col] == Space.CanMove || board[row][col] == Space.PawnSpecialMove) {
+                if (board[row][col] == Space.PawnSpecialMove) {
+                    newValue = Space.PawnSpecialMove
+                }
+                else if (board[row][col] == Space.Empty || board[row][col] == Space.CanMove) {
                     newValue = Space.CanMove
                 }
                 else {
@@ -113,7 +116,7 @@ export const pieceProtect = (row, col, board, oldPosition, oldImageBoard) => {
         }
     }
 
-    if (newValue == Space.Empty && (board[row][col] == Space.Fill || board[row][col] == Space.Kill || board[row][col] == Space.KillKing || board[row][col] == Space.King)) {
+    if (newValue == Space.Empty && (board[row][col] == Space.Fill || board[row][col] == Space.Kill || board[row][col] == Space.KillKing || board[row][col] == Space.King || oldImageBoard[row][col] != '')) {
         newValue = Space.Fill
     }
 
