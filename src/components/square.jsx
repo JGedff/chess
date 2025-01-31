@@ -69,6 +69,10 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     }
 
     const getBackgroundColor = (fill) => {
+        if (board[row][col] == Space.CheckMate) {
+            return " bg-secondary"
+        }
+
         if (board[row][col] == Space.Check || board[row][col] == Space.KillKing) {
             return " bg-danger"
         }
@@ -97,7 +101,7 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
             {
                 isTransforming ? <TransformModal row={row} col={col} side={imageBoard[row][col].split('/')[1]} hideModal={hideTransformModal} board={board} updateBoard={handleMove} imageBoard={imageBoard} updateImageBoard={updateImageBoard} /> : <></>
             }
-            <button className={"col w-12 align-content-center" + getBackgroundColor(filled)} onClick={handleClick} disabled={!canClick()}>
+            <button className={"col w-12 align-content-center" + getBackgroundColor(filled)} onClick={handleClick} disabled={!canClick()} data-id={`${row}-${col}`}>
                 {
                     imageBoard[row][col] != '' ?
                     <img src={imageBoard[row][col]} alt="" className="w-100"/> :

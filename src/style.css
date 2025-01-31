@@ -37,3 +37,11 @@
 .justify-items-center {
     justify-items: center;
 }
+
+.bg-half-grey {
+    background-color: rgba(128, 128, 128, 0.347);
+}
+
+.fit-content {
+    width: fit-content;
+}

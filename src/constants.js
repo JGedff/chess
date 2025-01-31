@@ -17,5 +17,6 @@ export const Space = {
     PawnSpecialMove: 4,
     King: 5,
     Check: 6,
-    KillKing: 7
+    KillKing: 7,
+    CheckMate: 8
 }

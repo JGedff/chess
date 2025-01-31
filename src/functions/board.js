@@ -1,15 +1,5 @@
 import { Space } from "../constants"
 
-/* export const ImageBoard = [
-    ["/black/tower.png","/black/horse.png","/black/bishop.png","/black/queen.png","/black/king.png","/black/bishop.png","/black/horse.png","/black/tower.png"],
-    ["/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png"],
-    ["","","","","","","",""],
-    ["","","","","","","",""],
-    ["","","","","","","",""],
-    ["","","","","","","",""],
-    ["/white/pawn.png","/white/pawn.png","/white/pawn.png","/white/pawn.png","/white/pawn.png","/white/pawn.png","/white/pawn.png","/white/pawn.png"],
-    ["/white/tower.png","/white/horse.png","/white/bishop.png","/white/queen.png","/white/king.png","/white/bishop.png","/white/horse.png","/white/tower.png"],
-] */
 export const ImageBoard = [
     ["/black/tower.png","/black/horse.png","/black/bishop.png","/black/queen.png","/black/king.png","/black/bishop.png","/black/horse.png","/black/tower.png"],
     ["/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png"],
@@ -101,4 +91,18 @@ export const haveSameValues = (newArray, arrayToCheck) => {
     }
 
     return true
+}
+
+export const combineBoards = (board1, board2) => {
+    const newBoard = board1
+
+    for (let x = 0; x < board2.length; x++) {
+        for (let y = 0; y < board2[x].length; y++) {
+            if (board2[x][y] != Space.Empty && board2[x][y] != Space.Fill && board2[x][y] != Space.King) {
+                newBoard[x][y] = board2[x][y]
+            }
+        }
+    }
+
+    return newBoard
 }

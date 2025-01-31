@@ -3,7 +3,10 @@ import { useEffect, useState } from "react"
 import Row from "./row"
 import MoveTimeline from "./moveTimeline"
 
-import { ImageBoard, MoveBoard } from "../functions"
+import { checkMate, copyBoard, getKingPos, ImageBoard, MoveBoard } from "../functions"
+import { Sides, Space } from "../constants"
+import { isKingInDanger } from "../functions/king"
+import Winner from "./winner"
 
 export default function Board({ initLength, initHeight }) {
     const [spaceImageBoard, setSpaceImageBoard] = useState(ImageBoard)
@@ -11,6 +14,7 @@ export default function Board({ initLength, initHeight }) {
     const [showModal, setShowModal] = useState(false)
     const [length, setLength] = useState(initLength)
     const [height, setHeight] = useState(initHeight)
+    const [endGame, setEndGame] = useState([false, ""])
     const [turn, setTurn] = useState(true)
 
     useEffect(() => {
@@ -20,6 +24,28 @@ export default function Board({ initLength, initHeight }) {
     useEffect(() => {
         setHeight(initHeight)
     }, [initHeight])
+
+    useEffect(() => {
+        if (isKingInDanger(spaceBoard, Sides.Black, spaceImageBoard) && checkMate(spaceBoard, spaceImageBoard, Sides.Black)) {
+            const newBoard = copyBoard(spaceBoard)
+            const pos = getKingPos(spaceBoard, spaceImageBoard, Sides.Black)
+            
+            newBoard[pos[0]][pos[1]] = Space.CheckMate
+            
+            updateBoard(newBoard)
+            setEndGame([true, Sides.White])
+        }
+
+        if (isKingInDanger(spaceBoard, Sides.White, spaceImageBoard) && checkMate(spaceBoard, spaceImageBoard, Sides.White)) {
+            const newBoard = copyBoard(spaceBoard)
+            const pos = getKingPos(spaceBoard, spaceImageBoard, Sides.White)
+            
+            newBoard[pos[0]][pos[1]] = Space.CheckMate
+            
+            updateBoard(newBoard)
+            setEndGame([true, Sides.Black])
+        }
+    }, [spaceImageBoard])
 
     /* useEffect(() => {
         console.log(spaceBoard)
@@ -41,6 +67,10 @@ export default function Board({ initLength, initHeight }) {
         setShowModal(val)
     }
 
+    const setContinue = (bool) => {
+        setEndGame(!bool)
+    }
+
     const generateBoard = (height, lenght) => {
         const board = []
         let filled = true
@@ -55,6 +85,11 @@ export default function Board({ initLength, initHeight }) {
     
     return (
         <div className={ showModal ? "pt-70p mt-70p" : "" }>
+            {
+                endGame[0] ?
+                <Winner won={endGame[1]} setContinue={setContinue}/> :
+                <></>
+            }
             <MoveTimeline updateBoard={setSpaceBoard} updateImages={setSpaceImageBoard} updateTurn={setTurn} initImageBoard={spaceImageBoard} initValBoard={spaceBoard} initTurn={turn} />
             <div className="border border-dark rounded-8p container text-center w-600p h-600p">
                 {
