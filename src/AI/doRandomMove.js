@@ -22,7 +22,7 @@ const moveRandomPiece = (imageBoard, moveBoard, number, side, updateImageBoard, 
         selectRandomPiece(imageBoard, moveBoard, updateImageBoard, updateBoard, changeTurn, numbersChecked)
     }
     else {
-        const [newImageBoard, newBoard, spaceValueBeforeMoving] = selectRandomMoveForPiece(imageBoard, newMoveBoard, number, side)
+        const [newImageBoard, newBoard] = selectRandomMoveForPiece(imageBoard, newMoveBoard, number, side)
 
         updateImageBoard(newImageBoard)
         updateBoard(newBoard)
@@ -70,16 +70,25 @@ const selectRandomMoveForPiece = (imageBoard, moveBoard, number, side) => {
     const randomMovePos = Math.trunc(Math.random() * possibleMoves.length)
     const [moveX, moveY, value] = possibleMoves[randomMovePos]
 
-    newMoveBoard[moveX][moveY] = newMoveBoard[pieceX][pieceY]
-    newMoveBoard[pieceX][pieceY] = 0
-
-    newImageBoard[moveX][moveY] = newImageBoard[pieceX][pieceY]
-    newImageBoard[pieceX][pieceY] = ''
+    if (value == Space.PawnSpecialMove) {
+        newMoveBoard[moveX][moveY] = newMoveBoard[pieceX][pieceY]
+        newMoveBoard[pieceX][pieceY] = 0
+    
+        newImageBoard[moveX][moveY] = getRandomTransformation(side)
+        newImageBoard[pieceX][pieceY] = ''
+    }
+    else {
+        newMoveBoard[moveX][moveY] = newMoveBoard[pieceX][pieceY]
+        newMoveBoard[pieceX][pieceY] = 0
+    
+        newImageBoard[moveX][moveY] = newImageBoard[pieceX][pieceY]
+        newImageBoard[pieceX][pieceY] = ''
+    }
 
     newMoveBoard = deleteMoveSpaces(newMoveBoard, newImageBoard)
     newMoveBoard = deleteCheckSpaces(newMoveBoard)
 
-    return [newImageBoard, getAllKingCheck(newMoveBoard, newImageBoard), value]
+    return [newImageBoard, getAllKingCheck(newMoveBoard, newImageBoard)]
 }
 
 const getAiPossibleMoves = (moveBoard) => {
@@ -94,4 +103,28 @@ const getAiPossibleMoves = (moveBoard) => {
     }
 
     return moves
+}
+
+const getRandomTransformation = (side) => {
+    let piece = `/${side}/`
+
+    switch (Math.trunc(Math.random() * 4)) {
+        case 0:
+            piece += 'tower.png'
+            break;
+        case 1:
+            piece += 'horse.png'
+            break;
+        case 2:
+            piece += 'bishop.png'
+            break;
+        case 3:
+            piece += 'queen.png'
+            break;
+        default:
+            piece += 'tower.png'
+            break;
+    }
+
+    return piece
 }

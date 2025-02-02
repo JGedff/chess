@@ -1,25 +1,25 @@
 import { Space } from "../constants"
 
 export const ImageBoard = [
-    ["/black/pawn.png","","/white/queen.png","","/black/king.png","","",""],
-    ["","","","","","","",""],
+    ["","","","","/black/king.png","","",""],
+    ["/white/pawn.png","","","","","","",""],
     ["","","","","","","",""],
     ["","","","","","","",""],
     ["","","","","","","",""],
     ["","","","","","","",""],
     ["","/black/pawn.png","","","","","",""],
-    ["/white/pawn.png","","/white/pawn.png","","/white/king.png","","",""],
+    ["","","","","/white/king.png","","",""],
 ]
 
 export const MoveBoard = [
-    [Space.Fill, Space.Empty, Space.Fill, Space.Empty, Space.Check, Space.Empty, Space.Empty, Space.Empty],
-    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.King, Space.Empty, Space.Empty, Space.Empty],
+    [Space.Fill, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
     [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
     [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
     [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
     [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
     [Space.Empty, Space.Fill, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
-    [Space.Fill, Space.Empty, Space.Fill, Space.Empty, Space.King, Space.Empty, Space.Empty, Space.Empty],
+    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.King, Space.Empty, Space.Empty, Space.Empty],
 ]
 
 /* export const ImageBoard = [

@@ -88,7 +88,7 @@ export const showMoves = (row, col, oldBoard, oldImageBoard) => {
                 newBoard = moveTower(row, col, newBoard, imagePath[1], imageBoard)
                 break
             case "king.png":
-                newBoard = moveKing(row, col, newBoard, imagePath[1], imageBoard)
+                newBoard = moveKingOutOfCheck(row, col, newBoard, imageBoard)
                 break
             case "horse.png":
                 newBoard = moveHorse(row, col, newBoard, imagePath[1], imageBoard)

@@ -35,7 +35,7 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
                 newBoard = moveTower(row, col, newBoard, imagePath[1], imageBoard)
                 break
             case "king.png":
-                newBoard = moveKing(row, col, newBoard, imagePath[1], imageBoard)
+                newBoard = moveKingOutOfCheck(row, col, newBoard, imageBoard)
                 break
             case "horse.png":
                 newBoard = moveHorse(row, col, newBoard, imagePath[1], imageBoard)
