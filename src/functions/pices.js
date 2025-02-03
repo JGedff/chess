@@ -1,10 +1,11 @@
 import { copyBoard, deleteCheckSpaces, deleteMoveSpaces } from "./board"
-import { getAllKingCheck, moveKing, moveKingOutOfCheck } from "./king"
+import { getAllKingCheck, moveKingOutOfCheck } from "./king"
 import { MovingPiece, Space } from "../constants"
 import { movePawn, transformPawn } from "./pawn"
 import { moveBishop } from "./bishop"
 import { moveTower } from "./tower"
 import { moveHorse } from "./horse"
+import { showMoves } from "./checkMove"
 
 export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, showTransformModal, oldImageBoard, updateImageBoard) => {
     let newBoard = copyBoard(oldBoard)
@@ -121,4 +122,20 @@ export const pieceProtect = (row, col, board, oldPosition, oldImageBoard) => {
     }
 
     return newValue
+}
+
+export const getAllPiecesMoves = (imageBoard, moveBoard, side) => {
+    let newMoveBoard = copyBoard(moveBoard)
+    
+    console.log('xd')
+    
+    for (let x = 0; x < imageBoard.length; x++) {
+        for (let y = 0; y < imageBoard[x].length; y++) {
+            if (imageBoard[x][y].split("/")[1] == side) {
+                newMoveBoard = showMoves(x, y, newMoveBoard, imageBoard)
+            }
+        }
+    }
+
+    return newMoveBoard
 }

@@ -1,10 +1,9 @@
-import { MovingPiece, Sides, Space } from "../constants"
+import { MovingPiece, Space } from "../constants"
 import { moveBishop } from "./bishop"
 import { combineBoards, copyBoard } from "./board"
 import { moveHorse } from "./horse"
-import { moveKing, moveKingOutOfCheck } from "./king"
+import { moveKingOutOfCheck } from "./king"
 import { movePawn } from "./pawn"
-import { handleMovePiece, pieceProtect } from "./pices"
 import { moveTower } from "./tower"
 
 export const getMoveValue = (value, imagePath, imageToCheck) => {

@@ -8,6 +8,7 @@ import { Sides, Space } from "../constants"
 import { isKingInDanger } from "../functions/king"
 import Winner from "./winner"
 import { AI } from "../AI"
+import { playerCanMove } from "../functions/board"
 
 export default function Board({ initLength, initHeight }) {
     const [spaceImageBoard, setSpaceImageBoard] = useState(ImageBoard)
@@ -59,6 +60,17 @@ export default function Board({ initLength, initHeight }) {
             
             updateBoard(newBoard)
             setEndGame([true, Sides.Black])
+
+            gameOver = true
+        }
+        
+        if (!playerCanMove(spaceImageBoard, spaceBoard, turn)) {
+            if (!turn) {
+                setEndGame([true, Sides.White])
+            }
+            else {
+                setEndGame([true, Sides.Black])
+            }
 
             gameOver = true
         }
