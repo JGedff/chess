@@ -13,7 +13,7 @@ export default function Board({ initLength, initHeight }) {
     const [spaceImageBoard, setSpaceImageBoard] = useState(ImageBoard)
     const [spaceBoard, setSpaceBoard] = useState(MoveBoard)
     const [timelineMove, setTimelineMove] = useState(false)
-    const [difficulty, setDifficulty] = useState('d') // Default: '' | Values: [Random | Easy]
+    const [difficulty, setDifficulty] = useState('Random') // Default: '' | Values: [Random | Easy]
     const [endGame, setEndGame] = useState([false, ""])
     const [showModal, setShowModal] = useState(false)
     const [length, setLength] = useState(initLength)

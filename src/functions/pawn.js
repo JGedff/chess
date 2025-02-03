@@ -46,16 +46,16 @@ export const pawnNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) =>
             }
         }
         else if (row == 6) { // Move
-            if (newBoard[row - 1][col] != Space.Fill && newBoard[row - 2][col] != Space.Fill) {
+            if (newBoard[row - 1][col] == Space.Empty && newBoard[row - 2][col] == Space.Empty) {
                 newBoard[row - 1][col] = Space.CanMove
                 newBoard[row - 2][col] = Space.CanMove
             }
-            else if (newBoard[row - 1][col] != Space.Fill) {
+            else if (newBoard[row - 1][col] == Space.Empty) {
                 newBoard[row - 1][col] = Space.CanMove
             }
         }
         else {
-            if (newBoard[row - 1][col] != Space.Fill) {
+            if (newBoard[row - 1][col] == Space.Empty) {
                 newBoard[row - 1][col] = Space.CanMove
             }
         }
@@ -97,16 +97,16 @@ export const pawnNormalMove = (row, col, oldMoveBoard, imageName, imageBoard) =>
             }
         }
         else if (row == 1) { // Move
-            if (newBoard[row + 1][col] != Space.Fill && newBoard[row + 2][col] != Space.Fill) {
+            if (newBoard[row + 1][col] == Space.Empty && newBoard[row + 2][col] == Space.Empty) {
                 newBoard[row + 1][col] = Space.CanMove
                 newBoard[row + 2][col] = Space.CanMove
             }
-            else if (newBoard[row + 1][col] != Space.Fill) {
+            else if (newBoard[row + 1][col] == Space.Empty) {
                 newBoard[row + 1][col] = Space.CanMove
             }
         }
         else {
-            if (newBoard[row + 1][col] != Space.Fill) {
+            if (newBoard[row + 1][col] == Space.Empty) {
                 newBoard[row + 1][col] = Space.CanMove
             }
         }
