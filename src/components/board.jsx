@@ -13,7 +13,7 @@ export default function Board({ initLength, initHeight }) {
     const [spaceImageBoard, setSpaceImageBoard] = useState(ImageBoard)
     const [spaceBoard, setSpaceBoard] = useState(MoveBoard)
     const [timelineMove, setTimelineMove] = useState(false)
-    const [difficulty, setDifficulty] = useState('Random') // Default: '' | Values: [Random]
+    const [difficulty, setDifficulty] = useState('d') // Default: '' | Values: [Random | Easy]
     const [endGame, setEndGame] = useState([false, ""])
     const [showModal, setShowModal] = useState(false)
     const [length, setLength] = useState(initLength)
@@ -32,9 +32,9 @@ export default function Board({ initLength, initHeight }) {
         AI.difficulty = difficulty
     }, [difficulty])
 
-    useEffect(() => {
+    /* useEffect(() => {
         console.log(spaceBoard)
-    }, [spaceBoard])
+    }, [spaceBoard]) */
 
     useEffect(() => {
         let gameOver = false
@@ -101,7 +101,7 @@ export default function Board({ initLength, initHeight }) {
     }
     
     return (
-        <div className={ showModal ? "pt-70p mt-70p" : "" }>
+        <div className={ showModal ? "mt-175p" : "" }>
             {
                 endGame[0] ?
                 <Winner won={endGame[1]} setContinue={setContinue}/> :

@@ -1,6 +1,6 @@
 import { Space } from "../constants"
 
-export const ImageBoard = [
+/* export const ImageBoard = [
     ["","","","","/black/king.png","","",""],
     ["/white/pawn.png","","","","","","",""],
     ["","","","","","","",""],
@@ -20,9 +20,9 @@ export const MoveBoard = [
     [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
     [Space.Empty, Space.Fill, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
     [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.King, Space.Empty, Space.Empty, Space.Empty],
-]
+] */
 
-/* export const ImageBoard = [
+export const ImageBoard = [
     ["/black/tower.png","/black/horse.png","/black/bishop.png","/black/queen.png","/black/king.png","/black/bishop.png","/black/horse.png","/black/tower.png"],
     ["/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png"],
     ["","","","","","","",""],
@@ -42,7 +42,7 @@ export const MoveBoard = [
     [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
     [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill],
     [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.King, Space.Fill, Space.Fill, Space.Fill],
-] */
+]
 
 export const copyBoard = (board) => {
     const newBoard = []
