@@ -1,6 +1,7 @@
 import { Sides, Space } from "../constants"
 import { checkMate, handleMovePiece } from "../functions"
-import { isKingInDanger } from "../functions/king"
+import { playerCanMove } from "../functions/board"
+import { getKingPos, isKingInDanger } from "../functions/king"
 
 const updateBoard = (board) => {
     console.log('update board => ', board)
@@ -67,11 +68,16 @@ export class ChessPerformance {
         this.timePerformance_handleMovePiece_emptySpace()
         this.timePerformance_handleMovePiece_queenMiddleBoard()
 
-        this.timePerformance_checkMate_noMate()
-        this.timePerformance_checkMate_yesMate()
+        this.timePerformance_checkMate_no()
+        this.timePerformance_checkMate_yes()
 
-        this.timePerformance_isKingInDanger_noDanger()
-        this.timePerformance_isKingInDanger_yesDanger()
+        this.timePerformance_isKingInDanger_no()
+        this.timePerformance_isKingInDanger_yes()
+
+        this.timePerformance_getKingPos()
+
+        this.timePerformance_playerCanMove_no()
+        this.timePerformance_playerCanMove_yes()
     }
 
     timePerformance_handleMovePiece_emptySpace = () => {
@@ -116,7 +122,7 @@ export class ChessPerformance {
         console.log(`Click on queen in the middle of the board: ${cronometer.getDiffSeconds()} seconds`)
     }
     
-    timePerformance_checkMate_noMate = () => {
+    timePerformance_checkMate_no = () => {
         cronometer.start()
         
         const danger = checkMate(this.moveBoard, this.imageBoard, Sides.White)
@@ -126,7 +132,7 @@ export class ChessPerformance {
         console.log(`Is checkMate? (${danger}): ${cronometer.getDiffSeconds()} seconds`)
     }
 
-    timePerformance_checkMate_yesMate = () => {
+    timePerformance_checkMate_yes = () => {
         let moveBoard = [
             [Space.Fill, Space.Fill, Space.Fill, Space.Empty, Space.King, Space.Fill, Space.Fill, Space.Fill],
             [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill],
@@ -158,7 +164,7 @@ export class ChessPerformance {
         console.log(`Is checkMate? (${danger}): ${cronometer.getDiffSeconds()} seconds`)
     }
 
-    timePerformance_isKingInDanger_noDanger = () => {
+    timePerformance_isKingInDanger_no = () => {
         cronometer.start()
         
         const danger = isKingInDanger(this.moveBoard, Sides.White, this.imageBoard)
@@ -168,7 +174,7 @@ export class ChessPerformance {
         console.log(`Is king in danger? (${danger}): ${cronometer.getDiffSeconds()} seconds`)
     }
 
-    timePerformance_isKingInDanger_yesDanger = () => {
+    timePerformance_isKingInDanger_yes = () => {
         let moveBoard = [
             [Space.Fill, Space.Fill, Space.Fill, Space.Empty, Space.King, Space.Fill, Space.Fill, Space.Fill],
             [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill],
@@ -198,5 +204,57 @@ export class ChessPerformance {
         cronometer.stop()
 
         console.log(`Is king in danger? (${danger}): ${cronometer.getDiffSeconds()} seconds`)
+    }
+
+    timePerformance_getKingPos = () => {
+        cronometer.start()
+        
+        let pos = getKingPos(this.moveBoard, this.imageBoard, Sides.White)
+
+        cronometer.stop()
+
+        console.log(`Get King Position (${pos}): ${cronometer.getDiffSeconds()} seconds`)
+    }
+
+    timePerformance_playerCanMove_yes = () => {
+        cronometer.start()
+        
+        let canMove = playerCanMove(this.imageBoard, this.moveBoard, true)
+
+        cronometer.stop()
+
+        console.log(`Player can move? (${canMove}): ${cronometer.getDiffSeconds()} seconds`)
+    }
+
+    timePerformance_playerCanMove_no = () => {
+        let moveBoard = [
+            [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.King],
+            [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Fill, Space.Empty, Space.Empty],
+            [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+            [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+            [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+            [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+            [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+            [Space.King, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+        ]
+        
+        let imageBoard = [
+            ["","","","","","","","/black/king.png"],
+            ["","","","","","/white/queen.png","",""],
+            ["","","","","","","",""],
+            ["","","","","","","",""],
+            ["","","","","","","",""],
+            ["","","","","","","",""],
+            ["","","","","","","",""],
+            ["/white/king.png","","","","","","",""],
+        ]
+
+        cronometer.start()
+        
+        let canMove = playerCanMove(imageBoard, moveBoard, false)
+
+        cronometer.stop()
+
+        console.log(`Player can move? (${canMove}): ${cronometer.getDiffSeconds()} seconds`)
     }
 }

@@ -158,7 +158,7 @@ const secureKing = (row, col, board, kingPos, newValue, oldImageBoard) => {
 export const getKingPos = (board, imageBoard, side) => {
     for (let x = 0; x < board.length; x++) {
         for (let y = 0; y < board[x].length; y++) {
-            if (board[x][y] == Space.Check && imageBoard[x][y].split('/')[1] == side) {
+            if ((board[x][y] == Space.King || board[x][y] == Space.Check) && imageBoard[x][y].split('/')[1] == side) {
                 return [x, y]
             } 
         }
