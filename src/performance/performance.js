@@ -1,4 +1,5 @@
 import { selectRandomPiece } from "../AI/doRandomMove"
+import { getNextMove } from "../AI/minMax"
 import { Sides, Space } from "../constants"
 import { checkMate, handleMovePiece } from "../functions"
 import { playerCanMove } from "../functions/board"
@@ -267,6 +268,9 @@ export class ChessPerformance {
 
     performanceAi = () => {
         this.timePerformance_selectRandomPiece()
+
+        this.timePerformance_getNextMove_easyDifficulty()
+        this.timePerformance_getNextMove_normalDifficulty()
     }
 
     timePerformance_selectRandomPiece = () => {
@@ -277,5 +281,28 @@ export class ChessPerformance {
         cronometer.stop()
 
         console.log(`AI random move: ${cronometer.getDiffSeconds()} seconds`)
+    }
+    
+    timePerformance_getNextMove_easyDifficulty = () => {
+        cronometer.start()
+
+        const [newImageBoard, newMoveBoard, ] = getNextMove(this.imageBoard, this.moveBoard, true, 3)
+
+        cronometer.stop()
+    
+        console.log(`AI minmax move (depth 3): ${cronometer.getDiffSeconds()} seconds`)
+        console.log(newImageBoard, newMoveBoard)
+    }
+    
+    timePerformance_getNextMove_normalDifficulty = () => {
+        console.log('WAIT TOO LONG +20seconds')
+/*         cronometer.start()
+
+        const [newImageBoard, newMoveBoard, ] = getNextMove(this.imageBoard, this.moveBoard, true, 5)
+
+        cronometer.stop()
+    
+        console.log(`AI minmax move (depth 5): ${cronometer.getDiffSeconds()} seconds`)
+        console.log(newImageBoard, newMoveBoard) */
     }
 }
