@@ -1,5 +1,6 @@
 import { Sides, Space } from "../constants"
 import { checkMate, handleMovePiece } from "../functions"
+import { isKingInDanger } from "../functions/king"
 
 const updateBoard = (board) => {
     console.log('update board => ', board)
@@ -68,6 +69,9 @@ export class ChessPerformance {
 
         this.timePerformance_checkMate_noMate()
         this.timePerformance_checkMate_yesMate()
+
+        this.timePerformance_isKingInDanger_noDanger()
+        this.timePerformance_isKingInDanger_yesDanger()
     }
 
     timePerformance_handleMovePiece_emptySpace = () => {
@@ -152,5 +156,47 @@ export class ChessPerformance {
         cronometer.stop()
 
         console.log(`Is checkMate? (${danger}): ${cronometer.getDiffSeconds()} seconds`)
+    }
+
+    timePerformance_isKingInDanger_noDanger = () => {
+        cronometer.start()
+        
+        const danger = isKingInDanger(this.moveBoard, Sides.White, this.imageBoard)
+
+        cronometer.stop()
+
+        console.log(`Is king in danger? (${danger}): ${cronometer.getDiffSeconds()} seconds`)
+    }
+
+    timePerformance_isKingInDanger_yesDanger = () => {
+        let moveBoard = [
+            [Space.Fill, Space.Fill, Space.Fill, Space.Empty, Space.King, Space.Fill, Space.Fill, Space.Fill],
+            [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill],
+            [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+            [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+            [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Fill, Space.Empty, Space.Empty, Space.Empty],
+            [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+            [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Empty, Space.Fill, Space.Fill, Space.Fill],
+            [Space.Fill, Space.Fill, Space.Fill, Space.Empty, Space.Check, Space.Empty, Space.Empty, Space.Fill],
+        ]
+        
+        let imageBoard = [
+            ["/black/tower.png","/black/horse.png","/black/bishop.png","","/black/king.png","/black/bishop.png","/black/horse.png","/black/tower.png"],
+            ["/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png"],
+            ["","","","","","","",""],
+            ["","","","","","","",""],
+            ["","","","","/black/queen.png","","",""],
+            ["","","","","","","",""],
+            ["/white/pawn.png","/white/pawn.png","/white/pawn.png","/white/pawn.png","","/white/pawn.png","/white/pawn.png","/white/pawn.png"],
+            ["/white/tower.png","/white/horse.png","/white/bishop.png","","/white/king.png","","","/white/tower.png"],
+        ]
+        
+        cronometer.start()
+        
+        const danger = isKingInDanger(moveBoard, Sides.White, imageBoard)
+
+        cronometer.stop()
+
+        console.log(`Is king in danger? (${danger}): ${cronometer.getDiffSeconds()} seconds`)
     }
 }
