@@ -1,5 +1,5 @@
-import { Space } from "../constants"
-import { handleMovePiece } from "../functions"
+import { Sides, Space } from "../constants"
+import { checkMate, handleMovePiece } from "../functions"
 
 const updateBoard = (board) => {
     console.log('update board => ', board)
@@ -35,6 +35,27 @@ const MoveBoard = [
     [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.King, Space.Fill, Space.Fill, Space.Fill],
 ]
 
+class Crono {
+    constructor() {
+        this.init = null
+        this.end = null
+    }
+
+    start = () => {
+        this.init = new Date()
+    }
+
+    stop = () => {
+        this.end = new Date()
+    }
+
+    getDiffSeconds = () => {
+        return (this.end - this.init) / 1000
+    }
+}
+
+const cronometer = new Crono()
+
 export class ChessPerformance {
     constructor() {
         this.moveBoard = MoveBoard
@@ -42,39 +63,94 @@ export class ChessPerformance {
     }
 
     all = () => {
-        this.testPerformance_handleMovePiece_emptySpace()
-        this.testPerformance_handleMovePiece_queenMiddleBoard()
+        this.timePerformance_handleMovePiece_emptySpace()
+        this.timePerformance_handleMovePiece_queenMiddleBoard()
+
+        this.timePerformance_checkMate_noMate()
+        this.timePerformance_checkMate_yesMate()
     }
 
-    testPerformance_handleMovePiece_emptySpace = () => {
-        let start = new Date()
-    
+    timePerformance_handleMovePiece_emptySpace = () => {
+        cronometer.start()
+        
         handleMovePiece(3, 3, this.moveBoard, updateBoard, changeTurn, showTransformModal, this.imageBoard, updateBoard)
         
-        let finish = new Date()
+        cronometer.stop()
         
-        console.log(`Click on empty space: ${(finish - start) / 1000} seconds`)
+        console.log(`Click on empty space: ${cronometer.getDiffSeconds()} seconds`)
     }
     
-    testPerformance_handleMovePiece_queenMiddleBoard = () => {
-        this.moveBoard[3][3] = Space.Fill
-        this.moveBoard[7][3] = Space.Empty
+    timePerformance_handleMovePiece_queenMiddleBoard = () => {
+        let moveBoard = [
+            [Space.Fill, Space.Fill, Space.Fill, Space.Empty, Space.King, Space.Fill, Space.Fill, Space.Fill],
+            [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill],
+            [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+            [Space.Empty, Space.Empty, Space.Empty, Space.Fill, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+            [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+            [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+            [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill],
+            [Space.Fill, Space.Fill, Space.Fill, Space.Empty, Space.King, Space.Fill, Space.Fill, Space.Fill],
+        ]
 
-        this.imageBoard[3][3] = this.imageBoard[7][3]
-        this.imageBoard[7][3] = ''
+        let imageBoard = [
+            ["/black/tower.png","/black/horse.png","/black/bishop.png","/black/queen.png","/black/king.png","/black/bishop.png","/black/horse.png","/black/tower.png"],
+            ["/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png"],
+            ["","","","","","","",""],
+            ["","","","/white/queen.png","","","",""],
+            ["","","","","","","",""],
+            ["","","","","","","",""],
+            ["/white/pawn.png","/white/pawn.png","/white/pawn.png","/white/pawn.png","/white/pawn.png","/white/pawn.png","/white/pawn.png","/white/pawn.png"],
+            ["/white/tower.png","/white/horse.png","/white/bishop.png","","/white/king.png","/white/bishop.png","/white/horse.png","/white/tower.png"],
+        ]
 
-        let start = new Date()
+        cronometer.start()
+        
+        handleMovePiece(3, 3, moveBoard, updateBoard, changeTurn, showTransformModal, imageBoard, updateBoard)
+        
+        cronometer.stop()
+        
+        console.log(`Click on queen in the middle of the board: ${cronometer.getDiffSeconds()} seconds`)
+    }
     
-        handleMovePiece(3, 3, this.moveBoard, updateBoard, changeTurn, showTransformModal, this.imageBoard, updateBoard)
+    timePerformance_checkMate_noMate = () => {
+        cronometer.start()
         
-        let finish = new Date()
+        const danger = checkMate(this.moveBoard, this.imageBoard, Sides.White)
 
-        this.moveBoard[3][3] = Space.Empty
-        this.moveBoard[7][3] = Space.Fill
+        cronometer.stop()
 
-        this.imageBoard[7][3] = this.imageBoard[3][3]
-        this.imageBoard[3][3] = ''
+        console.log(`Is checkMate? (${danger}): ${cronometer.getDiffSeconds()} seconds`)
+    }
+
+    timePerformance_checkMate_yesMate = () => {
+        let moveBoard = [
+            [Space.Fill, Space.Fill, Space.Fill, Space.Empty, Space.King, Space.Fill, Space.Fill, Space.Fill],
+            [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill],
+            [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+            [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+            [Space.Empty, Space.Empty, Space.Empty, Space.Fill, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+            [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+            [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Empty, Space.Fill, Space.Fill, Space.Fill],
+            [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.King, Space.Fill, Space.Empty, Space.Fill],
+        ]
         
-        console.log(`Click on queen in the middle of the board: ${(finish - start) / 1000} seconds`)
+        let imageBoard = [
+            ["/black/tower.png","/black/horse.png","/black/bishop.png","","/black/king.png","/black/bishop.png","/black/horse.png","/black/tower.png"],
+            ["/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png"],
+            ["","","","","","","",""],
+            ["","","","","","","",""],
+            ["","","","","/black/queen.png","","",""],
+            ["","","","","","","",""],
+            ["/white/pawn.png","/white/pawn.png","/white/pawn.png","/white/pawn.png","","/white/pawn.png","/white/pawn.png","/white/pawn.png"],
+            ["/white/tower.png","/white/horse.png","/white/bishop.png","/white/pawn.png","/white/king.png","/white/pawn.png","","/white/tower.png"],
+        ]
+        
+        cronometer.start()
+
+        const danger = checkMate(moveBoard, imageBoard, Sides.White)
+
+        cronometer.stop()
+
+        console.log(`Is checkMate? (${danger}): ${cronometer.getDiffSeconds()} seconds`)
     }
 }

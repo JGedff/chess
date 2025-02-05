@@ -14,7 +14,7 @@ export default function Board({ initLength, initHeight }) {
     const [spaceImageBoard, setSpaceImageBoard] = useState(ImageBoard)
     const [spaceBoard, setSpaceBoard] = useState(MoveBoard)
     const [timelineMove, setTimelineMove] = useState(false)
-    const [difficulty, setDifficulty] = useState('Random') // Default: '' | Values: [Random | Easy]
+    const [difficulty, setDifficulty] = useState('s') // Default: '' | Values: [Random | Easy]
     const [endGame, setEndGame] = useState([false, ""])
     const [showModal, setShowModal] = useState(false)
     const [length, setLength] = useState(initLength)
@@ -52,7 +52,7 @@ export default function Board({ initLength, initHeight }) {
             gameOver = true
         }
 
-        if (isKingInDanger(spaceBoard, Sides.White, spaceImageBoard) && checkMate(spaceBoard, spaceImageBoard, Sides.White)) {
+        if (!gameOver && isKingInDanger(spaceBoard, Sides.White, spaceImageBoard) && checkMate(spaceBoard, spaceImageBoard, Sides.White)) {
             const newBoard = copyBoard(spaceBoard)
             const pos = getKingPos(spaceBoard, spaceImageBoard, Sides.White)
             
@@ -64,7 +64,7 @@ export default function Board({ initLength, initHeight }) {
             gameOver = true
         }
         
-        if (!playerCanMove(spaceImageBoard, spaceBoard, turn)) {
+        if (!gameOver && !playerCanMove(spaceImageBoard, spaceBoard, turn)) {
             if (!turn) {
                 setEndGame([true, Sides.White])
             }

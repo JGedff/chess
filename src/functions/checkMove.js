@@ -101,7 +101,7 @@ export const showMoves = (row, col, oldBoard, oldImageBoard) => {
         MovingPiece[0][1] = row
         MovingPiece[0][2] = col
         MovingPiece[0][3] = newBoard[row][col]
-
+        
         newBoard = moveKingOutOfCheck(row, col, newBoard, imageBoard)
     }
 

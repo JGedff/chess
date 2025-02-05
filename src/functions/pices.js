@@ -1,4 +1,4 @@
-import { copyBoard, deleteCheckSpaces, deleteMoveSpaces } from "./board"
+import { combineBoards, copyBoard, deleteCheckSpaces, deleteMoveSpaces } from "./board"
 import { getAllKingCheck, moveKingOutOfCheck } from "./king"
 import { MovingPiece, Space } from "../constants"
 import { movePawn, transformPawn } from "./pawn"
@@ -127,12 +127,10 @@ export const pieceProtect = (row, col, board, oldPosition, oldImageBoard) => {
 export const getAllPiecesMoves = (imageBoard, moveBoard, side) => {
     let newMoveBoard = copyBoard(moveBoard)
     
-    console.log('xd')
-    
     for (let x = 0; x < imageBoard.length; x++) {
         for (let y = 0; y < imageBoard[x].length; y++) {
             if (imageBoard[x][y].split("/")[1] == side) {
-                newMoveBoard = showMoves(x, y, newMoveBoard, imageBoard)
+                newMoveBoard = combineBoards(newMoveBoard, showMoves(x, y, newMoveBoard, imageBoard))
             }
         }
     }

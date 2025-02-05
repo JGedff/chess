@@ -1,27 +1,28 @@
 import { Sides, Space } from "../constants"
 import { getAllPiecesMoves } from "./pices"
 
-export const ImageBoard = [
-    ["","","","","","","/black/king.png",""],
-    ["","","","","/white/queen.png","","",""],
-    ["","","","","","","",""],
-    ["","","","","","","",""],
-    ["","","","","","","",""],
-    ["","","","","","","",""],
-    ["","","","","","","",""],
-    ["","","","","/white/king.png","","",""],
+export const MoveBoard = [
+    [Space.Fill, Space.Fill, Space.Fill, Space.Empty, Space.King, Space.Fill, Space.Fill, Space.Fill],
+    [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Fill],
+    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+    [Space.Empty, Space.Empty, Space.Fill, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
+    [Space.Fill, Space.Fill, Space.Fill, Space.Fill, Space.Empty, Space.Fill, Space.Fill, Space.Fill],
+    [Space.Fill, Space.Fill, Space.Fill, Space.Empty, Space.King, Space.Empty, Space.Empty, Space.Fill],
 ]
 
-export const MoveBoard = [
-    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.King, Space.Empty],
-    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Fill, Space.Empty, Space.Empty, Space.Empty],
-    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
-    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
-    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
-    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
-    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.Empty],
-    [Space.Empty, Space.Empty, Space.Empty, Space.Empty, Space.King, Space.Empty, Space.Empty, Space.Empty],
+export const ImageBoard = [
+    ["/black/tower.png","/black/horse.png","/black/bishop.png","","/black/king.png","/black/bishop.png","/black/horse.png","/black/tower.png"],
+    ["/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png","/black/pawn.png"],
+    ["","","","","","","",""],
+    ["","","","","","","",""],
+    ["","","/black/queen.png","","","","",""],
+    ["","","","","","","",""],
+    ["/white/pawn.png","/white/pawn.png","/white/pawn.png","/white/pawn.png","","/white/pawn.png","/white/pawn.png","/white/pawn.png"],
+    ["/white/tower.png","/white/horse.png","/white/bishop.png","","/white/king.png","","","/white/tower.png"],
 ]
+
 /* 
 export const ImageBoard = [
     ["/black/tower.png","/black/horse.png","/black/bishop.png","/black/queen.png","/black/king.png","/black/bishop.png","/black/horse.png","/black/tower.png"],
@@ -46,17 +47,14 @@ export const MoveBoard = [
 ] */
 
 export const copyBoard = (board) => {
-    const newBoard = []
+    let newBoard = Array.from({ length: 8}, () => Array(8).fill(null))
 
     for (let h = 0; h < board.length; h++) {
         const row = board[h]
-        let newRow = []
-        
-        for (let w = 0; w < row.length; w++) {
-            newRow.push(row[w])
-        }
 
-        newBoard.push(newRow)
+        for (let w = 0; w < row.length; w++) {
+            newBoard[h][w] = row[w]
+        }
     }
 
     return newBoard
@@ -123,7 +121,7 @@ export const combineBoards = (board1, board2) => {
 
     for (let x = 0; x < board2.length; x++) {
         for (let y = 0; y < board2[x].length; y++) {
-            if (board2[x][y] != Space.Empty && board2[x][y] != Space.Fill && board2[x][y] != Space.King) {
+            if (board2[x][y] != Space.Empty && board2[x][y] != Space.Fill && board2[x][y] != Space.King && board2[x][y] != Space.Check) {
                 newBoard[x][y] = board2[x][y]
             }
         }
@@ -172,7 +170,6 @@ export const playerCanMove = (imageBoard, moveBoard, turn) => {
         side = Sides.Black
     }
 
-    console.log(imageBoard)
     let newMoveBoard = getAllPiecesMoves(imageBoard, moveBoard, side)
 
     for (let x = 0; x < newMoveBoard.length; x++) {
