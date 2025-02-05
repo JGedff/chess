@@ -1,3 +1,4 @@
+import { selectRandomPiece } from "../AI/doRandomMove"
 import { Sides, Space } from "../constants"
 import { checkMate, handleMovePiece } from "../functions"
 import { playerCanMove } from "../functions/board"
@@ -7,8 +8,8 @@ const updateBoard = (board) => {
     console.log('update board => ', board)
 }
 
-const changeTurn = (boolean) => {
-    console.log('change turn => ', boolean)
+const changeTurn = () => {
+    console.log('change turn => ', false)
 }
 
 const showTransformModal = (boolean) => {
@@ -65,6 +66,12 @@ export class ChessPerformance {
     }
 
     all = () => {
+        this.performanceMainFunctions()
+
+        this.performanceAi()
+    }
+
+    performanceMainFunctions = () => {
         this.timePerformance_handleMovePiece_emptySpace()
         this.timePerformance_handleMovePiece_queenMiddleBoard()
 
@@ -256,5 +263,19 @@ export class ChessPerformance {
         cronometer.stop()
 
         console.log(`Player can move? (${canMove}): ${cronometer.getDiffSeconds()} seconds`)
+    }
+
+    performanceAi = () => {
+        this.timePerformance_selectRandomPiece()
+    }
+
+    timePerformance_selectRandomPiece = () => {
+        cronometer.start()
+        
+        selectRandomPiece(this.imageBoard, this.moveBoard, updateBoard, updateBoard, changeTurn, [])
+
+        cronometer.stop()
+
+        console.log(`AI random move: ${cronometer.getDiffSeconds()} seconds`)
     }
 }
