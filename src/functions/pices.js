@@ -5,19 +5,20 @@ import { movePawn } from "./pawn"
 import { moveBishop } from "./bishop"
 import { moveTower } from "./tower"
 import { moveHorse } from "./horse"
-import { showMoves } from "./checkMove"
+import { getMoveValue, showMoves } from "./checkMove"
 import { updateMove } from "../AI/miniMax-chess"
 import { moveQueen } from "./queen"
 import { AI } from "../AI"
 
 export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, showTransformModal, oldImageBoard, updateImageBoard) => {
+    const imageBoard = copyBoard(oldImageBoard)
+
     let newBoard = copyBoard(oldBoard)
-    let imageBoard = copyBoard(oldImageBoard)
 
     const [side, piece] = imageBoard[row][col]
     const oldValue = oldBoard[row][col]
 
-    if (oldValue == Space.Fill || oldValue == Space.King) {
+    if (oldValue == Space.Fill) {
         deleteMoveSpaces(newBoard, imageBoard)
 
         MovingPiece[0] = [side, piece]
@@ -53,8 +54,9 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
     else if (oldValue == Space.CanMove || oldValue == Space.Kill || oldValue == Space.PawnSpecialMove || oldValue == Space.KillKing) {
         deleteMoveSpaces(newBoard, imageBoard)
 
+        // Update move for Chessjs
         if (AI.difficulty == 'Chessjs') {
-            updateMove([MovingPiece[1], MovingPiece[2]], [row, col]) // Update move for Chessjs
+            updateMove([MovingPiece[1], MovingPiece[2]], [row, col])
         }
 
         imageBoard[row][col] = MovingPiece[0]
@@ -78,7 +80,7 @@ export const handleMovePiece = (row, col, oldBoard, updateBoard, changeTurn, sho
         updateImageBoard(imageBoard)
         updateBoard(newBoard)
     }
-    else if (oldValue == Space.Check) {
+    else if (oldValue == Space.Check || oldValue == Space.King) {
         deleteMoveSpaces(newBoard, imageBoard)
 
         MovingPiece[0] = [side, piece]
@@ -112,11 +114,11 @@ export const pieceProtect = (row, col, board, oldImageBoard, oldRow, oldCol) => 
     for (let x = 0; x < newBoard.length; x++) {
         for (let y = 0; y < newBoard.length; y++) {
             if (newBoard[x][y] == Space.King && imageBoard[x][y][0] == side) {
-                if (actualValue == Space.PawnSpecialMove) {
-                    newValue = Space.PawnSpecialMove
-                }
-                else if (actualValue == Space.Empty || actualValue == Space.CanMove) {
+                if (actualValue == Space.CanMove) {
                     newValue = Space.CanMove
+                }
+                else if (actualValue == Space.PawnSpecialMove) {
+                    newValue = Space.PawnSpecialMove
                 }
                 else {
                     newValue = Space.Kill
@@ -128,7 +130,7 @@ export const pieceProtect = (row, col, board, oldImageBoard, oldRow, oldCol) => 
     if (oldImageBoard[row][col] == []) {
         newValue = Space.Empty
     }
-    else if (newValue == Space.Empty && (actualValue == Space.Fill || actualValue == Space.Kill || actualValue == Space.KillKing || actualValue == Space.King)) {
+    else if (newValue == Space.Empty && (actualValue == Space.Fill || actualValue == Space.Kill || actualValue == Space.King || actualValue == Space.KillKing)) {
         newValue = Space.Fill
     }
 
@@ -136,7 +138,7 @@ export const pieceProtect = (row, col, board, oldImageBoard, oldRow, oldCol) => 
 }
 
 export const getAllPiecesMoves = (imageBoard, moveBoard, side) => {
-    let newMoveBoard = copyBoard(moveBoard)
+    const newMoveBoard = copyBoard(moveBoard)
     
     for (let x = 0; x < imageBoard.length; x++) {
         for (let y = 0; y < imageBoard.length; y++) {
@@ -147,4 +149,25 @@ export const getAllPiecesMoves = (imageBoard, moveBoard, side) => {
     }
 
     return newMoveBoard
+}
+
+export const pieceMove = (row, col, moveBoard, side, imageBoard, directions) => {
+    for (const [moveX, moveY] of directions) {
+        let newRow = row + moveX;
+        let newCol = col + moveY;
+
+        while (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+            const oldValue = moveBoard[newRow][newCol]
+            const newValue = getMoveValue(oldValue, imageBoard[newRow][newCol], side)
+
+            moveBoard[newRow][newCol] = newValue
+
+            if (oldValue == newValue || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
+                break
+            }
+
+            newRow += moveX;
+            newCol += moveY;
+        }
+    }
 }

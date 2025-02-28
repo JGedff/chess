@@ -20,3 +20,16 @@ export const Space = {
     KillKing: 7,
     CheckMate: 8
 }
+
+export const towerDirections = [
+    [-1, 0], [1, 0], [0, -1], [0, 1] // up, down, left, right
+]
+
+export const bishopDirections = [
+    [-1, -1], [-1, 1], [1, -1], [1, 1], // up-left, up-right, down-left, down-right
+]
+
+export const queenDirections = [
+    [-1, -1], [-1, 1], [1, -1], [1, 1],
+    [-1, 0], [1, 0], [0, -1], [0, 1]
+];

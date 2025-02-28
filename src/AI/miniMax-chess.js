@@ -5,8 +5,8 @@ const pieceValues = { 'p': 1, 'n': 3, 'b': 3, 'r': 5, 'q': 9, 'k': 1000 };
 
 function evaluateBoard(board) {
     let evaluation = 0;
-    for (let square of board) {
-        for (let piece of square) {
+    for (const square of board) {
+        for (const piece of square) {
             if (piece) {
                 const value = pieceValues[piece.type] || 0;
                 evaluation += piece.color === 'w' ? value : -value;
@@ -17,16 +17,16 @@ function evaluateBoard(board) {
 }
 
 function minimax(depth, isMaximizing, alpha, beta) {
-    if (depth === 0 || chess.isGameOver()) {
+    if (depth <= 0 || chess.isGameOver()) {
         return evaluateBoard(chess.board());
     }
 
     let bestValue = isMaximizing ? -Infinity : Infinity;
-    let moves = chess.moves();
+    const moves = chess.moves();
     
-    for (let move of moves) {
+    for (const move of moves) {
         chess.move(move);
-        let value = minimax(depth - 1, !isMaximizing, alpha, beta);
+        const value = minimax(depth - 1, !isMaximizing, alpha, beta);
         chess.undo();
 
         if (isMaximizing) {
@@ -44,19 +44,26 @@ function minimax(depth, isMaximizing, alpha, beta) {
 
 function findBestMove(depth) {
     let bestMove = null;
-    let bestValue = -Infinity;
-    let alpha = -Infinity
     let beta = Infinity;
-    let moves = chess.moves({ verbose: true });
+    let bestValue = Infinity;
     
-    for (let move of moves) {
-        chess.move(move.san);
-        let moveValue = minimax(depth - 1, false, alpha, beta);
+    const alpha = -Infinity
+    const moves = chess.moves({ verbose: true });
+    
+    for (const move of moves) {
+        chess.move(move);
+        const moveValue = minimax(depth - 1, true, alpha, beta);
         chess.undo();
 
-        if (moveValue > bestValue) {
+        if (moveValue < bestValue) {
             bestValue = moveValue;
             bestMove = move;
+        }
+
+        beta = Math.min(beta, moveValue)
+
+        if (beta <= alpha) {
+            break
         }
     }
     return bestMove;

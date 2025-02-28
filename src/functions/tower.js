@@ -1,58 +1,11 @@
-import { getMoveValue } from "./checkMove"
-import { Sides, Space } from "../constants"
-import { pieceProtect } from "./pices"
-
-const addMoveTowerSpaces = (row, col, moveBoard, side, imageBoard) => {
-    for (let x = row + 1; x < moveBoard.length; x++) {
-        const oldValue = moveBoard[x][col]
-        const newValue = getMoveValue(oldValue, imageBoard[x][col], side)
-        
-        moveBoard[x][col] = newValue
-
-        if ((oldValue == newValue && oldValue != Space.CanMove) || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
-            break
-        }
-    }
-
-    for (let x = row - 1; x >= 0; x--) {
-        const oldValue = moveBoard[x][col]
-        const newValue = getMoveValue(oldValue, imageBoard[x][col], side)
-        
-        moveBoard[x][col] = newValue
-
-        if ((oldValue == newValue && oldValue != Space.CanMove) || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
-            break
-        }
-    }
-
-    for (let y = col + 1; y < moveBoard.length; y++) {
-        const oldValue = moveBoard[row][y]
-        const newValue = getMoveValue(oldValue, imageBoard[row][y], side)
-        
-        moveBoard[row][y] = newValue
-
-        if ((oldValue == newValue && oldValue != Space.CanMove) || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
-            break
-        }
-    }
-
-    for (let y = col - 1; y >= 0; y--) {
-        const oldValue = moveBoard[row][y]
-        const newValue = getMoveValue(oldValue, imageBoard[row][y], side)
-        
-        moveBoard[row][y] = newValue
-
-        if ((oldValue == newValue && oldValue != Space.CanMove) || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
-            break
-        }
-    }
-}
+import { Sides, Space, towerDirections } from "../constants"
+import { pieceMove, pieceProtect } from "./pices"
 
 export const towerNormalMove = (row, col, moveBoard, imageName, imageBoard) => {
     if (imageName == Sides.Black) {
-        addMoveTowerSpaces(row, col, moveBoard, Sides.White, imageBoard)
+        pieceMove(row, col, moveBoard, Sides.White, imageBoard, towerDirections)
     } else {
-        addMoveTowerSpaces(row, col, moveBoard, Sides.Black, imageBoard)
+        pieceMove(row, col, moveBoard, Sides.Black, imageBoard, towerDirections)
     }
 }
 

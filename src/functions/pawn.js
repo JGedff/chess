@@ -119,7 +119,7 @@ export const movePawn = (row, col, moveBoard, imageName, oldImageBoard) => {
         for (let y = 0; y < moveBoard.length; y++) {
             const pieceValue = moveBoard[x][y]
 
-            if (pieceValue == Space.CanMove || pieceValue == Space.Kill || pieceValue == Space.KillKing || pieceValue == Space.PawnSpecialMove) {
+            if (pieceValue == Space.CanMove || pieceValue == Space.Kill || pieceValue == Space.PawnSpecialMove || pieceValue == Space.KillKing) {
                 moveBoard[x][y] = pieceProtect(x, y, moveBoard, oldImageBoard, row, col)
             }
         }

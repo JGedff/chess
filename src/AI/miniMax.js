@@ -1,14 +1,35 @@
 import { Sides, Space } from "../constants"
 import { checkMate, showMoves } from "../functions/checkMove"
 
+const pieceValues = {
+    'tower': 5,
+    'horse': 3,
+    'bishop': 3,
+    'queen': 9,
+    'king': 0,
+    'pawn': 1,
+}
+
+const moveValues = {
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 2,
+    4: 8,
+    5: 1000,
+    6: 1200,
+    7: 1020,
+    8: 2000,
+}
+
 const getMoves = (valueBoard) => {
     const newPositions = []
 
     for (let x = 0; x < valueBoard.length; x++) {
-        for (let y = 0; y < valueBoard.length; y++) {            
+        for (let y = 0; y < valueBoard.length; y++) {
             const pieceValue = valueBoard[x][y]
 
-            if (pieceValue == Space.CanMove || pieceValue == Space.Kill || pieceValue == Space.KillKing || pieceValue == Space.PawnSpecialMove) {
+            if (pieceValue == Space.CanMove || pieceValue == Space.Kill || pieceValue == Space.PawnSpecialMove || pieceValue == Space.KillKing) {
                 newPositions.push([x, y])
             }
         }
@@ -64,79 +85,24 @@ const undoMove = (imageBoard, valueBoard, move, auxiliar) => {
 }
 
 const getPiecesValues = (imagePiece) => {
-    let val = 0
+    const [pieceSide, piece] = imagePiece
+    const value = pieceValues[piece]
 
-    if (imagePiece != []) {
-        const [pieceSide, piece] = imagePiece
-    
-        if (pieceSide == Sides.White) {
-            if (piece == 'pawn') {
-                val += 1
-            }
-            else if (piece == 'horse' || piece == 'bishop') {
-                val += 3
-            }
-            else if (piece == 'tower') {
-                val += 5
-            }
-            else if (piece == 'queen') {
-                val += 9
-            }
-            else if (piece == 'king') {
-                val += 1000
-            }
-        }
-        else {
-            if (piece == 'pawn') {
-                val -= 1
-            }
-            else if (piece == 'horse' || piece == 'bishop') {
-                val -= 3
-            }
-            else if (piece == 'tower') {
-                val -= 5
-            }
-            else if (piece == 'queen') {
-                val -= 9
-            }
-            else if (piece == 'king') {
-                val -= 1000
-            }
-        }
+    if (pieceSide == Sides.White) {
+        return value
     }
 
-    return val
+    return -value
 }
 
-const getCheckValues = (imagePiece, pieceValue) => {
-    let val = 0
+const getCheckValues = (pieceSide, pieceValue) => {
+    const value = moveValues[pieceValue]
 
-    if (pieceValue != 0) {
-        const imageSide = imagePiece[0]
-
-        if (imageSide == Sides.White) {
-            switch (pieceValue) {
-                case Space.Check:
-                    val -= 100
-                    break;
-                case Space.CheckMate:
-                    val -= 200
-                    break;
-            }
-        }
-        else {
-            switch (pieceValue) {
-                case Space.Check:
-                    val += 100
-                    break;
-                case Space.CheckMate:
-                    val += 200
-                    break;
-            }
-        }
+    if (pieceSide == Sides.White) {
+        return value
     }
 
-    return val
+    return -value
 }
 
 const evaluate = (imageBoard, valueBoard) => {
@@ -146,9 +112,11 @@ const evaluate = (imageBoard, valueBoard) => {
         for (let y = 0; y < imageBoard.length; y++) {
             const imagePiece = imageBoard[x][y]
 
-            value += getPiecesValues(imagePiece)
-
-            value += getCheckValues(imagePiece, valueBoard[x][y])
+            if (imagePiece.length != 0) {
+                value += getPiecesValues(imagePiece)
+    
+                value += getCheckValues(imagePiece[0], valueBoard[x][y])
+            }
         }
     }
 
@@ -161,18 +129,17 @@ const minimax = (imageBoard, valueBoard, depth, alpha, beta, minimaxing, side) =
     }
 
     let newSide = Sides.Black
-
-    if (side == Sides.Black) {
+    let newScore = Infinity
+    
+    if (minimaxing) {
         newSide = Sides.White
+        newScore = -Infinity
     }
 
-    let newScore = minimaxing ? -Infinity : Infinity
-    let moves = getAvailableMoves(imageBoard, valueBoard, newSide)
-    
-    moves = orderMoves(moves, imageBoard, valueBoard, minimaxing, newSide)
+    const moves = getAvailableMoves(imageBoard, valueBoard, newSide)
 
-    for (const move of moves) {
-        let auxiliar = ['', 0]
+    for (const move of orderMoves(moves, imageBoard, valueBoard, minimaxing, newSide)) {
+        const auxiliar = [[], 0]
 
         applyMove(imageBoard, valueBoard, move, auxiliar)
         
@@ -197,8 +164,8 @@ const minimax = (imageBoard, valueBoard, depth, alpha, beta, minimaxing, side) =
     return newScore
 }
 
-const orderMoves = (moves, imageBoard, valueBoard, minimax, side) => {
-    let auxiliar = ['', 0]
+const orderMoves = (moves, imageBoard, valueBoard, minimaxing, side) => {
+    const auxiliar = [[], 0]
 
     return moves.sort((a, b) => {
         applyMove(imageBoard, valueBoard, a, auxiliar)
@@ -209,31 +176,37 @@ const orderMoves = (moves, imageBoard, valueBoard, minimax, side) => {
         const scoreB = evaluate(imageBoard, valueBoard, side)
         undoMove(imageBoard, valueBoard, b, auxiliar)
 
-        return minimax ? scoreB - scoreA : scoreA - scoreB
+        return minimaxing ? scoreB - scoreA : scoreA - scoreB
     })
 }
 
 export const getNextMove = (imageBoard, valueBoard, depth, side) => {
-    let bestValue = -Infinity
-    let alpha = -Infinity
+    const alpha = -Infinity
+    const moves = getAvailableMoves(imageBoard, valueBoard, side)
+    
+    let bestValue = Infinity
     let bestMove = null
     let beta = Infinity
 
-    for (let move of getAvailableMoves(imageBoard, valueBoard, side)) {
-        let auxiliar = ['', 0]
+    for (const move of orderMoves(moves, imageBoard, valueBoard, false, Sides.Black)) {
+        const auxiliar = [[], 0]
 
         applyMove(imageBoard, valueBoard, move, auxiliar)
         
-        const moveValue = minimax(imageBoard, valueBoard, depth - 1, alpha, beta, false, side)
+        const moveValue = minimax(imageBoard, valueBoard, depth - 1, alpha, beta, true, side)
         
         undoMove(imageBoard, valueBoard, move, auxiliar)
 
-        if (moveValue > bestValue) {
+        if (moveValue < bestValue) {
             bestValue = moveValue
             bestMove = move
         }
 
-        alpha = Math.max(alpha, moveValue)
+        beta = Math.min(beta, moveValue)
+
+        if (beta <= alpha) {
+            break
+        }
     }
 
     return bestMove

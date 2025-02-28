@@ -109,7 +109,7 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
             }
             <button className={"col w-12 align-content-center" + getBackgroundColor(filled)} onClick={handleClick} disabled={!canClick()} data-id={`${row}-${col}`}>
                 {
-                    imagePiece != [] ?
+                    imagePiece.length != 0 ?
                     <img src={"/" + imagePiece.join("/") + ".png"} alt="" className="w-100"/> :
                     <></>
                 }

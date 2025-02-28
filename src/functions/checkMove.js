@@ -10,7 +10,7 @@ import { moveTower } from "./tower"
 export const getMoveValue = (value, imagePath, imageToCheck) => {
     let image = ''
     
-    if (imagePath != [] && imagePath != undefined) {
+    if (imagePath.length != 0) {
         image = imagePath[0]
     }
 
@@ -36,22 +36,18 @@ export const checkMate = (board, imageBoard, side) => {
 }
 
 const someoneCanMove = (board, imageBoard, side) => {
-    let newBoard = copyBoard(board)
+    const newBoard = copyBoard(board)
 
     for (let x = 0; x < newBoard.length; x++) {
         for (let y = 0; y < newBoard.length; y++) {
             if (side == imageBoard[x][y][0]) {
-                const pieceMove = showMoves(x, y, newBoard, imageBoard)
-
-                combineBoards(newBoard, pieceMove)
+                combineBoards(newBoard, showMoves(x, y, newBoard, imageBoard))
             }
         }
     }
 
-    for (let x = 0; x < newBoard.length; x++) {
-        for (let y = 0; y < newBoard.length; y++) {
-            const pieceValue = newBoard[x][y]
-
+    for (const row of newBoard) {
+        for (const pieceValue of row) {
             if (pieceValue == Space.CanMove || pieceValue == Space.Kill || pieceValue == Space.KillKing || pieceValue == Space.PawnSpecialMove) {
                 return true
             }
@@ -62,12 +58,12 @@ const someoneCanMove = (board, imageBoard, side) => {
 }
 
 export const showMoves = (row, col, oldBoard, imageBoard) => {
-    let newBoard = copyBoard(oldBoard)
+    const newBoard = copyBoard(oldBoard)
 
     const [side, piece] = imageBoard[row][col]
     const oldPieceValue = oldBoard[row][col]
 
-    if (oldPieceValue == Space.Fill || oldPieceValue == Space.King) {
+    if (oldPieceValue == Space.Fill) {
         MovingPiece[0] = [side, piece]
         MovingPiece[1] = row
         MovingPiece[2] = col
@@ -86,9 +82,6 @@ export const showMoves = (row, col, oldBoard, imageBoard) => {
             case "queen":
                 moveQueen(row, col, newBoard, side, imageBoard)
                 break
-            case "king":
-                moveKingOutOfCheck(row, col, newBoard, imageBoard)
-                break
             case "horse":
                 moveHorse(row, col, newBoard, side, imageBoard)
                 break
@@ -96,7 +89,7 @@ export const showMoves = (row, col, oldBoard, imageBoard) => {
                 break
         }
     }
-    else if (oldPieceValue == Space.Check) {
+    else if (oldPieceValue == Space.King || oldPieceValue == Space.Check) {
         MovingPiece[0] = [side, piece]
         MovingPiece[1] = row
         MovingPiece[2] = col

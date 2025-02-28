@@ -2,7 +2,7 @@ import { copyBoard, getAllKingCheck } from "../functions"
 
 export default function TransformModal({ row, col, side, hideModal, board, updateBoard, imageBoard, updateImageBoard, changeTurn }) {
     const handleClick = (e) => {
-        let piece = e.target.src.split('/')[4].split('.')[0]
+        const piece = e.target.src.split('/')[4].split('.')[0]
 
         const newImageBoard = copyBoard(imageBoard)
         newImageBoard[row][col] = [side, piece]

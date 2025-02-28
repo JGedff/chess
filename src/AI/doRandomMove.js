@@ -14,7 +14,7 @@ export const selectRandomPiece = (imageBoard, moveBoard, updateImageBoard, updat
 }
 
 const moveRandomPiece = (imageBoard, moveBoard, number, side, updateImageBoard, updateBoard, changeTurn, numbersChecked = []) => {
-    let newMoveBoard = getRandomPieceMoves(imageBoard, moveBoard, number, side)
+    const newMoveBoard = getRandomPieceMoves(imageBoard, moveBoard, number, side)
 
     if (haveSameValues(moveBoard, newMoveBoard)) {
         numbersChecked.push(number)
@@ -67,8 +67,8 @@ const getIndexRandomPiece = (imageBoard, number, side) => {
 }
 
 const selectRandomMoveForPiece = (imageBoard, moveBoard, number, side) => {
-    let newImageBoard = copyBoard(imageBoard)
-    let newMoveBoard = copyBoard(moveBoard)
+    const newImageBoard = copyBoard(imageBoard)
+    const newMoveBoard = copyBoard(moveBoard)
 
     const [pieceX, pieceY] = getIndexRandomPiece(imageBoard, number, side)
     const possibleMoves = getAiPossibleMoves(moveBoard)

@@ -38,8 +38,8 @@ export default function Row({ initLength, initFilled, rowIndex, initialTurn, cha
         const row = []
         let isFilled = filled
 
-        for (let l = 0; l < lenght; l++) {
-            row.push(<Square key={l + rowIndex} col={l} row={rowIndex} filled={isFilled} initialTurn={turn} changeTurn={changeTurn} initBoard={board} handleMove={handleMove} initImageBoard={imageBoard} updateImageBoard={updateImgBoard} initTransformPawn={showModal} showTransform={setTransformPawn} setTimelineMove={setTimelineMove} />)
+        for (let y = 0; y < lenght; y++) {
+            row.push(<Square key={y + rowIndex} col={y} row={rowIndex} filled={isFilled} initialTurn={turn} changeTurn={changeTurn} initBoard={board} handleMove={handleMove} initImageBoard={imageBoard} updateImageBoard={updateImgBoard} initTransformPawn={showModal} showTransform={setTransformPawn} setTimelineMove={setTimelineMove} />)
             isFilled = !isFilled
         }
 

@@ -29,7 +29,7 @@ export const moveKing = (row, col, moveBoard, imageName, imageBoard) => {
 }
 
 const getCheck = (row, col, piece, board, imageToCheck, imageBoard) => {
-    let newBoard = copyBoard(board)
+    const newBoard = copyBoard(board)
 
     switch (piece) {
         case "pawn":
@@ -118,8 +118,9 @@ export const moveKingOutOfCheck = (row, col, moveBoard, imageBoard) => {
 }
 
 const secureKing = (row, col, oldMoveBoard, newValue, oldImageBoard, oldRow, oldCol) => {
+    const newImageBoard = copyBoard(oldImageBoard)
+    
     let newBoard = copyBoard(oldMoveBoard)
-    let newImageBoard = copyBoard(oldImageBoard)
 
     newBoard[row][col] = Space.King
     newBoard[oldRow][oldCol] = Space.Empty

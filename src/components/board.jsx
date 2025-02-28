@@ -5,7 +5,6 @@ import MoveTimeline from "./moveTimeline"
 
 import { checkMate, copyBoard, getKingPos, ImageBoard, MoveBoard } from "../functions"
 import { Sides, Space } from "../constants"
-import { isKingInDanger } from "../functions/king"
 import Winner from "./winner"
 import { AI } from "../AI"
 
@@ -13,7 +12,7 @@ export default function Board({ initLength, initHeight }) {
     const [spaceImageBoard, setSpaceImageBoard] = useState(ImageBoard)
     const [spaceBoard, setSpaceBoard] = useState(MoveBoard)
     const [timelineMove, setTimelineMove] = useState(false)
-    const [difficulty, setDifficulty] = useState('s') // Default: '' | Values: [Random | Easy | Chessjs]
+    const [difficulty, setDifficulty] = useState('Easy') // Default: '' | Values: [Random | Easy | Chessjs]
     const [endGame, setEndGame] = useState([false, ""])
     const [showModal, setShowModal] = useState(false)
     const [length, setLength] = useState(initLength)
@@ -100,8 +99,8 @@ export default function Board({ initLength, initHeight }) {
         const board = []
         let filled = true
 
-        for (let h = 0; h < height; h++) {
-            board.push(<Row key={h} initLength={lenght} initFilled={filled} rowIndex={h} initialTurn={turn} changeTurn={handleTurn} initBoard={spaceBoard} handleMove={updateBoard} initImageBoard={spaceImageBoard} updateImgBoard={updateImageBoard} initShowModal={showModal} setTransformPawn={showTransformModal} setTimelineMove={setTimelineMove}/>)
+        for (let x = 0; x < height; x++) {
+            board.push(<Row key={x} initLength={lenght} initFilled={filled} rowIndex={x} initialTurn={turn} changeTurn={handleTurn} initBoard={spaceBoard} handleMove={updateBoard} initImageBoard={spaceImageBoard} updateImgBoard={updateImageBoard} initShowModal={showModal} setTransformPawn={showTransformModal} setTimelineMove={setTimelineMove}/>)
             filled = !filled
         }
 
