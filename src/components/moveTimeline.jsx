@@ -26,19 +26,20 @@ export default function MoveTimeline({ updateBoard, updateImages, updateTurn, in
     const prevMove = () => {
         const newMoves = moves
         const newDeletedMoves = deletedMoves
+        const lastMove = newMoves[newMoves.length - 1]
 
         setTimeLineUpdate(true)
 
-        newDeletedMoves.push(newMoves[newMoves.length - 1])
+        newDeletedMoves.push(lastMove)
 
         newMoves.pop()
         setMoves(newMoves)
 
         setDeletedMoves(newDeletedMoves)
 
-        updateBoard(newMoves[newMoves.length - 1][0])
-        updateImages(newMoves[newMoves.length - 1][1])
-        updateTurn(newMoves[newMoves.length - 1][2])
+        updateBoard(lastMove[0])
+        updateImages(lastMove[1])
+        updateTurn(lastMove[2])
 
         setTimelineMove(true)
     }
@@ -46,16 +47,17 @@ export default function MoveTimeline({ updateBoard, updateImages, updateTurn, in
     const nextMove = () => {
         const newMoves = moves
         const newDeletedMoves = deletedMoves
+        const lastDeletedMove = newDeletedMoves[newDeletedMoves.length - 1]
 
         setTimeLineUpdate(true)
 
-        newMoves.push(newDeletedMoves[newDeletedMoves.length - 1])
+        newMoves.push(lastDeletedMove)
 
         setMoves(newMoves)
 
-        updateBoard(newDeletedMoves[newDeletedMoves.length - 1][0])
-        updateImages(newDeletedMoves[newDeletedMoves.length - 1][1])
-        updateTurn(newDeletedMoves[newDeletedMoves.length - 1][2])
+        updateBoard(lastDeletedMove[0])
+        updateImages(lastDeletedMove[1])
+        updateTurn(lastDeletedMove[2])
 
         newDeletedMoves.pop()
         setDeletedMoves(newDeletedMoves)

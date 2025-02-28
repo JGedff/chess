@@ -5,65 +5,58 @@ import { towerNormalMove } from "./tower"
 import { bishopNormalMove } from "./bishop"
 import { horseNormalMove } from "./horse"
 import { pawnNormalMove } from "./pawn"
+import { queenNormalMove } from "./queen"
 
-const getMoveArround = (row, col, oldMoveBoard, imageNameToCheck, imageBoard) => {
-    const newBoard = copyBoard(oldMoveBoard)
-    
+const getMoveArround = (row, col, moveBoard, imageNameToCheck, imageBoard) => {
     for (let x = row - 1; x <= row + 1; x++) {
-        if (x >= 0 && x < newBoard.length) {
+        if (x >= 0 && x < moveBoard.length) {
             for (let y = col - 1; y <= col + 1; y++) {
-                if (y >= 0 && y < newBoard.length) {
-                    newBoard[x][y] = getMoveValue(newBoard[x][y], imageBoard[x][y], imageNameToCheck)
+                if (y >= 0 && y < moveBoard.length) {
+                    moveBoard[x][y] = getMoveValue(moveBoard[x][y], imageBoard[x][y], imageNameToCheck)
                 }
             }
         }
     }
-
-    return newBoard
 }
 
-export const moveKing = (row, col, oldMoveBoard, imageName, imageBoard) => {
+export const moveKing = (row, col, moveBoard, imageName, imageBoard) => {
     if (imageName == Sides.Black) {
-        return getMoveArround(row, col, oldMoveBoard, Sides.White, imageBoard)
+        getMoveArround(row, col, moveBoard, Sides.White, imageBoard)
     }
-
-    return getMoveArround(row, col, oldMoveBoard, Sides.Black, imageBoard)
+    else {
+        getMoveArround(row, col, moveBoard, Sides.Black, imageBoard)
+    }
 }
 
 const getCheck = (row, col, piece, board, imageToCheck, imageBoard) => {
     let newBoard = copyBoard(board)
 
     switch (piece) {
-        case "pawn.png":
-            newBoard = pawnNormalMove(row, col, board, imageToCheck, imageBoard)
+        case "pawn":
+            pawnNormalMove(row, col, newBoard, imageToCheck, imageBoard)
             break
-        case "tower.png":
-            newBoard = towerNormalMove(row, col, board, imageToCheck, imageBoard)
+        case "tower":
+            towerNormalMove(row, col, newBoard, imageToCheck, imageBoard)
             break
-        case "bishop.png":
-            newBoard = bishopNormalMove(row, col, board, imageToCheck, imageBoard)
+        case "bishop":
+            bishopNormalMove(row, col, newBoard, imageToCheck, imageBoard)
             break
-        case "queen.png":
-            newBoard = bishopNormalMove(row, col, board, imageToCheck, imageBoard)
-            newBoard = towerNormalMove(row, col, newBoard, imageToCheck, imageBoard)
+        case "queen":
+            queenNormalMove(row, col, newBoard, imageToCheck, imageBoard)
             break
-        case "king.png":
-            newBoard = moveKing(row, col, board, imageToCheck, imageBoard)
+        case "king":
+            moveKing(row, col, newBoard, imageToCheck, imageBoard)
             break
-        case "horse.png":
-            newBoard = horseNormalMove(row, col, board, imageToCheck, imageBoard)
+        case "horse":
+            horseNormalMove(row, col, newBoard, imageToCheck, imageBoard)
             break
         default:
             break
     }
     
     for (let x = 0; x < newBoard.length; x++) {
-        const column = newBoard[x];
-        
-        for (let y = 0; y < column.length; y++) {
-            const value = column[y];
-            
-            if (value == Space.KillKing) {
+        for (let y = 0; y < newBoard.length; y++) {
+            if (newBoard[x][y] == Space.KillKing) {
                 return [x, y]
             }
         }
@@ -77,13 +70,9 @@ export const getAllKingCheck = (board, imageBoard) => {
     const allChecks = []
 
     for (let x = 0; x < newBoard.length; x++) {
-        const row = newBoard[x];
-        
-        for (let y = 0; y < row.length; y++) {
-            const pieceImage = imageBoard[x][y].split('/')
-            const side = pieceImage[1]
-            const piece = pieceImage[2]
-            const isCheck = getCheck(x, y, piece, newBoard, side, imageBoard)
+        for (let y = 0; y < newBoard.length; y++) {
+            const pieceImage = imageBoard[x][y]
+            const isCheck = getCheck(x, y, pieceImage[1], newBoard, pieceImage[0], imageBoard)
 
             if (isCheck != false) {
                 allChecks.push(isCheck)
@@ -100,10 +89,8 @@ export const getAllKingCheck = (board, imageBoard) => {
 
 export const isKingInDanger = (board, side, imageBoard) => {
     for (let x = 0; x < board.length; x++) {
-        const row = board[x];
-        
-        for (let y = 0; y < row.length; y++) {
-            if (board[x][y] == Space.Check && imageBoard[x][y].split('/')[1] == side) {
+        for (let y = 0; y < board.length; y++) {
+            if (board[x][y] == Space.Check && imageBoard[x][y][0] == side) {
                 return true
             }
         }
@@ -112,35 +99,35 @@ export const isKingInDanger = (board, side, imageBoard) => {
     return false
 }
 
-export const moveKingOutOfCheck = (row, col, board, imageBoard) => {
-    const newBoard = moveKing(row, col, board, imageBoard[row][col].split('/')[1], imageBoard)
+export const moveKingOutOfCheck = (row, col, moveBoard, imageBoard) => {
+    moveKing(row, col, moveBoard, imageBoard[row][col][0], imageBoard)
     
     for (let x = row - 1; x < row + 2; x++) {
-        if (x >= 0 && x < newBoard.length) {
+        if (x >= 0 && x < moveBoard.length) {
             for (let y = col - 1; y < col + 2; y++) {
-                if ((y >= 0 && y < newBoard.length) && !(x == row && y == col)) {
-                    if (newBoard[x][y] == Space.Kill || newBoard[x][y] == Space.CanMove) {
-                        newBoard[x][y] = secureKing(x, y, board, [row, col], newBoard[x][y], imageBoard)
+                if ((y >= 0 && y < moveBoard.length) && !(x == row && y == col)) {
+                    const pieceValue = moveBoard[x][y]
+
+                    if (pieceValue == Space.Kill || pieceValue == Space.CanMove) {
+                        moveBoard[x][y] = secureKing(x, y, moveBoard, pieceValue, imageBoard, row, col)
                     }
                 }
             }
         }
     }
-
-    return newBoard
 }
 
-const secureKing = (row, col, board, kingPos, newValue, oldImageBoard) => {
-    let newBoard = copyBoard(board)
-    let imageBoard = copyBoard(oldImageBoard)
+const secureKing = (row, col, oldMoveBoard, newValue, oldImageBoard, oldRow, oldCol) => {
+    let newBoard = copyBoard(oldMoveBoard)
+    let newImageBoard = copyBoard(oldImageBoard)
 
     newBoard[row][col] = Space.King
-    newBoard[kingPos[0]][kingPos[1]] = Space.Empty
+    newBoard[oldRow][oldCol] = Space.Empty
 
-    imageBoard[row][col] = imageBoard[kingPos[0]][kingPos[1]]
-    imageBoard[kingPos[0]][kingPos[1]] = ''
+    newImageBoard[row][col] = newImageBoard[oldRow][oldCol]
+    newImageBoard[oldRow][oldCol] = []
 
-    newBoard = getAllKingCheck(newBoard, imageBoard)
+    newBoard = getAllKingCheck(newBoard, newImageBoard)
 
     if (newBoard[row][col] == Space.King) {
         return newValue
@@ -157,8 +144,10 @@ const secureKing = (row, col, board, kingPos, newValue, oldImageBoard) => {
 
 export const getKingPos = (board, imageBoard, side) => {
     for (let x = 0; x < board.length; x++) {
-        for (let y = 0; y < board[x].length; y++) {
-            if ((board[x][y] == Space.King || board[x][y] == Space.Check) && imageBoard[x][y].split('/')[1] == side) {
+        for (let y = 0; y < board.length; y++) {
+            const pieceValue = board[x][y]
+
+            if ((pieceValue == Space.King || pieceValue == Space.Check) && imageBoard[x][y][0] == side) {
                 return [x, y]
             } 
         }

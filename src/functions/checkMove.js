@@ -4,13 +4,14 @@ import { combineBoards, copyBoard } from "./board"
 import { moveHorse } from "./horse"
 import { moveKingOutOfCheck } from "./king"
 import { movePawn } from "./pawn"
+import { moveQueen } from "./queen"
 import { moveTower } from "./tower"
 
 export const getMoveValue = (value, imagePath, imageToCheck) => {
     let image = ''
     
-    if (imagePath != '' && imagePath != undefined) {
-        image = imagePath.split('/')[1]
+    if (imagePath != [] && imagePath != undefined) {
+        image = imagePath[0]
     }
 
     if (value == Space.Empty) {
@@ -27,9 +28,7 @@ export const getMoveValue = (value, imagePath, imageToCheck) => {
 }
 
 export const checkMate = (board, imageBoard, side) => {
-    let newBoard = copyBoard(board)
-
-    if (someoneCanMove(newBoard, imageBoard, side)) {
+    if (someoneCanMove(board, imageBoard, side)) {
         return false
     }
 
@@ -40,18 +39,20 @@ const someoneCanMove = (board, imageBoard, side) => {
     let newBoard = copyBoard(board)
 
     for (let x = 0; x < newBoard.length; x++) {
-        for (let y = 0; y < newBoard[x].length; y++) {
-            if (side == imageBoard[x][y].split('/')[1]) {
+        for (let y = 0; y < newBoard.length; y++) {
+            if (side == imageBoard[x][y][0]) {
                 const pieceMove = showMoves(x, y, newBoard, imageBoard)
 
-                newBoard = combineBoards(pieceMove, newBoard)
+                combineBoards(newBoard, pieceMove)
             }
         }
     }
 
     for (let x = 0; x < newBoard.length; x++) {
-        for (let y = 0; y < newBoard[x].length; y++) {
-            if (newBoard[x][y] == Space.CanMove || newBoard[x][y] == Space.Kill || newBoard[x][y] == Space.KillKing || newBoard[x][y] == Space.PawnSpecialMove) {
+        for (let y = 0; y < newBoard.length; y++) {
+            const pieceValue = newBoard[x][y]
+
+            if (pieceValue == Space.CanMove || pieceValue == Space.Kill || pieceValue == Space.KillKing || pieceValue == Space.PawnSpecialMove) {
                 return true
             }
         }
@@ -60,49 +61,48 @@ const someoneCanMove = (board, imageBoard, side) => {
     return false
 }
 
-export const showMoves = (row, col, oldBoard, oldImageBoard) => {
+export const showMoves = (row, col, oldBoard, imageBoard) => {
     let newBoard = copyBoard(oldBoard)
-    let imageBoard = copyBoard(oldImageBoard)
 
-    const imagePath = imageBoard[row][col].split('/')
+    const [side, piece] = imageBoard[row][col]
+    const oldPieceValue = oldBoard[row][col]
 
-    if (oldBoard[row][col] == Space.Fill || oldBoard[row][col] == Space.King) {
-        MovingPiece[0][0] = imagePath.join('/')
-        MovingPiece[0][1] = row
-        MovingPiece[0][2] = col
-        MovingPiece[0][3] = newBoard[row][col]
+    if (oldPieceValue == Space.Fill || oldPieceValue == Space.King) {
+        MovingPiece[0] = [side, piece]
+        MovingPiece[1] = row
+        MovingPiece[2] = col
+        MovingPiece[3] = newBoard[row][col]
 
-        switch (imagePath[2]) {
-            case "pawn.png":
-                newBoard = movePawn(row, col, newBoard, imagePath[1], imageBoard)
+        switch (piece) {
+            case "pawn":
+                movePawn(row, col, newBoard, side, imageBoard)
                 break
-            case "tower.png":
-                newBoard = moveTower(row, col, newBoard, imagePath[1], imageBoard)
+            case "tower":
+                moveTower(row, col, newBoard, side, imageBoard)
                 break
-            case "bishop.png":
-                newBoard = moveBishop(row, col, newBoard, imagePath[1], imageBoard)
+            case "bishop":
+                moveBishop(row, col, newBoard, side, imageBoard)
                 break
-            case "queen.png":
-                newBoard = moveBishop(row, col, newBoard, imagePath[1], imageBoard)
-                newBoard = moveTower(row, col, newBoard, imagePath[1], imageBoard)
+            case "queen":
+                moveQueen(row, col, newBoard, side, imageBoard)
                 break
-            case "king.png":
-                newBoard = moveKingOutOfCheck(row, col, newBoard, imageBoard)
+            case "king":
+                moveKingOutOfCheck(row, col, newBoard, imageBoard)
                 break
-            case "horse.png":
-                newBoard = moveHorse(row, col, newBoard, imagePath[1], imageBoard)
+            case "horse":
+                moveHorse(row, col, newBoard, side, imageBoard)
                 break
             default:
                 break
         }
     }
-    else if (oldBoard[row][col] == Space.Check) {
-        MovingPiece[0][0] = imagePath.join('/')
-        MovingPiece[0][1] = row
-        MovingPiece[0][2] = col
-        MovingPiece[0][3] = newBoard[row][col]
+    else if (oldPieceValue == Space.Check) {
+        MovingPiece[0] = [side, piece]
+        MovingPiece[1] = row
+        MovingPiece[2] = col
+        MovingPiece[3] = newBoard[row][col]
         
-        newBoard = moveKingOutOfCheck(row, col, newBoard, imageBoard)
+        moveKingOutOfCheck(row, col, newBoard, imageBoard)
     }
 
     return newBoard

@@ -1,23 +1,49 @@
-import { AI } from "./index";
-import { selectRandomPiece } from "./doRandomMove";
-import { getNextMove } from "./minMax";
+import { AI } from "./index"
+import { selectRandomPiece } from "./doRandomMove"
+import { getNextMove } from "./miniMax"
+import { Sides, Space } from "../constants"
+import { copyBoard } from "../functions"
+import { getBestMove, updateMove } from "./miniMax-chess"
 
-export const move = (spaceImageBoard, spaceBoard, updateImageBoard, updateBoard, handleTurn) => {
+export const move = (spaceImageBoard, spaceBoard, updateImageBoard, updateBoard, handleTurn, turn) => {
+    let side = Sides.White
+
+    if (!turn) {
+        side = Sides.Black
+    }
+
+    const newImageBoard = copyBoard(spaceImageBoard)
+    const newValueBoard = copyBoard(spaceBoard)
+    
     if (AI.difficulty == 'Random') {
-        selectRandomPiece(spaceImageBoard, spaceBoard, updateImageBoard, updateBoard, handleTurn, [])
+        selectRandomPiece(spaceImageBoard, spaceBoard, updateImageBoard, updateBoard, handleTurn, side, [])
     }
     else if (AI.difficulty == 'Easy') {
-        const [newImageBoard, newMoveBoard, ] = getNextMove(spaceImageBoard, spaceBoard, false, 3)
+        const [piecePos, newPiecePos] = getNextMove(spaceImageBoard, spaceBoard, 4, side)
+
+        newImageBoard[newPiecePos[0]][newPiecePos[1]] = newImageBoard[piecePos[0]][piecePos[1]]
+        newImageBoard[piecePos[0]][piecePos[1]] = []
+
+        newValueBoard[newPiecePos[0]][newPiecePos[1]] = newValueBoard[piecePos[0]][piecePos[1]]
+        newValueBoard[piecePos[0]][piecePos[1]] = Space.Empty
 
         updateImageBoard(newImageBoard)
-        updateBoard(newMoveBoard)
+        updateBoard(newValueBoard)
         handleTurn()
     }
-    else if (AI.difficulty == 'Hard') {
-        const [newImageBoard, newMoveBoard, ] = getNextMove(spaceImageBoard, spaceBoard, false, 5)
+    else if (AI.difficulty == 'Chessjs') {
+        const [piecePos, newPiecePos] = getBestMove(4)
+
+        newImageBoard[newPiecePos[0]][newPiecePos[1]] = newImageBoard[piecePos[0]][piecePos[1]]
+        newImageBoard[piecePos[0]][piecePos[1]] = []
+
+        newValueBoard[newPiecePos[0]][newPiecePos[1]] = newValueBoard[piecePos[0]][piecePos[1]]
+        newValueBoard[piecePos[0]][piecePos[1]] = Space.Empty
+
+        updateMove(piecePos, newPiecePos)
 
         updateImageBoard(newImageBoard)
-        updateBoard(newMoveBoard)
+        updateBoard(newValueBoard)
         handleTurn()
     }
     else {

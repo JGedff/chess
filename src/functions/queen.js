@@ -1,13 +1,14 @@
-import { getMoveValue } from "./checkMove"
 import { Sides, Space } from "../constants"
+import { getMoveValue } from "./checkMove"
 import { pieceProtect } from "./pices"
 
-const checkBishopMove = (row, col, moveBoard, side, oldImageBoard) => {
+const checkQueenMove = (row, col, moveBoard, side, oldImageBoard) => {
     let y = col - 1;
     let y2 = col + 1;
 
     let yBlock = false
     let y2Block = false
+    let verticalBlock = false
 
     for (let x = row + 1; x < 8; x++) {
         let oldValue
@@ -37,6 +38,18 @@ const checkBishopMove = (row, col, moveBoard, side, oldImageBoard) => {
             }
         }
 
+        // Vertical down
+        if (!verticalBlock) {
+            oldValue = moveBoard[x][col]
+            newValue = getMoveValue(oldValue, oldImageBoard[x][col], side)
+
+            moveBoard[x][col] = newValue
+            
+            if ((oldValue == newValue && oldValue != Space.CanMove) || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
+                verticalBlock = true
+            }
+        }
+
         y--;
         y2++;
     }
@@ -46,6 +59,7 @@ const checkBishopMove = (row, col, moveBoard, side, oldImageBoard) => {
     
     yBlock = false
     y2Block = false
+    verticalBlock = false
     
     for (let x = row - 1; x >= 0; x--) {
         let oldValue
@@ -75,22 +89,56 @@ const checkBishopMove = (row, col, moveBoard, side, oldImageBoard) => {
             }
         }
 
+        // Vertical up
+        if (!verticalBlock) {
+            oldValue = moveBoard[x][col]
+            newValue = getMoveValue(oldValue, oldImageBoard[x][col], side)
+
+            moveBoard[x][col] = newValue
+            
+            if ((oldValue == newValue && oldValue != Space.CanMove) || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
+                verticalBlock = true
+            }
+        }
+
         y--;
         y2++;
     }
+
+    for (let y = col + 1; y < moveBoard.length; y++) {
+        const oldValue = moveBoard[row][y]
+        const newValue = getMoveValue(oldValue, oldImageBoard[row][y], side)
+
+        moveBoard[row][y] = newValue
+        
+        if ((oldValue == newValue && oldValue != Space.CanMove) || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
+            break
+        }
+    }
+    
+    for (let y = col - 1; y >= 0; y--) {
+        const oldValue = moveBoard[row][y]
+        const newValue = getMoveValue(oldValue, oldImageBoard[row][y], side)
+
+        moveBoard[row][y] = newValue
+        
+        if ((oldValue == newValue && oldValue != Space.CanMove) || newValue == Space.Kill || newValue == Space.King || newValue == Space.Check || newValue == Space.KillKing) {
+            break
+        }
+    }
 }
 
-export const bishopNormalMove = (row, col, moveBoard, imageName, oldImageBoard) => {
+export const queenNormalMove = (row, col, moveBoard, imageName, oldImageBoard) => {
     if (imageName == Sides.White) {
-        checkBishopMove(row, col, moveBoard, Sides.Black, oldImageBoard)
+        checkQueenMove(row, col, moveBoard, Sides.Black, oldImageBoard)
     }
     else {
-        checkBishopMove(row, col, moveBoard, Sides.White, oldImageBoard)
+        checkQueenMove(row, col, moveBoard, Sides.White, oldImageBoard)
     }
 }
 
-export const moveBishop = (row, col, moveBoard, imageName, oldImageBoard) => {
-    bishopNormalMove(row, col, moveBoard, imageName, oldImageBoard)
+export const moveQueen = (row, col, moveBoard, imageName, oldImageBoard) => {
+    queenNormalMove(row, col, moveBoard, imageName, oldImageBoard)
     
     for (let x = 0; x < moveBoard.length; x++) {
         for (let y = 0; y < moveBoard.length; y++) {

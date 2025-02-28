@@ -1,25 +1,25 @@
-import { Sides, Space } from "../constants"
-import { boardsAreEqual, copyBoard, deleteCheckSpaces, deleteMoveSpaces, getAmountPieces } from "../functions/board"
+import { Space } from "../constants"
+import { copyBoard, deleteCheckSpaces, deleteMoveSpaces, getAmountPieces, haveSameValues } from "../functions/board"
 import { showMoves } from "../functions/checkMove"
 import { getAllKingCheck } from "../functions/king"
 
-export const selectRandomPiece = (imageBoard, moveBoard, updateImageBoard, updateBoard, changeTurn, numbersChecked = []) => {
-    let randomPieceNumber = Math.trunc(Math.random() * getAmountPieces(imageBoard, Sides.Black))
+export const selectRandomPiece = (imageBoard, moveBoard, updateImageBoard, updateBoard, changeTurn, side, numbersChecked = []) => {
+    let randomPieceNumber = Math.trunc(Math.random() * getAmountPieces(imageBoard, side))
 
     while (numbersChecked.includes(randomPieceNumber)) {
-        randomPieceNumber = Math.trunc(Math.random() * getAmountPieces(imageBoard, Sides.Black))
+        randomPieceNumber = Math.trunc(Math.random() * getAmountPieces(imageBoard, side))
     }
 
-    moveRandomPiece(imageBoard, moveBoard, randomPieceNumber, Sides.Black, updateImageBoard, updateBoard, changeTurn, numbersChecked)
+    moveRandomPiece(imageBoard, moveBoard, randomPieceNumber, side, updateImageBoard, updateBoard, changeTurn, numbersChecked)
 }
 
 const moveRandomPiece = (imageBoard, moveBoard, number, side, updateImageBoard, updateBoard, changeTurn, numbersChecked = []) => {
     let newMoveBoard = getRandomPieceMoves(imageBoard, moveBoard, number, side)
 
-    if (boardsAreEqual(moveBoard, newMoveBoard)) {
+    if (haveSameValues(moveBoard, newMoveBoard)) {
         numbersChecked.push(number)
 
-        selectRandomPiece(imageBoard, moveBoard, updateImageBoard, updateBoard, changeTurn, numbersChecked)
+        selectRandomPiece(imageBoard, moveBoard, updateImageBoard, updateBoard, changeTurn, side, numbersChecked)
     }
     else {
         const [newImageBoard, newBoard] = selectRandomMoveForPiece(imageBoard, newMoveBoard, number, side)
@@ -34,26 +34,32 @@ const getRandomPieceMoves = (imageBoard, moveBoard, number, side) => {
     let index = 0
 
     for (let x = 0; x < imageBoard.length; x++) {
-        for (let y = 0; y < imageBoard[x].length; y++) {
-            if (imageBoard[x][y].split("/")[1] == side && index == number) {
+        for (let y = 0; y < imageBoard.length; y++) {
+            const pieceSide = imageBoard[x][y][0]
+
+            if (pieceSide == side && index == number) {
                 return showMoves(x, y, moveBoard, imageBoard)
             }
-            else if (imageBoard[x][y].split("/")[1] == side) {
+            else if (pieceSide == side) {
                 index += 1
             }
         }
     }
+
+    return moveBoard
 }
 
 const getIndexRandomPiece = (imageBoard, number, side) => {
     let index = 0
 
     for (let x = 0; x < imageBoard.length; x++) {
-        for (let y = 0; y < imageBoard[x].length; y++) {
-            if (imageBoard[x][y].split("/")[1] == side && index == number) {
+        for (let y = 0; y < imageBoard.length; y++) {
+            const pieceSide = imageBoard[x][y][0]
+
+            if (pieceSide == side && index == number) {
                 return [x, y]
             }
-            else if (imageBoard[x][y].split("/")[1] == side) {
+            else if (pieceSide == side) {
                 index += 1
             }
         }
@@ -72,21 +78,21 @@ const selectRandomMoveForPiece = (imageBoard, moveBoard, number, side) => {
 
     if (value == Space.PawnSpecialMove) {
         newMoveBoard[moveX][moveY] = newMoveBoard[pieceX][pieceY]
-        newMoveBoard[pieceX][pieceY] = 0
+        newMoveBoard[pieceX][pieceY] = Space.Empty
     
         newImageBoard[moveX][moveY] = getRandomTransformation(side)
-        newImageBoard[pieceX][pieceY] = ''
+        newImageBoard[pieceX][pieceY] = []
     }
     else {
         newMoveBoard[moveX][moveY] = newMoveBoard[pieceX][pieceY]
-        newMoveBoard[pieceX][pieceY] = 0
+        newMoveBoard[pieceX][pieceY] = Space.Empty
     
         newImageBoard[moveX][moveY] = newImageBoard[pieceX][pieceY]
-        newImageBoard[pieceX][pieceY] = ''
+        newImageBoard[pieceX][pieceY] = []
     }
 
-    newMoveBoard = deleteMoveSpaces(newMoveBoard, newImageBoard)
-    newMoveBoard = deleteCheckSpaces(newMoveBoard)
+    deleteMoveSpaces(newMoveBoard, newImageBoard)
+    deleteCheckSpaces(newMoveBoard)
 
     return [newImageBoard, getAllKingCheck(newMoveBoard, newImageBoard)]
 }
@@ -95,9 +101,11 @@ const getAiPossibleMoves = (moveBoard) => {
     const moves = []
 
     for (let x = 0; x < moveBoard.length; x++) {
-        for (let y = 0; y < moveBoard[x].length; y++) {
-            if (moveBoard[x][y] == Space.CanMove || moveBoard[x][y] == Space.Kill || moveBoard[x][y] == Space.KillKing || moveBoard[x][y] == Space.PawnSpecialMove) {
-                moves.push([x, y, moveBoard[x][y]])
+        for (let y = 0; y < moveBoard.length; y++) {
+            const pieceValue = moveBoard[x][y]
+
+            if (pieceValue == Space.CanMove || pieceValue == Space.Kill || pieceValue == Space.KillKing || pieceValue == Space.PawnSpecialMove) {
+                moves.push([x, y, pieceValue])
             }
         }
     }
@@ -106,25 +114,25 @@ const getAiPossibleMoves = (moveBoard) => {
 }
 
 const getRandomTransformation = (side) => {
-    let piece = `/${side}/`
+    let piece = ''
 
     switch (Math.trunc(Math.random() * 4)) {
         case 0:
-            piece += 'tower.png'
+            piece = 'tower.png'
             break;
         case 1:
-            piece += 'horse.png'
+            piece = 'horse.png'
             break;
         case 2:
-            piece += 'bishop.png'
+            piece = 'bishop.png'
             break;
         case 3:
-            piece += 'queen.png'
+            piece = 'queen.png'
             break;
         default:
-            piece += 'tower.png'
+            piece = 'tower.png'
             break;
     }
 
-    return piece
+    return [side, piece]
 }

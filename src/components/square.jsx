@@ -9,6 +9,8 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     const [showingModal, setShowingModal] = useState(initTransformPawn)
     const [imageBoard, setImageBoard] = useState(initImageBoard)
     const [isTransforming, setIsTransforming] = useState(false)
+    const [imagePiece, setImagePiece] = useState([])
+    const [valuePiece, setValuePiece] = useState([])
     const [board, setBoard] = useState(initBoard)
     const [turn, setTurn] = useState(initialTurn)
 
@@ -18,10 +20,12 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
 
     useEffect(() => {
         setBoard(initBoard)
+        setValuePiece(initBoard[row][col])
     }, [initBoard])
 
     useEffect(() => {
         setImageBoard(initImageBoard)
+        setImagePiece(initImageBoard[row][col])
     }, [initImageBoard])
 
     useEffect(() => {
@@ -43,19 +47,19 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
 
         setTimelineMove(false)
 
-        if (board[row][col] == Space.PawnSpecialMove) {
+        if (valuePiece == Space.PawnSpecialMove) {
             setIsTransforming(true)
         }
     }
 
     const canClick = () => {
-        const pieceColor = imageBoard[row][col].split('/')[1]
+        const pieceColor = imagePiece[0]
 
         if (showingModal) {
             return false
         }
 
-        if (board[row][col] == Space.CanMove || board[row][col] == Space.Kill || board[row][col] == Space.PawnSpecialMove || board[row][col] == Space.KillKing) {
+        if (valuePiece == Space.CanMove || valuePiece == Space.Kill || valuePiece == Space.PawnSpecialMove || valuePiece == Space.KillKing) {
             return true
         }
 
@@ -71,23 +75,23 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     }
 
     const getBackgroundColor = (fill) => {
-        if (board[row][col] == Space.CheckMate) {
+        if (valuePiece == Space.CheckMate) {
             return " bg-secondary"
         }
 
-        if (board[row][col] == Space.Check || board[row][col] == Space.KillKing) {
+        if (valuePiece == Space.Check || valuePiece == Space.KillKing) {
             return " bg-danger"
         }
 
-        if (board[row][col] == Space.PawnSpecialMove) {
+        if (valuePiece == Space.PawnSpecialMove) {
             return " bg-success"
         }
 
-        if (board[row][col] == Space.Kill) {
+        if (valuePiece == Space.Kill) {
             return " bg-warning"
         }
 
-        if (board[row][col] == Space.CanMove) {
+        if (valuePiece == Space.CanMove) {
             return " bg-info"
         }
         
@@ -101,12 +105,12 @@ export default function Square({ filled, col, row, initialTurn, changeTurn, init
     return (
         <>
             {
-                isTransforming ? <TransformModal row={row} col={col} side={imageBoard[row][col].split('/')[1]} hideModal={hideTransformModal} board={board} updateBoard={handleMove} imageBoard={imageBoard} updateImageBoard={updateImageBoard} changeTurn={changeTurn}/> : <></>
+                isTransforming ? <TransformModal row={row} col={col} side={imagePiece[0]} hideModal={hideTransformModal} board={board} updateBoard={handleMove} imageBoard={imageBoard} updateImageBoard={updateImageBoard} changeTurn={changeTurn}/> : <></>
             }
             <button className={"col w-12 align-content-center" + getBackgroundColor(filled)} onClick={handleClick} disabled={!canClick()} data-id={`${row}-${col}`}>
                 {
-                    imageBoard[row][col] != '' ?
-                    <img src={imageBoard[row][col]} alt="" className="w-100"/> :
+                    imagePiece != [] ?
+                    <img src={"/" + imagePiece.join("/") + ".png"} alt="" className="w-100"/> :
                     <></>
                 }
             </button>
